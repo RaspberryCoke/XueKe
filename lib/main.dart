@@ -89,6 +89,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -111,7 +112,7 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> with SingleTickerProvider
   List tabs = ["新闻", "历史", "图片"];
   List list = [
     TemplatePage(),
-    TemplatePage(),
+    LockPage(),
     TemplatePage(),
   ];
   int _selectedIndex = 1;
@@ -133,14 +134,15 @@ class _ScaffoldRouteState extends State<ScaffoldRoute> with SingleTickerProvider
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar( //导航栏
+
+      appBar:  _selectedIndex==1?null:AppBar( //导航栏
         title: Text("App Name"),
         actions: <Widget>[ //导航栏右侧菜单
           IconButton(icon: Icon(Icons.share), onPressed: () {}),
         ],
       ),
       drawer: MyDrawer(), //抽屉
-      bottomNavigationBar:BottomNavigationBar(
+      bottomNavigationBar:_selectedIndex==1?null:BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Business'),
