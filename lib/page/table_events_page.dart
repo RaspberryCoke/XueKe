@@ -11,8 +11,9 @@ class TableEventsPage extends StatefulWidget {
 
 class _TableEventsPageState extends State<TableEventsPage> {
 
-  double _xOffset = 0.0;
-  double _yOffset = 0.0;
+  bool _isDragging = false;
+  double _x = 0;
+  double _y = 0;
 
   List<String> cards = [
     Res.new_card_bg_1,
@@ -66,43 +67,42 @@ class _TableEventsPageState extends State<TableEventsPage> {
 
 
       drawer: Drawer(
-          //backgroundColor: Colors.white,
+        //backgroundColor: Colors.white,
           child: Column(
-        children: [
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  tileMode: TileMode.mirror,
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFf689ad3), Color(0xD9B5B5FF)],
-                  stops: [0.0, 1.0],
+            children: [
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      tileMode: TileMode.mirror,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xFf689ad3), Color(0xD9B5B5FF)],
+                      stops: [0.0, 1.0],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                  flex: 1,
-                  child: UserAccountsDrawerHeader(
-                    accountName: Text("大包子",
-                      style: TextStyle(fontSize: 16, color: Colors.black),),
-                    accountEmail: Text("千里之行 始于足下",
-                      style: TextStyle(fontSize: 13, color: Colors.black),),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        "https://tse2-mm.cn.bing.net/th/id/OIP-C.j9by_1c7kEqMmgUf6klzwgHaFp?w=250&h=193&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                      ),
-                    ),
-                    decoration: BoxDecoration(//背景
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                "https://tse3-mm.cn.bing.net/th/id/OIP-C.Ih2_mBebzjZ8kEjgzXJjoAHaEo?w=297&h=185&c=7&r=0&o=5&dpr=1.3&pid=1.7"),
-                            fit: BoxFit.cover)),
-
-                    /*decoration: const BoxDecoration(
+              Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: UserAccountsDrawerHeader(
+                          accountName: Text("大包子",
+                            style: TextStyle(fontSize: 16, color: Colors.black),),
+                          accountEmail: Text("千里之行 始于足下",
+                            style: TextStyle(fontSize: 13, color: Colors.black),),
+                          currentAccountPicture: CircleAvatar(
+                              backgroundImage: new ExactAssetImage('assets/person.png')
+                          ),
+                          decoration: BoxDecoration(//背景
+                            image: DecorationImage(
+                              image: new ExactAssetImage('assets/person_bg.png'),
+                              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        /*decoration: const BoxDecoration(
                         //color: Colors.yellow,
                         image: DecorationImage(
                             image: NetworkImage(
@@ -123,67 +123,77 @@ class _TableEventsPageState extends State<TableEventsPage> {
                         )
                       ],
                     ),*/
-                  ))
+                      ))
+                ],
+              ),
+              const ListTile(
+                leading: CircleAvatar(
+                  child: Icon(Icons.people),
+                ),
+                title: Text("个人中心"),
+              ),
+              Divider(
+                color: Colors.grey,
+                height: 20,
+                thickness: 1,
+                indent: 20,
+                endIndent: 0,
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  child: Icon(Icons.settings),
+                ),
+                title: Text("系统设置"),
+              ),
+              Divider(
+                color: Colors.grey,
+                height: 20,
+                thickness: 1,
+                indent: 20,
+                endIndent: 0,
+              ),
             ],
-          ),
-          const ListTile(
-            leading: CircleAvatar(
-              child: Icon(Icons.people),
-            ),
-            title: Text("个人中心"),
-          ),
-          Divider(
-            color: Colors.grey,
-            height: 20,
-            thickness: 1,
-            indent: 20,
-            endIndent: 0,
-          ),
-          ListTile(
-            leading: CircleAvatar(
-              child: Icon(Icons.settings),
-            ),
-            title: Text("系统设置"),
-          ),
-          Divider(),
-        ],
-      )),
+          )),
+
 
 
       floatingActionButton: Stack(
         children: [
           Positioned(
-            right: _xOffset,
-            bottom: _yOffset,
-            child:FloatingActionButton.extended(
-              icon: Icon(Icons.add),
-              onPressed: () {
-
-                _showAddTodoDialog();
-
+            right: _x,
+            bottom: _y,
+            child: GestureDetector(
+              onPanStart: (details) {
+                setState(() {
+                  _isDragging = true;
+                });
               },
-              label: Text(
-                "创建待办",
-                style: TextStyle(fontSize: 17, color: Colors.white),
+              onPanUpdate: (details) {
+                setState(() {
+                  _x = (_x - details.delta.dx).clamp(0, 190);
+                  _y = (_y - details.delta.dy).clamp(0, 580);
+                });
+              },
+              onPanEnd: (details) {
+                setState(() {
+                  _isDragging = false;
+                });
+              },
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  _showAddTodoDialog();
+                },
+                label: Text(
+                  "创建待办",
+                  style: TextStyle(fontSize: 17, color: Colors.white),
+                ),
+                icon: Icon(Icons.add),
               ),
             ),
-          ),
-          GestureDetector(
-            onPanUpdate: (details) {
-              //ontouch: () {
-                setState(() {
-                  // _xOffset -= details.delta.dx;
-                  //_yOffset -= details.delta.dy;
-                  _xOffset = (_xOffset - details.delta.dx).clamp(0, 180);
-                  _yOffset = (_yOffset - details.delta.dy).clamp(0, 577);
-                });
-             // };
-            },
-          ),
+          )
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-
     );
   }
 }

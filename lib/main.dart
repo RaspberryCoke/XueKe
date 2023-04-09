@@ -1,6 +1,83 @@
 import 'package:flutter/material.dart';
 import 'page/template_page.dart';
 import 'package:app_entrance/page/home_page.dart';
+import 'colors.dart';
+import 'model/cut_corners_border.dart';
+
+void main(){
+  runApp(
+      MyApp());
+}
+
+ThemeData _buildShrineTheme() {
+  final ThemeData base = ThemeData.light();
+  return base.copyWith(
+    colorScheme: base.colorScheme.copyWith(
+      primary: kShrinePink400,
+      secondary: kShrineErrorRed,
+      //error: kShrineErrorRed,
+    ),
+    scaffoldBackgroundColor: kShrineSurfaceWhite,
+    textSelectionTheme: const TextSelectionThemeData(
+      selectionColor: kShrinePurple,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: CutCornersBorder(),
+      focusedBorder: CutCornersBorder(
+        borderSide: BorderSide(
+          width: 2.0,
+          color: kShrinePurple,
+        ),
+      ),
+      floatingLabelStyle: TextStyle(
+        color: kShrinePurple,
+      ),
+    ),
+  );
+}
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const HomePage(),
+
+      theme: _buildShrineTheme(),
+
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 void main() {
   runApp(const MyApp());
 }
@@ -132,4 +209,4 @@ class MyDrawer extends StatelessWidget {
       ),
     );
   }
-}
+}*/
