@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'expands/top_button_expanded.dart';
 import 'expands/top_blank_expanded.dart';
@@ -11,6 +12,7 @@ import 'expands/bottom_button_expanded.dart';
 //expands/top_button_expanded.dart.dart
 class LockPage extends StatelessWidget {
   LockPage({Key? key}) : super(key: key);
+  CountDownController controller = CountDownController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,20 @@ class LockPage extends StatelessWidget {
             TopButtonExpanded(child: Text('TopButtonExpanded')),
             TopTextExpanded(child:Text('TopTextExpanded')),
             TopBlankExpanded(),
-            MiddleTimerExpanded(child: Text('MiddleTimerExpanded')),
+            MiddleTimerExpanded(child: CircularCountDownTimer(
+              isReverseAnimation: true,
+              isReverse: true,
+              width: 300,
+              height: 300,
+              duration: 60,
+              fillColor: Colors.blue,
+              ringColor: Colors.blue.withOpacity(0.25),
+              autoStart: true,
+              controller: controller,
+              onComplete: () {
+                controller.restart();
+              },
+            )),
             BottomTextExpanded(child: Text('BottomTextExpanded')),
             BottomBlankExpanded(),
             BottomButtonExpanded(child:Text('BottomButtonExpanded')),
