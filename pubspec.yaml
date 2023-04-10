@@ -30,6 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
   circular_countdown_timer: 0.2.1
   duration_picker: 1.1.0+1
   shared_preferences: 2.0.15
@@ -40,7 +44,9 @@ dependencies:
   flutter_easyloading: 3.0.5
   shake_animation_widget: ^3.0.3
   cupertino_icons: ^1.0.2
-
+  hexcolor: ^3.0.1
+  font_awesome_flutter: ^9.1.0
+  otp_text_field: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +57,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,7 +72,63 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/
+      - assets/person.png
+      - assets/person_bg.png
+      - assets/art_card2.png
+      - assets/avatar.png
+      - assets/bg.png
+      - assets/bg_study_room_1.jpg
+      - assets/bg_study_room_2.jpg
+      - assets/bg_study_room_3.JPG
+      - assets/bonfire_pure.mp3
+      - assets/class_ring_2.mp3
+      - assets/default_background_new_1.JPG
+      - assets/default_background_new_2.JPG
+      - assets/default_background_new_3.jpg
+      - assets/default_background_new_4.JPG
+      - assets/default_background_new_5.JPG
+      - assets/default_background_new_6.JPG
+      - assets/default_background_new_7.JPG
+      - assets/default_background_new_8.JPG
+      - assets/drawer_bg.png
+      - assets/drawer_bg2.png
+      - assets/ic_action_big_timeline.png
+      - assets/ic_action_bottom_future_task.png
+      - assets/ic_action_bubble.png
+      - assets/ic_action_close_dark.png
+      - assets/ic_action_confirm.png
+      - assets/ic_action_keyboard_arrow_down.png
+      - assets/ic_action_pause.png
+      - assets/ic_action_statistic_task_icon.png
+      - assets/ic_bgm_bookflip.jpg
+      - assets/ic_bgm_clock.png
+      - assets/ic_bgm_quite.png
+      - assets/ic_bgm_rain.png
+      - assets/ic_bgm_rain2.png
+      - assets/ic_bgm_think.png
+      - assets/ic_close.png
+      - assets/ic_music.png
+      - assets/ic_play_circle_outline_white_48dp.png
+      - assets/image_login_bg.jpeg
+      - assets/kanoon.mp3
+      - assets/logo.png
+      - assets/logo2.png
+      - assets/mp3_1.mp3
+      - assets/music_box.mp3
+      - assets/new_card_bg_1.png
+      - assets/new_card_bg_2.JPG
+      - assets/new_card_bg_3.jpg
+      - assets/new_card_bg_4.jpg
+      - assets/random_avator1.png
+      - assets/random_avator2.png
+      - assets/random_avator3.png
+      - assets/t1.mp3
+      - assets/t2.mp3
+      - assets/t3.mp3
+      - assets/t4.mp3
+      - assets/t5.mp3
+      - assets/ticking_new.mp3
+      - assets/wind_leaf.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,6 +1,15 @@
 import 'package:app_entrance/logic/login_logic.dart';
 import 'package:app_entrance/logic/main_logic.dart';
+import 'package:app_entrance/login/registration_page.dart';
+import 'package:app_entrance/page/constant.dart';
+import 'package:app_entrance/page/login.dart';
+import 'package:app_entrance/page/splash_page.dart';
+import 'package:app_entrance/page/table_events_page.dart';
+import 'package:app_entrance/page/todo_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'page/template_page.dart';
 import 'package:app_entrance/page/home_page.dart';
@@ -41,6 +50,7 @@ ThemeData _buildShrineTheme() {
     ),
   );
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -51,12 +61,58 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<MainLogic>(create: (_) => MainLogic.instance),
+      ],
+      child: MaterialApp(
+        builder: EasyLoading.init(),
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          //此处
+          const Locale('zh', 'CH'),
+          const Locale('en', 'US'),
+        ],
+        onGenerateRoute: (settings) {
+          Widget widget;
+          Map<String, dynamic>? args =
+          settings.arguments as Map<String, dynamic>?;
+          switch (settings.name) {
+            case Constant.main:
+              widget = SplashPage();
+              break;
+            case Constant.login:
+              widget = Login();
+              break;
+            case Constant.register:
+              widget = RegistrationPage();
+              break;
+            case Constant.homePage:
+              widget = HomePage();
+              break;
+/*            case Constant.todoDetailPage:
+              widget = TodoDetailPage(args: args);
+              break;*/
+            case Constant.todoPage:
+              widget = const TodoPage();
+              break;
+/*            case Constant.settingPage:
+              widget = const SettingPage();
+              break;*/
+            default:
+              widget = TableEventsPage();
+          }
 
-      theme: _buildShrineTheme(),
-
+          return MaterialPageRoute(builder: (context) {
+            return widget;
+          });
+        },
+      ),
     );
   }
 }
