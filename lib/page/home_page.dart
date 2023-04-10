@@ -1,7 +1,9 @@
 import 'package:app_entrance/page/data_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app_entrance/page/table_events_page.dart';
-import 'package:app_entrance/page/lockscreen_page.dart';
+//import 'package:app_entrance/page/lock_page/expands/lock_page.dart';
+
+import 'lock_page/lock_page.dart';
 class HomePage extends StatefulWidget{
   const HomePage({super.key});
 

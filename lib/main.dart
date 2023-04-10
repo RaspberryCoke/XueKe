@@ -66,6 +66,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<MainLogic>(create: (_) => MainLogic.instance),
       ],
       child: MaterialApp(
+        theme: _buildShrineTheme(),
         builder: EasyLoading.init(),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
