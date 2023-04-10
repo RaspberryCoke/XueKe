@@ -15,6 +15,7 @@ import 'page/template_page.dart';
 import 'package:app_entrance/page/home_page.dart';
 import 'colors.dart';
 import 'model/cut_corners_border.dart';
+import 'page/todo_detail_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,9 +97,9 @@ class _MyAppState extends State<MyApp> {
             case Constant.homePage:
               widget = HomePage();
               break;
-/*            case Constant.todoDetailPage:
+            case Constant.todoDetailPage:
               widget = TodoDetailPage(args: args);
-              break;*/
+              break;
             case Constant.todoPage:
               widget = const TodoPage();
               break;

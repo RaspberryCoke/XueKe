@@ -59,7 +59,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
       return ;
     }
 
-    User user = User(account: account, password: password);
+    User user = User(name:name,account: account, password: password);
     bool success = LoginLogic.instance.register(user);
     if (!success) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -267,7 +267,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
         return ;
       }
 
-      User user = User(account: account, password: password);
+      User user = User(name:name,account: account, password: password);
       bool success = LoginLogic.instance.register(user);
       if (!success) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
