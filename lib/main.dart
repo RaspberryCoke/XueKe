@@ -1,12 +1,18 @@
+import 'package:app_entrance/logic/login_logic.dart';
+import 'package:app_entrance/logic/main_logic.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'page/template_page.dart';
 import 'package:app_entrance/page/home_page.dart';
 import 'colors.dart';
 import 'model/cut_corners_border.dart';
 
-void main(){
-  runApp(
-      MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  MainLogic.instance.init(sharedPreferences);
+  LoginLogic.instance.init();
+  runApp(MyApp());
 }
 
 ThemeData _buildShrineTheme() {
