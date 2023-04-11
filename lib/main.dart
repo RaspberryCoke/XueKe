@@ -12,11 +12,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_entrance/page/lock_page/lock_page.dart';
-import 'page/template_page.dart';
 import 'package:app_entrance/page/home_page.dart';
 import 'colors.dart';
 import 'model/cut_corners_border.dart';
 import 'page/todo_detail_page.dart';
+import 'package:app_entrance/page/lock_page/go_to_back_dialog.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
