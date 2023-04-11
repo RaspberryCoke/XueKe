@@ -8,6 +8,8 @@ class HomePage extends StatefulWidget{
 
   State<HomePage> createState() => _HomePageState();
 }
+
+
 class _HomePageState extends State<HomePage>{
   int _currentIndex=0;
 
@@ -37,7 +39,13 @@ class _HomePageState extends State<HomePage>{
 
         onTap: (index){
           setState(() {
-            _currentIndex=index;
+            if(index==1)
+            {
+              //全屏页面的跳转的实现
+              Navigator.pushNamed(context, '/lock_page');
+            }
+            else
+              _currentIndex=index;
           });
         },
 
@@ -46,8 +54,8 @@ class _HomePageState extends State<HomePage>{
           BottomNavigationBarItem(icon:Icon(Icons.recycling), label: "锁屏",tooltip: ''),
           BottomNavigationBarItem(icon:Icon(Icons.data_thresholding_outlined), label: "数据",tooltip: ''),
           //BottomNavigationBarItem(icon:Icon(Icons.people), label: "用户"),
-        ],),
-
+        ],
+      ),
     );
   }
 }

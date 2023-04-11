@@ -8,13 +8,6 @@ class TemplatePage extends StatelessWidget {
       body: Center(
         child: Text('这是TemplatePage'),
       ),
-      floatingActionButton: FloatingActionButton( //悬浮按钮
-          child: Icon(Icons.add),
-          onPressed:_onAdd
-      ),
     );
-  }
-
-  void _onAdd(){
   }
 }

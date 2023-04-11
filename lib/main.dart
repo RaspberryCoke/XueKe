@@ -11,6 +11,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app_entrance/page/lock_page/lock_page.dart';
 import 'page/template_page.dart';
 import 'package:app_entrance/page/home_page.dart';
 import 'colors.dart';
@@ -67,6 +68,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<MainLogic>(create: (_) => MainLogic.instance),
       ],
       child: MaterialApp(
+        routes: {
+          '/lock_page': (context) => LockPage(),
+        },
         theme: _buildShrineTheme(),
         builder: EasyLoading.init(),
         debugShowCheckedModeBanner: false,
