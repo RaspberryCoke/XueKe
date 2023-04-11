@@ -29,6 +29,9 @@ class _RegistrationPageState extends State<RegistrationPage>{
   bool checkedValue = false;
   bool checkboxValue = false;
 
+  void _back(){
+    Navigator.pushReplacementNamed(context, Constant.login);
+  }
   void _register() {
 
     if (password.isEmpty) {
@@ -78,20 +81,36 @@ class _RegistrationPageState extends State<RegistrationPage>{
         child: Stack(
           children: [
             Container(
-              height: 150,
-              child: HeaderWidget(150, false, Icons.person_add_alt_1_rounded),
+              height: 160,
+              child:
+                HeaderWidget(150, false, Icons.person_add_alt_1_rounded),
             ),
+            SizedBox(height: 110),
+
             Container(
               margin: EdgeInsets.fromLTRB(25, 50, 25, 10),
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              alignment: Alignment.center,
+             // alignment: Alignment.center,
               child: Column(
                 children: [
                   Form(
                     key: _formKey,
                     child: Column(
                       children: [
-                        SizedBox(height: 130),
+                        SizedBox(height: 12),
+                        Positioned(
+                          left: 18.0,
+                          child:
+                          /*BackButton(
+                            color: Colors.white,
+                            onPressed: _back,
+                          ),*/
+                          IconButton (
+                              icon: Icon(Icons.back_hand),
+                              onPressed: _back,
+                          )
+                        ),
+                        SizedBox(height: 80),
                         Container(
                           child: TextFormField(
                             validator: (val) {
@@ -106,7 +125,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 30,),
+                        SizedBox(height: 25),
                         Container(
                           child: TextFormField(
                             validator: (val) {
@@ -122,7 +141,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 25.0),
                         Container(
                           child: TextFormField(
                             validator: (val) {
@@ -140,7 +159,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 25.0),
                         Container(
                           child: TextFormField(
                             validator: (val) {
@@ -158,7 +177,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 25.0),
                         Container(
                           child: TextFormField(
                             onChanged: (value) {
@@ -175,7 +194,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 25.0),
                         Container(
                           child: TextFormField(
                             onChanged: (value) {

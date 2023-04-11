@@ -177,7 +177,9 @@ class _TableEventsPageState extends State<TableEventsPage> {
                       ))
                 ],
               ),
-              const ListTile(
+
+
+              /*const ListTile(
                 leading: CircleAvatar(
                   child: Icon(Icons.people),
                 ),
@@ -202,7 +204,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
                 thickness: 1,
                 indent: 20,
                 endIndent: 0,
-              ),
+              ),*/
             ],
           )
       ),
