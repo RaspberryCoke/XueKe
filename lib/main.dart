@@ -1,5 +1,151 @@
+import 'package:app_entrance/logic/login_logic.dart';
+import 'package:app_entrance/logic/main_logic.dart';
+import 'package:app_entrance/login/registration_page.dart';
+import 'package:app_entrance/page/constant.dart';
+import 'package:app_entrance/page/login.dart';
+import 'package:app_entrance/page/splash_page.dart';
+import 'package:app_entrance/page/table_events_page.dart';
+import 'package:app_entrance/page/todo_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app_entrance/page/lock_page/lock_page.dart';
+import 'package:app_entrance/page/home_page.dart';
+import 'colors.dart';
+import 'model/cut_corners_border.dart';
+import 'page/todo_detail_page.dart';
+import 'package:app_entrance/page/lock_page/go_to_back_dialog.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  MainLogic.instance.init(sharedPreferences);
+  LoginLogic.instance.init();
+  runApp(MyApp());
+}
+
+ThemeData _buildShrineTheme() {
+  final ThemeData base = ThemeData.light();
+  return base.copyWith(
+    colorScheme: base.colorScheme.copyWith(
+      primary: kShrinePink400,
+      secondary: kShrineErrorRed,
+      //error: kShrineErrorRed,
+    ),
+    scaffoldBackgroundColor: kShrineSurfaceWhite,
+    textSelectionTheme: const TextSelectionThemeData(
+      selectionColor: kShrinePurple,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: CutCornersBorder(),
+      focusedBorder: CutCornersBorder(
+        borderSide: BorderSide(
+          width: 2.0,
+          color: kShrinePurple,
+        ),
+      ),
+      floatingLabelStyle: TextStyle(
+        color: kShrinePurple,
+      ),
+    ),
+  );
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<MainLogic>(create: (_) => MainLogic.instance),
+      ],
+      child: MaterialApp(
+        routes: {
+          '/lock_page': (context) => LockPage(),
+        },
+        theme: _buildShrineTheme(),
+        builder: EasyLoading.init(),
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          //此处
+          const Locale('zh', 'CH'),
+          const Locale('en', 'US'),
+        ],
+        onGenerateRoute: (settings) {
+          Widget widget;
+          Map<String, dynamic>? args =
+          settings.arguments as Map<String, dynamic>?;
+          switch (settings.name) {
+            case Constant.main:
+              widget = SplashPage();
+              break;
+            case Constant.login:
+              widget = Login();
+              break;
+            case Constant.register:
+              widget = RegistrationPage();
+              break;
+            case Constant.homePage:
+              widget = HomePage();
+              break;
+            case Constant.todoDetailPage:
+              widget = TodoDetailPage(args: args);
+              break;
+            case Constant.todoPage:
+              widget = const TodoPage();
+              break;
+/*            case Constant.settingPage:
+              widget = const SettingPage();
+              break;*/
+            default:
+              widget = TableEventsPage();
+          }
+
+          return MaterialPageRoute(builder: (context) {
+            return widget;
+          });
+        },
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 void main() {
   runApp(const MyApp());
 }
@@ -11,105 +157,126 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home:
+      HomePage()//ScaffoldRoute(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class ScaffoldRoute extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _ScaffoldRouteState createState() => _ScaffoldRouteState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _ScaffoldRouteState extends State<ScaffoldRoute> with SingleTickerProviderStateMixin{
+  late TabController _tabController;
+  List tabs = ["新闻", "历史", "图片"];
+  List list = [
+    TemplatePage(),
+    LockPage(),
+    TemplatePage(),
+  ];
+  int _selectedIndex = 1;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: tabs.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    // 释放资源
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+
+      appBar:  _selectedIndex==1?null:AppBar( //导航栏
+        title: Text("App Name"),
+        actions: <Widget>[ //导航栏右侧菜单
+          IconButton(icon: Icon(Icons.share), onPressed: () {}),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      drawer: MyDrawer(), //抽屉
+      bottomNavigationBar:_selectedIndex==1?null:BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Business'),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'School'),
+        ],
+        currentIndex: _selectedIndex,
+        fixedColor: Colors.blue,
+        onTap: _onItemTapped,
+      ),
+
+      body: list[_selectedIndex],
+      );
+
+  }
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+}
+
+
+class MyDrawer extends StatelessWidget {
+  const MyDrawer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: MediaQuery.removePadding(
+        context: context,
+        //移除抽屉菜单顶部默认留白
+        removeTop: true,
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "Wendux",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  ListTile(
+                    leading: const Icon(Icons.add),
+                    title: const Text('Add account'),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Manage accounts'),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-}
+}*/
