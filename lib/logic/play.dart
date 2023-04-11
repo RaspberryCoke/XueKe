@@ -8,12 +8,12 @@ class Play {
   static const String t3 = 't3.mp3';
   static const String t4 = 't4.mp3';
   static const String t5 = 't5.mp3';*/
-  static const String t1 = 'music_box.mp3';
-  static const String t2 = 'ticking_new.mp3';
-  static const String t3 = 'class_ring_2.mp3';
-  static const String t4 = 'wind_leaf.mp3';
-  static const String t5 = 'kanoon.mp3';
-  static const String t6 = 'bonfire_pure.mp3';
+  static const String t1 = 'yinyuehe.mp3';
+  static const String t2 = 'fire.mp3';
+  static const String t3 = 'yusheng.mp3';
+  static const String t4 = 'guzheng.mp3';
+  static const String t5 = 'xishui.mp3';
+  static const String t6 = 'senlin.mp3';
   static const String bgMusic = 'mp3_1.mp3';
 
   static const List<String> ts = [t1, t2, t3, t4, t5,t6];

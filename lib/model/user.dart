@@ -6,7 +6,7 @@ class User {
   String? content;
 
   User({
-    required this.name,
+    this.name,
     required this.account,
     required this.password,
     this.avatar,
@@ -14,7 +14,7 @@ class User {
   });
 
   User.fromJson(Map<String, dynamic> json) {
-    account = json['name'];
+    name = json['name'];
     account = json['account'];
     password = json['password'];
     avatar = json['avatar'];

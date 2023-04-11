@@ -19,6 +19,13 @@ class Res {
   static const String default_background_new_6 = "assets/default_background_new_6.JPG";
   static const String default_background_new_7 = "assets/default_background_new_7.JPG";
   static const String default_background_new_8 = "assets/default_background_new_8.JPG";
+  static const String default_background_1 = "assets/default_background_1.png";
+  static const String default_background_2 = "assets/default_background_2.png";
+  static const String default_background_3 = "assets/default_background_3.png";
+  static const String default_background_4 = "assets/default_background_4.png";
+  static const String default_background_5 = "assets/default_background_5.png";
+  static const String default_background_6 = "assets/default_background_6.png";
+
   static const String drawer_bg = "assets/drawer_bg.png";
   static const String drawer_bg2 = "assets/drawer_bg2.png";
   static const String ic_action_big_timeline = "assets/ic_action_big_timeline.png";
@@ -36,6 +43,10 @@ class Res {
   static const String ic_bgm_rain = "assets/ic_bgm_rain.png";
   static const String ic_bgm_rain2 = "assets/ic_bgm_rain2.png";
   static const String ic_bgm_think = "assets/ic_bgm_think.png";
+  static const String ic_bgm_fire = "assets/ic_bgm_fire.png";
+  static const String ic_bgm_guzheng = "assets/ic_bgm_guzheng.png";
+  static const String ic_bgm_senlin = "assets/ic_bgm_senlin.png";
+  static const String ic_bgm_xishui = "assets/ic_bgm_xishui.png";
   static const String ic_close = "assets/ic_close.png";
   static const String ic_music = "assets/ic_music.png";
   static const String ic_play_circle_outline_white_48dp = "assets/ic_play_circle_outline_white_48dp.png";
@@ -50,11 +61,13 @@ class Res {
   static const String random_avator1 = "assets/random_avator1.png";
   static const String random_avator2 = "assets/random_avator2.png";
   static const String random_avator3 = "assets/random_avator3.png";
-  static const String t1 = "assets/t1.mp3";
-  static const String t2 = "assets/t2.mp3";
-  static const String t3 = "assets/t3.mp3";
-  static const String t4 = "assets/t4.mp3";
-  static const String t5 = "assets/t5.mp3";
   static const String ticking_new = "assets/ticking_new.mp3";
   static const String wind_leaf = "assets/wind_leaf.mp3";
+  static const String xishui = "assets/xishui.mp3";
+  static const String fire = "assets/fire.mp3";
+  static const String yusheng = "assets/yusheng.mp3";
+  static const String guzheng = "assets/guzheng.mp3";
+  static const String yinyuehe = "assets/yinyuehe.mp3";
+  static const String senlin = "assets/senlin.mp3";
+
 }
