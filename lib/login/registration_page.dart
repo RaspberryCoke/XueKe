@@ -3,6 +3,7 @@ import 'package:app_entrance/model/user.dart';
 import 'package:app_entrance/page/constant.dart';
 import 'package:app_entrance/res.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app_entrance/login/theme_helper.dart';
 import 'package:app_entrance/login/header_widget.dart';
@@ -85,31 +86,26 @@ class _RegistrationPageState extends State<RegistrationPage>{
               child:
                 HeaderWidget(150, false, Icons.person_add_alt_1_rounded),
             ),
-            SizedBox(height: 110),
-
+          //  SizedBox(height: 110),
             Container(
               margin: EdgeInsets.fromLTRB(25, 50, 25, 10),
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-             // alignment: Alignment.center,
+              //alignment: Alignment.center,
               child: Column(
                 children: [
                   Form(
                     key: _formKey,
                     child: Column(
                       children: [
-                        SizedBox(height: 12),
-                        Positioned(
+                        SizedBox(height: 50),
+/*                        Positioned(
                           left: 18.0,
                           child:
-                          /*BackButton(
-                            color: Colors.white,
+                          BackButton(
+                            color: Colors.black,
                             onPressed: _back,
-                          ),*/
-                          IconButton (
-                              icon: Icon(Icons.back_hand),
-                              onPressed: _back,
-                          )
-                        ),
+                          ),
+                        ),*/
                         SizedBox(height: 80),
                         Container(
                           child: TextFormField(
@@ -125,7 +121,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 25),
+                        SizedBox(height: 20),
                         Container(
                           child: TextFormField(
                             validator: (val) {
@@ -141,7 +137,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 25.0),
+                        SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
                             validator: (val) {
@@ -159,7 +155,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 25.0),
+                        SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
                             validator: (val) {
@@ -177,7 +173,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 25.0),
+                        SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
                             onChanged: (value) {
@@ -194,7 +190,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 25.0),
+                        SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
                             onChanged: (value) {
@@ -214,8 +210,7 @@ class _RegistrationPageState extends State<RegistrationPage>{
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
 
-
-                        SizedBox(height: 15.0),
+                        SizedBox(height: 10.0),
                         FormField<bool>(
                           builder: (state) {
                             return Column(
@@ -252,7 +247,8 @@ class _RegistrationPageState extends State<RegistrationPage>{
                             }
                           },
                         ),
-                        SizedBox(height: 20.0),
+
+                        SizedBox(height: 10.0),
                         Container(
                           decoration: ThemeHelper().buttonBoxDecoration(context),
                           child: ElevatedButton(
@@ -304,7 +300,27 @@ class _RegistrationPageState extends State<RegistrationPage>{
 
                           ),
                         ),
-                        SizedBox(height: 30.0),
+                        SizedBox(height: 5.0),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10,20,10,20),
+                          //child: Text('Don\'t have an account? Create'),
+                          child: Text.rich(
+                              TextSpan(
+                                  children: [
+                                    TextSpan(text: "已存在账号? "),
+                                    TextSpan(
+                                      text: '返回登录',
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = (){
+                                          Navigator.pushReplacementNamed(context, Constant.login);
+                                          //Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
+                                        },
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).accentColor),
+                                    ),
+                                  ]
+                              )
+                          ),
+                        ),
                       ],
                     ),
                   ),

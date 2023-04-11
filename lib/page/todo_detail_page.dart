@@ -32,7 +32,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
   ];
 
   List<String> musicText = [
-    '无声',
+    '音乐盒',
     '时钟滴答-Free',
     '雨声-普通版-Free',
     '雨声-无损-Free',
@@ -41,7 +41,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
   ];
 
   List<String> musicBg = [
-    Res.ic_bgm_quite,
+    Res.ic_bgm_box,
     Res.ic_bgm_clock,
     Res.ic_bgm_rain,
     Res.ic_bgm_rain2,
@@ -185,7 +185,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                           },
                           child: Container(
                             height: 40,
-                            foregroundDecoration: BoxDecoration(
+                            foregroundDecoration: BoxDecoration(//选择该音乐
                               color: musicIndex != index
                                   ? Colors.white70
                                   : Colors.transparent,
@@ -377,7 +377,9 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                               autoStart: false,
 
                               // This Callback will execute when the Countdown Starts.
-                              onStart: () {},
+                              onStart: () {
+
+                              },
                               // This Callback will execute when the Countdown Ends.
                               onComplete: () {
                                 isDone = true;

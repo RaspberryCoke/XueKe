@@ -1,4 +1,6 @@
 class Res {
+  static const String person = "assets/person.png";
+  static const String person_bg = "assets/person_bg.png";
   static const String image_login_bg = "assets/image_login_bg.png";
   static const String logo2 = "assets/logo2.png";
   static const String art_card2 = "assets/art_card2.png";
@@ -27,6 +29,7 @@ class Res {
   static const String ic_action_keyboard_arrow_down = "assets/ic_action_keyboard_arrow_down.png";
   static const String ic_action_pause = "assets/ic_action_pause.png";
   static const String ic_action_statistic_task_icon = "assets/ic_action_statistic_task_icon.png";
+  static const String ic_bgm_box = "assets/ic_bgm_box.png";
   static const String ic_bgm_bookflip = "assets/ic_bgm_bookflip.jpg";
   static const String ic_bgm_clock = "assets/ic_bgm_clock.png";
   static const String ic_bgm_quite = "assets/ic_bgm_quite.png";

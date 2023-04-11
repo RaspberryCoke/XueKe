@@ -44,7 +44,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Forgot Password?',
+                            Text('忘记登入密码?',
                               style: TextStyle(
                                   fontSize: 35,
                                   fontWeight: FontWeight.bold,
@@ -53,7 +53,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               // textAlign: TextAlign.center,
                             ),
                             SizedBox(height: 10,),
-                            Text('Enter the email address associated with your account.',
+                            Text('输入账号的邮箱地址',
                               style: TextStyle(
                                 // fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -62,7 +62,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               // textAlign: TextAlign.center,
                             ),
                             SizedBox(height: 10,),
-                            Text('We will email you a verification code to check your authenticity.',
+                            Text('我们将给你发送一份验证码进行验证.',
                               style: TextStyle(
                                 color: Colors.black38,
                                 // fontSize: 20,
@@ -79,13 +79,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           children: <Widget>[
                             Container(
                               child: TextFormField(
-                                decoration: ThemeHelper().textInputDecoration("Email", "Enter your email"),
+                                decoration: ThemeHelper().textInputDecoration("邮箱", "输入您的邮箱"),
                                 validator: (val){
                                   if(val!.isEmpty){
-                                    return "Email can't be empty";
+                                    return "邮箱不能为空";
                                   }
                                   else if(!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(val)){
-                                    return "Enter a valid email address";
+                                    return "请输入一个正确的邮箱地址";
                                   }
                                   return null;
                                 },
@@ -101,7 +101,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   padding: const EdgeInsets.fromLTRB(
                                       40, 10, 40, 10),
                                   child: Text(
-                                    "Send".toUpperCase(),
+                                    "发送".toUpperCase(),
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -124,9 +124,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             Text.rich(
                               TextSpan(
                                 children: [
-                                  TextSpan(text: "Remember your password? "),
+                                  TextSpan(text: "记住了你的密码? "),
                                   TextSpan(
-                                    text: 'Login',
+                                    text: '登入',
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         Navigator.push(
