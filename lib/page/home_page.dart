@@ -1,7 +1,7 @@
-import 'package:app_entrance/page/data_page.dart';
+import 'package:tomato_clock/page/data_page.dart';
 import 'package:flutter/material.dart';
-import 'package:app_entrance/page/table_events_page.dart';
-import 'package:app_entrance/page/lock_page/lock_page.dart';
+import 'package:tomato_clock/page/table_events_page.dart';
+import 'package:tomato_clock/page/lock_page/lock_page.dart';
 
 class HomePage extends StatefulWidget{
   const HomePage({super.key});

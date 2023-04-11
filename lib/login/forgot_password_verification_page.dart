@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:app_entrance/login/theme_helper.dart';
+import 'package:tomato_clock/login/theme_helper.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 
 import 'header_widget.dart';
 import 'profile_page.dart';
-import 'package:app_entrance/login/header_widget.dart';
+import 'package:tomato_clock/login/header_widget.dart';
 
 class ForgotPasswordVerificationPage extends StatefulWidget {
   const ForgotPasswordVerificationPage({Key? key}) : super(key: key);

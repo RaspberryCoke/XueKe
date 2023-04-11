@@ -1,14 +1,14 @@
-import 'package:app_entrance/logic/login_logic.dart';
-import 'package:app_entrance/logic/main_logic.dart';
-import 'package:app_entrance/model/todo.dart';
-import 'package:app_entrance/page/change_password_page.dart';
-import 'package:app_entrance/page/constant.dart';
-import 'package:app_entrance/page/event.dart';
-import 'package:app_entrance/page/login.dart';
-import 'package:app_entrance/page/todo_detail_page.dart';
+import 'package:tomato_clock/logic/login_logic.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
+import 'package:tomato_clock/model/todo.dart';
+import 'package:tomato_clock/page/change_password_page.dart';
+import 'package:tomato_clock/page/constant.dart';
+import 'package:tomato_clock/page/event.dart';
+import 'package:tomato_clock/page/login.dart';
+import 'package:tomato_clock/page/todo_detail_page.dart';
 import 'package:flutter/material.dart';
-import 'package:app_entrance/res.dart';
-import 'package:app_entrance/page/todo_page.dart';
+import 'package:tomato_clock/res.dart';
+import 'package:tomato_clock/page/todo_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TableEventsPage extends StatefulWidget {

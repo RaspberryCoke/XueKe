@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:app_entrance/logic/login_logic.dart';
+import 'package:tomato_clock/logic/login_logic.dart';
 //import 'package:pomodoro_clock/page/constant.dart';
-import 'package:app_entrance/res.dart';
+import 'package:tomato_clock/res.dart';
 
 
 class LoginPage extends StatefulWidget {

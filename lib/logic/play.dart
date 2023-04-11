@@ -1,4 +1,4 @@
-import 'package:app_entrance/logic/main_logic.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
 
 class Play {
   static const String _playKey = 'play';

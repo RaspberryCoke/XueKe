@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:app_entrance/res.dart';
+import 'package:tomato_clock/res.dart';
 
 class BackgroundUtils {
   /// 随机背景图

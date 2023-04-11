@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:app_entrance/model/todo.dart';
-import 'package:app_entrance/page/event.dart';
+import 'package:tomato_clock/model/todo.dart';
+import 'package:tomato_clock/page/event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:app_entrance/logic/main_logic.dart';
-import 'package:app_entrance/res.dart';
-import 'package:app_entrance/utils/time_utils.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
+import 'package:tomato_clock/res.dart';
+import 'package:tomato_clock/utils/time_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 

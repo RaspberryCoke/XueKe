@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:app_entrance/logic/login_logic.dart';
-import 'package:app_entrance/model/user.dart';
-import 'package:app_entrance/page/constant.dart';
-import 'package:app_entrance/res.dart';
+import 'package:tomato_clock/logic/login_logic.dart';
+import 'package:tomato_clock/model/user.dart';
+import 'package:tomato_clock/page/constant.dart';
+import 'package:tomato_clock/res.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({Key? key}) : super(key: key);

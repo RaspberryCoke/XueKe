@@ -2,11 +2,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:app_entrance/login/theme_helper.dart';
+import 'package:tomato_clock/login/theme_helper.dart';
 
 import 'forgot_password_verification_page.dart';
 import 'header_widget.dart';
-import 'package:app_entrance/page/login.dart';
+import 'package:tomato_clock/page/login.dart';
 
 
 class ForgotPasswordPage extends StatefulWidget {

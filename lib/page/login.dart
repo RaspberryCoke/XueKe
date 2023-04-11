@@ -1,12 +1,12 @@
-import 'package:app_entrance/logic/login_logic.dart';
+import 'package:tomato_clock/logic/login_logic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:app_entrance/login/forgot_password_page.dart';
-import 'package:app_entrance/login/registration_page.dart';
-import 'package:app_entrance/login/header_widget.dart';
-import 'package:app_entrance/login/theme_helper.dart';
-import 'package:app_entrance/page/constant.dart';
+import 'package:tomato_clock/login/forgot_password_page.dart';
+import 'package:tomato_clock/login/registration_page.dart';
+import 'package:tomato_clock/login/header_widget.dart';
+import 'package:tomato_clock/login/theme_helper.dart';
+import 'package:tomato_clock/page/constant.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

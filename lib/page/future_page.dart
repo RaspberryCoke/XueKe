@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:app_entrance/logic/main_logic.dart';
-import 'package:app_entrance/model/todo.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
+import 'package:tomato_clock/model/todo.dart';
 import 'package:intl/intl.dart';
-import 'package:app_entrance/page/todo_page.dart';
-import 'package:app_entrance/res.dart';
+import 'package:tomato_clock/page/todo_page.dart';
+import 'package:tomato_clock/res.dart';
 
 /// 未来倒计时
 class FuturePage extends StatefulWidget {

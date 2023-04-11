@@ -2,9 +2,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:app_entrance/page/login.dart';
-import 'package:app_entrance/page/splash_page.dart';
-import 'package:app_entrance/login/header_widget.dart';
+import 'package:tomato_clock/page/login.dart';
+import 'package:tomato_clock/page/splash_page.dart';
+import 'package:tomato_clock/login/header_widget.dart';
 
 import 'forgot_password_page.dart';
 import 'forgot_password_verification_page.dart';

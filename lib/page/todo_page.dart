@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
-import 'package:app_entrance/logic/main_logic.dart';
-import 'package:app_entrance/model/todo.dart';
-import 'package:app_entrance/res.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
+import 'package:tomato_clock/model/todo.dart';
+import 'package:tomato_clock/res.dart';
 class TodoPage extends StatefulWidget {
   const TodoPage({Key? key, this.date}) : super(key: key);
   final int? date;

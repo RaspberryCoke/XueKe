@@ -1,22 +1,22 @@
-import 'package:app_entrance/logic/login_logic.dart';
-import 'package:app_entrance/logic/main_logic.dart';
-import 'package:app_entrance/login/registration_page.dart';
-import 'package:app_entrance/page/constant.dart';
-import 'package:app_entrance/page/login.dart';
-import 'package:app_entrance/page/splash_page.dart';
-import 'package:app_entrance/page/table_events_page.dart';
-import 'package:app_entrance/page/todo_page.dart';
+import 'package:tomato_clock/logic/login_logic.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
+import 'package:tomato_clock/login/registration_page.dart';
+import 'package:tomato_clock/page/constant.dart';
+import 'package:tomato_clock/page/login.dart';
+import 'package:tomato_clock/page/splash_page.dart';
+import 'package:tomato_clock/page/table_events_page.dart';
+import 'package:tomato_clock/page/todo_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app_entrance/page/lock_page/lock_page.dart';
-import 'package:app_entrance/page/home_page.dart';
+import 'package:tomato_clock/page/lock_page/lock_page.dart';
+import 'package:tomato_clock/page/home_page.dart';
 import 'colors.dart';
 import 'model/cut_corners_border.dart';
 import 'page/todo_detail_page.dart';
-import 'package:app_entrance/page/lock_page/go_to_back_dialog.dart';
+import 'package:tomato_clock/page/lock_page/go_to_back_dialog.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-//import 'package:app_entrance/page/constant.dart';
-import 'package:app_entrance/res.dart';
-import 'package:app_entrance/page/login.dart';
+//import 'package:tomato_clock/page/constant.dart';
+import 'package:tomato_clock/res.dart';
+import 'package:tomato_clock/page/login.dart';
 import 'dart:async';
-import 'package:app_entrance/page/constant.dart';
+import 'package:tomato_clock/page/constant.dart';
 
 class SplashPage extends StatefulWidget {
    const SplashPage({Key? key}) : super(key: key);
