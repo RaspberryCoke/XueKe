@@ -3,6 +3,7 @@ import 'package:app_entrance/logic/main_logic.dart';
 import 'package:app_entrance/login/registration_page.dart';
 import 'package:app_entrance/page/constant.dart';
 import 'package:app_entrance/page/login.dart';
+import 'package:app_entrance/page/mine_setting_page.dart';
 import 'package:app_entrance/page/splash_page.dart';
 import 'package:app_entrance/page/table_events_page.dart';
 import 'package:app_entrance/page/todo_page.dart';
@@ -107,9 +108,9 @@ class _MyAppState extends State<MyApp> {
             case Constant.todoPage:
               widget = const TodoPage();
               break;
-/*            case Constant.settingPage:
-              widget = const SettingPage();
-              break;*/
+           case Constant.settingPage:
+              widget = const MineSettingPage();
+              break;
             default:
               widget = TableEventsPage();
           }

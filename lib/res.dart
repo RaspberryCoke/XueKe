@@ -1,5 +1,8 @@
 class Res {
   static const String person = "assets/person.png";
+  static const String person2 = "assets/person2.png";
+  static const String person3 = "assets/person3.png";
+  static const String person4 = "assets/person4.png";
   static const String person_bg = "assets/person_bg.png";
   static const String image_login_bg = "assets/image_login_bg.png";
   static const String logo2 = "assets/logo2.png";
@@ -11,21 +14,20 @@ class Res {
   static const String bg_study_room_3 = "assets/bg_study_room_3.JPG";
   static const String bonfire_pure = "assets/bonfire_pure.mp3";
   static const String class_ring_2 = "assets/class_ring_2.mp3";
-  static const String default_background_new_1 = "assets/default_background_new_1.JPG";
+
   static const String default_background_new_2 = "assets/default_background_new_2.JPG";
   static const String default_background_new_3 = "assets/default_background_new_3.jpg";
   static const String default_background_new_4 = "assets/default_background_new_4.JPG";
   static const String default_background_new_5 = "assets/default_background_new_5.JPG";
   static const String default_background_new_6 = "assets/default_background_new_6.JPG";
   static const String default_background_new_7 = "assets/default_background_new_7.JPG";
-  static const String default_background_new_8 = "assets/default_background_new_8.JPG";
+  static const String default_background_7 = "assets/default_background_7.png";
   static const String default_background_1 = "assets/default_background_1.png";
   static const String default_background_2 = "assets/default_background_2.png";
   static const String default_background_3 = "assets/default_background_3.png";
   static const String default_background_4 = "assets/default_background_4.png";
   static const String default_background_5 = "assets/default_background_5.png";
   static const String default_background_6 = "assets/default_background_6.png";
-
   static const String drawer_bg = "assets/drawer_bg.png";
   static const String drawer_bg2 = "assets/drawer_bg2.png";
   static const String ic_action_big_timeline = "assets/ic_action_big_timeline.png";
@@ -58,6 +60,12 @@ class Res {
   static const String new_card_bg_2 = "assets/new_card_bg_2.JPG";
   static const String new_card_bg_3 = "assets/new_card_bg_3.jpg";
   static const String new_card_bg_4 = "assets/new_card_bg_4.jpg";
+  static const String card_bg_1 = "assets/card_bg_1.png";
+  static const String card_bg_2 = "assets/card_bg_2.png";
+  static const String card_bg_3 = "assets/card_bg_3.png";
+  static const String card_bg_4 = "assets/card_bg_4.png";
+  static const String card_bg_5 = "assets/card_bg_5.png";
+  static const String card_bg_6 = "assets/card_bg_6.png";
   static const String random_avator1 = "assets/random_avator1.png";
   static const String random_avator2 = "assets/random_avator2.png";
   static const String random_avator3 = "assets/random_avator3.png";

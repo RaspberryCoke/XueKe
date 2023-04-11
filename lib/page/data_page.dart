@@ -117,7 +117,7 @@ class _DataPageState extends State<DataPage> {
                         markersMaxCount: 1,
                         markerSize: 4,
                         todayDecoration: BoxDecoration(
-                          color: Color(0xFF5789c2).withOpacity(.4),
+                          color: Color(0xFF5789c2).withOpacity(.5),
                           shape: BoxShape.circle,
                         ),
                         selectedDecoration: const BoxDecoration(
@@ -125,7 +125,7 @@ class _DataPageState extends State<DataPage> {
                           shape: BoxShape.circle,
                         ),
                         markerDecoration: const BoxDecoration(
-                          color: Colors.red,
+                          color: Color(0xffdc154a),
                           shape: BoxShape.circle,
                         ),
                       ),

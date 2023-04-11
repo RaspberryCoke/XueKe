@@ -1,3 +1,4 @@
+import 'package:app_entrance/page/constant.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,31 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     'xishui.mp3',
     'senlin.mp3',
   ];
+ back(){
+   Container(
+     width: 200,
+     height: 200,
+     decoration: BoxDecoration(
+       border: Border.all(
+         color: Colors.white10,
+         width: 2,
+       ),
+       color: Colors.white10,
+       borderRadius: BorderRadius.circular(100),
+     ),
+     child: Center(
+       child: Text(
+         '已完成',
+         style: TextStyle(
+             fontSize: 33.0,
+             color: Colors.white,
+             fontWeight: FontWeight.bold),
+       ),
+     ),
+   );
+   //Navigator.of(context).pop();
+  //Navigator.pushReplacementNamed(context, Constant.homePage) ;
+}
 
   List<String> musicText = [
     '音乐盒',
@@ -50,13 +76,13 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
   ];
 
   List<String> bgs = [
-    Res.default_background_new_1,
-    Res.default_background_new_2,
-    Res.default_background_new_3,
-    Res.default_background_new_4,
-    Res.default_background_new_5,
-    Res.default_background_new_6,
-    Res.default_background_new_7,
+    Res.default_background_1,
+    Res.default_background_2,
+    Res.default_background_3,
+    Res.default_background_4,
+    Res.default_background_5,
+    Res.default_background_6,
+    Res.default_background_7,
   ];
   bool isDone = false;
   bool isStop = false;
@@ -268,7 +294,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
               if (!isDone) {
                 _showOutDialog();
               } else {
-                Navigator.pop(context);
+                Navigator.pop(context);//已做完
               }
             },
           ),
@@ -296,7 +322,9 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                 alignment: Alignment.center,
                 children: [
                   isDone
-                      ? Container(
+                       ?
+                  //back()
+                  Container(
                           width: 200,
                           height: 200,
                           decoration: BoxDecoration(
@@ -394,6 +422,8 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                                   type = MusicStatus.complete;
                                   setSource(type, res: _timerSource);
                                   MainLogic.instance.addCompleteEvent(todo);
+                                  player.stop();
+                                  Navigator.pushReplacementNamed(context, Constant.homePage) ;
                                 });
                               }),
                         ),
