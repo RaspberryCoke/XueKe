@@ -103,10 +103,10 @@ class _HeaderWidgetState extends State<HeaderWidget> {
           Visibility(
             visible: _showIcon,
             child: Container(
-              height: _height - 40,
+              height: _height - 20,
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.all(20),
+                  margin: EdgeInsets.all(25),
                   padding: EdgeInsets.only(
                     left: 5.0,
                     top: 20.0,
@@ -126,7 +126,7 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                   child: Icon(
                     _icon,
                     color: Colors.white,
-                    size: 40.0,
+                    size: 70.0,
                   ),
                 ),
               ),
