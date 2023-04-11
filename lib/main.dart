@@ -13,12 +13,13 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomato_clock/page/lock_page/lock_page.dart';
 import 'package:tomato_clock/page/home_page.dart';
+import 'package:tomato_clock/page/back_to_app.dart';
 import 'colors.dart';
 import 'model/cut_corners_border.dart';
 import 'page/todo_detail_page.dart';
-import 'package:tomato_clock/page/lock_page/go_to_back_dialog.dart';
 
 void main() async {
+  print("------------------main start-----------------------");
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   MainLogic.instance.init(sharedPreferences);
@@ -62,16 +63,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
-  bool _should_ask=false;
-
   @override
   void initState() {
+    print("------------------_MyAppState initState-----------------------");
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    print("------------------_MyAppState dispose-----------------------");
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -79,24 +80,35 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("------------------_MyAppState didChangeAppLifecycleState-----------------------");
+    print("------------------_MyAppState didChangeAppLifecycleState-------state:${state}-----------");
     super.didChangeAppLifecycleState(state);
-    switch (state) {
+    switch (state)
+    {
       case AppLifecycleState.resumed:
+      {
         break;
-
+      }
 //处在不活动状态，无法处理用户响应。界面退到后台或弹出对话框情况下， 即失去了焦点但仍可以执行drawframe回调 类似于Android的onPause
       case AppLifecycleState.inactive:
+      {
+        if(BackToApp.is_set_to_keep_screen_on)
+          BackToApp.back_to_app();
         break;
-
+      }
 //不可见并不能响应用户的输入，但是在后台继续活动中。应用挂起，比如退到后台，失去了焦点且不会收到drawframe回调. 类似于Android的onStop
       case AppLifecycleState.paused:
+      {
+        if(BackToApp.is_set_to_keep_screen_on)
+          BackToApp.back_to_app();
         break;
-
+      }
 //APP结束时调用. 类似于Android的onDestroy
       case AppLifecycleState.detached:
-        break;
+      {
+          break;
+      }
     }
-
   }
 
   @override
@@ -160,161 +172,3 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      //home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home:
-      HomePage()//ScaffoldRoute(),
-    );
-  }
-}
-
-
-class ScaffoldRoute extends StatefulWidget {
-  @override
-  _ScaffoldRouteState createState() => _ScaffoldRouteState();
-}
-
-class _ScaffoldRouteState extends State<ScaffoldRoute> with SingleTickerProviderStateMixin{
-  late TabController _tabController;
-  List tabs = ["新闻", "历史", "图片"];
-  List list = [
-    TemplatePage(),
-    LockPage(),
-    TemplatePage(),
-  ];
-  int _selectedIndex = 1;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: tabs.length, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    // 释放资源
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-
-      appBar:  _selectedIndex==1?null:AppBar( //导航栏
-        title: Text("App Name"),
-        actions: <Widget>[ //导航栏右侧菜单
-          IconButton(icon: Icon(Icons.share), onPressed: () {}),
-        ],
-      ),
-      drawer: MyDrawer(), //抽屉
-      bottomNavigationBar:_selectedIndex==1?null:BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Business'),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'School'),
-        ],
-        currentIndex: _selectedIndex,
-        fixedColor: Colors.blue,
-        onTap: _onItemTapped,
-      ),
-
-      body: list[_selectedIndex],
-      );
-
-  }
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-}
-
-
-class MyDrawer extends StatelessWidget {
-  const MyDrawer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: MediaQuery.removePadding(
-        context: context,
-        //移除抽屉菜单顶部默认留白
-        removeTop: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 38.0),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "Wendux",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  ListTile(
-                    leading: const Icon(Icons.add),
-                    title: const Text('Add account'),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('Manage accounts'),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}*/

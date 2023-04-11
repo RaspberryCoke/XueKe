@@ -1,4 +1,4 @@
-package com.example.listviewdemo;
+package com.hebut.tomato_clock;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -12,14 +12,14 @@ import java.util.List;
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public class TgSystem {
-    public static void startService(Context context, Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //android8.0以上通过startForegroundService启动service
-            context.startForegroundService(intent);
-        } else {
-            context.startService(intent);
-        }
-    }
+//    public static void startService(Context context, Intent intent) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            //android8.0以上通过startForegroundService启动service
+//            context.startForegroundService(intent);
+//        } else {
+//            context.startService(intent);
+//        }
+//    }
 
     /**
      * 判断本地是否已经安装好了指定的应用程序包

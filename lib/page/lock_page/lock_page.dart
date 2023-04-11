@@ -8,6 +8,8 @@ import 'expands/top_text_expanded.dart';
 import 'expands/bottom_text_expanded.dart';
 import 'expands/bottom_blank_expanded.dart';
 import 'expands/bottom_button_expanded.dart';
+import 'package:tomato_clock/page/back_to_app.dart';
+
 
 class LockPage extends StatelessWidget {
   LockPage({
@@ -65,6 +67,14 @@ class LockPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
+                          onPressed:(){
+                            //
+                            BackToApp.is_set_to_keep_screen_on=true;
+                          },
+                          icon: Icon(Icons.start),
+                        )
+                        ,
+                        IconButton(
                             onPressed: () async {
                               bool? res = await showDialog<bool>(
                                   context: context,
@@ -81,13 +91,13 @@ class LockPage extends StatelessWidget {
                                         SimpleDialogOption(
                                           onPressed: () {
                                             Navigator.pop(context, false);
+                                            BackToApp.is_set_to_keep_screen_on=false;
                                           },
                                           child: Text("cancel"),
                                         ),
                                       ],
                                     );
                                   });
-
                               if (res == true) {
                                 Navigator.pop(context);
                               }
@@ -109,6 +119,7 @@ class LockPage extends StatelessWidget {
                       SimpleDialogOption(
                         onPressed: () {
                           Navigator.pop(context, true);
+                          BackToApp.is_set_to_keep_screen_on=false;
                         },
                         child: Text("close"),
                       ),
