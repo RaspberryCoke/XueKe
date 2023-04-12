@@ -1,12 +1,12 @@
-import 'package:app_entrance/page/constant.dart';
+import 'package:tomato_clock/page/constant.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:app_entrance/logic/main_logic.dart';
-import 'package:app_entrance/logic/play.dart';
-import 'package:app_entrance/res.dart';
-import 'package:app_entrance/utils/background_utils.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
+import 'package:tomato_clock/logic/play.dart';
+import 'package:tomato_clock/res.dart';
+import 'package:tomato_clock/utils/background_utils.dart';
 import '../model/todo.dart';
 
 enum MusicStatus { start, pause, init, resume, complete, close }

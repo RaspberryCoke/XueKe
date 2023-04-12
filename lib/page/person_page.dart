@@ -1,11 +1,11 @@
 import 'dart:ui';
-import 'package:app_entrance/page/constant.dart';
-import 'package:app_entrance/res.dart';
+import 'package:tomato_clock/page/constant.dart';
+import 'package:tomato_clock/res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:/glassmorphism.dart';
-import 'package:app_entrance/utils/glass_widget.dart';
-import 'package:app_entrance/logic/login_logic.dart';
+import 'package:tomato_clock/utils/glass_widget.dart';
+import 'package:tomato_clock/logic/login_logic.dart';
 
 class PersonPage extends StatefulWidget {
   const PersonPage({Key? key}) : super(key: key);

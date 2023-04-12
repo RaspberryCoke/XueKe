@@ -1,9 +1,9 @@
-import 'package:app_entrance/page/constant.dart';
-import 'package:app_entrance/page/login.dart';
+import 'package:tomato_clock/page/constant.dart';
+import 'package:tomato_clock/page/login.dart';
 import 'package:flutter/material.dart';
-import 'package:app_entrance/logic/login_logic.dart';
-import 'package:app_entrance/page/change_password_page.dart';
-import 'package:app_entrance/res.dart';
+import 'package:tomato_clock/logic/login_logic.dart';
+import 'package:tomato_clock/page/change_password_page.dart';
+import 'package:tomato_clock/res.dart';
 
 /// 我的设置页面
 class MineSettingPage extends StatefulWidget {
