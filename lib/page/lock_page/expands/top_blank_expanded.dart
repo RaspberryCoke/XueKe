@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 class TopBlankExpanded extends Expanded {
   TopBlankExpanded({
     Key? key,
-    int flex = 10,
+    int flex = 5,
     //required Widget child,
   }) : super(
     key: key,

@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage>{
             if(index==1)
             {
               //全屏页面的跳转的实现
+
               Navigator.pushNamed(context, '/lock_page');
             }
             else
