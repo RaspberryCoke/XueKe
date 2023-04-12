@@ -7,7 +7,6 @@ import 'package:app_entrance/logic/main_logic.dart';
 import 'package:app_entrance/logic/play.dart';
 import 'package:app_entrance/res.dart';
 import 'package:app_entrance/utils/background_utils.dart';
-
 import '../model/todo.dart';
 
 enum MusicStatus { start, pause, init, resume, complete, close }

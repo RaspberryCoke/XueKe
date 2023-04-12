@@ -14,9 +14,10 @@ class MineSettingPage extends StatefulWidget {
 }
 
 class _MineSettingPageState extends State<MineSettingPage> {
-  void back(){
+  void back() {
     Navigator.pushReplacementNamed(context, Constant.homePage);
   }
+
   Widget item(String title, VoidCallback callback, {TextStyle? textStyle}) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -41,17 +42,11 @@ class _MineSettingPageState extends State<MineSettingPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-         // automaticallyImplyLeading : true,
-         // actions: <Widget>[
-        leading:
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed:
-                back
-            ),
+        // automaticallyImplyLeading : true,
+        // actions: <Widget>[
+        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: back),
         //  ],
-            title: Text('设置'),
-
+        title: Text('设置'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -68,11 +63,12 @@ class _MineSettingPageState extends State<MineSettingPage> {
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
               image: DecorationImage(
-               // image: AssetImage(
-                  image: new ExactAssetImage('assets/person_bg.png'),
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.dstATop),
-                  fit: BoxFit.cover,
-              //),
+                // image: AssetImage(
+                image: new ExactAssetImage('assets/person_bg.png'),
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.8), BlendMode.dstATop),
+                fit: BoxFit.cover,
+                //),
               ),
             ),
             child: Column(
@@ -82,13 +78,14 @@ class _MineSettingPageState extends State<MineSettingPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(left: 20, right: 20, top: 30),
+                      margin: EdgeInsets.only(left: 20, right: 40, top: 30),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: BorderRadius.circular(60),
                         child: Image.asset(
                           LoginLogic.instance.currentUser?.avatar ?? Res.person,
                           height: 90,
                           width: 90,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
@@ -96,29 +93,28 @@ class _MineSettingPageState extends State<MineSettingPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 30),
+                          SizedBox(height: 20),
                           Container(
                             margin: EdgeInsets.only(top: 10),
                             child: Text(
                               '昵称：${LoginLogic.instance.currentUser?.name ?? ''}',
-                              overflow: TextOverflow.ellipsis,//溢出显示几个点
+                              overflow: TextOverflow.ellipsis, //溢出显示几个点
                               maxLines: 2,
-                              style: TextStyle(fontSize: 16, color: Colors.black),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black),
                               // '昵称：${LoginLogic.instance.currentUser?.name ?? ''}',
                               /*style:
                                   TextStyle(fontSize: 14, color: Colors.white),*/
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 8),
+                            margin: EdgeInsets.only(top: 14, bottom: 8),
                             child: Text(
                               '${LoginLogic.instance.currentUser?.content ?? '千里之行，始于足下'}',
-                              style: TextStyle(fontSize: 13, color: Colors.black),
-                              overflow: TextOverflow.ellipsis,//溢出显示几个点
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.black),
+                              overflow: TextOverflow.ellipsis, //溢出显示几个点
                               maxLines: 1,
-/*                                  '${LoginLogic.instance.currentUser?.content ?? '为了目标 每时每刻 砥砺前行'}',
-                                  style:
-                                  TextStyle(fontSize: 12, color: Colors.white),*/
                             ),
                           ),
                         ],
@@ -132,42 +128,40 @@ class _MineSettingPageState extends State<MineSettingPage> {
           item('修改昵称', () async {
             var success = await Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
-                  return Changename();
-                }));
+              return Changename();
+            }));
             if (success != null && success) {
               setState(() {});
             }
-          }),
+          }, textStyle: TextStyle(fontSize: 17)),
           item('修改头像', () async {
             var success = await Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
-                  return ChangeAvatar();
-                }));
+              return ChangeAvatar();
+            }));
             if (success != null && success) {
               setState(() {});
             }
-          }),
+          }, textStyle: TextStyle(fontSize: 17)),
           item('修改简介', () async {
             var success = await Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
-                  return ChangeContent();
-                }));
+              return ChangeContent();
+            }));
             if (success != null && success) {
               setState(() {});
             }
-          }),
+          }, textStyle: TextStyle(fontSize: 17)),
           item('修改密码', () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return ChangePasswordPage();
             }));
-          }),
-
+          }, textStyle: TextStyle(fontSize: 17)),
         ],
       ),
     );
   }
 }
-
 
 //修改头像
 class ChangeAvatar extends StatefulWidget {
@@ -178,12 +172,7 @@ class ChangeAvatar extends StatefulWidget {
 }
 
 class _ChangeAvatarState extends State<ChangeAvatar> {
-  List<String> list = [
-    Res.person,
-    Res.person2,
-    Res.person3,
-    Res.person4
-  ];
+  List<String> list = [Res.person, Res.person2, Res.person3, Res.person4];
   String? avatar = LoginLogic.instance.currentUser?.avatar;
   late int index = list.indexOf(avatar ?? '');
 
@@ -239,8 +228,6 @@ class _ChangeAvatarState extends State<ChangeAvatar> {
                 ),
               ),
               Spacer(),
-
-
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -265,8 +252,6 @@ class _ChangeAvatarState extends State<ChangeAvatar> {
                 ),
               ),
               Spacer(),
-
-
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -290,16 +275,14 @@ class _ChangeAvatarState extends State<ChangeAvatar> {
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
             ],
-
           ),
         ));
   }
 }
-
-
-
 
 //修改简介
 class ChangeContent extends StatefulWidget {
@@ -320,7 +303,7 @@ class _ChangeContentState extends State<ChangeContent> {
           elevation: 0,
           title: Text(
             '修改简介',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 17),
           ),
           //      backgroundColor: Color(0xFF5789c2),
           actions: [
@@ -362,7 +345,6 @@ class _ChangeContentState extends State<ChangeContent> {
         ));
   }
 }
-
 
 //修改昵称
 class Changename extends StatefulWidget {

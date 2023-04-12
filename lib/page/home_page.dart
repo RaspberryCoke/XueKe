@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage>{
 
         items: const [
           BottomNavigationBarItem(icon:Icon(Icons.message_rounded), label: "待办",tooltip: ''),
-          BottomNavigationBarItem(icon:Icon(Icons.recycling), label: "锁屏",tooltip: ''),
+          BottomNavigationBarItem(icon:Icon(Icons.lock), label: "锁屏",tooltip: ''),
           BottomNavigationBarItem(icon:Icon(Icons.data_thresholding_outlined), label: "数据",tooltip: ''),
           //BottomNavigationBarItem(icon:Icon(Icons.people), label: "用户"),
         ],

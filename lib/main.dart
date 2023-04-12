@@ -2,6 +2,7 @@ import 'package:app_entrance/logic/login_logic.dart';
 import 'package:app_entrance/logic/main_logic.dart';
 import 'package:app_entrance/login/registration_page.dart';
 import 'package:app_entrance/page/constant.dart';
+import 'package:app_entrance/page/future_page.dart';
 import 'package:app_entrance/page/login.dart';
 import 'package:app_entrance/page/mine_setting_page.dart';
 import 'package:app_entrance/page/splash_page.dart';
@@ -89,7 +90,7 @@ class _MyAppState extends State<MyApp> {
         onGenerateRoute: (settings) {
           Widget widget;
           Map<String, dynamic>? args =
-          settings.arguments as Map<String, dynamic>?;
+              settings.arguments as Map<String, dynamic>?;
           switch (settings.name) {
             case Constant.main:
               widget = SplashPage();
@@ -109,11 +110,11 @@ class _MyAppState extends State<MyApp> {
             case Constant.todoPage:
               widget = const TodoPage();
               break;
-           case Constant.settingPage:
+            case Constant.settingPage:
               widget = const MineSettingPage();
               break;
             case Constant.personPage:
-              widget =  PersonPage();
+              widget = PersonPage();
               break;
             default:
               widget = TableEventsPage();
@@ -127,28 +128,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 void main() {

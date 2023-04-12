@@ -4,6 +4,7 @@ import 'package:app_entrance/model/todo.dart';
 import 'package:app_entrance/page/change_password_page.dart';
 import 'package:app_entrance/page/constant.dart';
 import 'package:app_entrance/page/event.dart';
+import 'package:app_entrance/page/future_page.dart';
 import 'package:app_entrance/page/person_page.dart';
 import 'package:app_entrance/page/login.dart';
 import 'package:app_entrance/page/mine_setting_page.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:app_entrance/res.dart';
 import 'package:app_entrance/page/todo_page.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:list_tile_more_customizable/list_tile_more_customizable.dart';
 
 class TableEventsPage extends StatefulWidget {
   const TableEventsPage({Key? key}) : super(key: key);
@@ -21,8 +23,6 @@ class TableEventsPage extends StatefulWidget {
 }
 
 class _TableEventsPageState extends State<TableEventsPage> {
-
-
   late final ValueNotifier<List<Todo>> _selectedEvents;
   List<String> cards = [
     Res.card_bg_2,
@@ -32,12 +32,14 @@ class _TableEventsPageState extends State<TableEventsPage> {
     Res.card_bg_6,
   ];
 
-  void setting(){
+  void setting() {
     Navigator.pushReplacementNamed(context, Constant.settingPage);
   }
-  void person(){
+
+  void person() {
     Navigator.pushReplacementNamed(context, Constant.personPage);
   }
+
 
   bool _isDragging = false;
   double _x = 0;
@@ -48,18 +50,19 @@ class _TableEventsPageState extends State<TableEventsPage> {
       onTap: callback,
       child: Container(
         padding:
-        const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
         child: Text(
           title,
           style: textStyle ??
               TextStyle(
                 color: Colors.black,
-                fontSize: 16,
+                fontSize: 35,
               ),
         ),
       ),
     );
   }
+
   CalendarFormat _calendarFormat = CalendarFormat.week;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
@@ -120,8 +123,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
     );
   }
 
-
-
   void _showAddTodoDialog() {
     showGeneralDialog(
       context: context,
@@ -140,17 +141,17 @@ class _TableEventsPageState extends State<TableEventsPage> {
     );
   }
 
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Builder(builder: (BuildContext context) {
           return IconButton(
-            icon: const Icon(Icons.person,
+            icon: const Icon(
+              Icons.person,
               size: 33,
               //color: Colors.green,
             ),
-            onPressed: (){
+            onPressed: () {
               Scaffold.of(context).openDrawer();
             },
           );
@@ -166,25 +167,23 @@ class _TableEventsPageState extends State<TableEventsPage> {
           ),
         ),
       ),
-
-
       drawer: Drawer(
-        //backgroundColor: Colors.white,
+          //backgroundColor: Colors.white,
           child: Column(
-            children: [
-              Positioned.fill(
-                child: Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      tileMode: TileMode.mirror,
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Color(0xFf689ad3), Color(0xD9B5B5FF)],
-                      stops: [0.0, 1.0],
-                    ),
-                  ),
+        children: [
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  tileMode: TileMode.mirror,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xFf689ad3), Color(0xD9B5B5FF)],
+                  stops: [0.0, 1.0],
                 ),
               ),
+            ),
+          ),
 /*              Row(
                 children: [
                   Expanded(
@@ -208,160 +207,252 @@ class _TableEventsPageState extends State<TableEventsPage> {
                 ],
               ),*/
 
-              Container(
-                width: double.infinity,
-                height: 150,
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: new ExactAssetImage('assets/person_bg.png'),
-                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.dstATop),
-                      fit: BoxFit.cover,
-                  ),
-                ),
-                child: Column(
+          Container(
+            width: double.infinity,
+            height: 200,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: new ExactAssetImage('assets/person_bg.png'),
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.65), BlendMode.dstATop),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 20, right: 20, top: 30),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.asset(
-                              LoginLogic.instance.currentUser?.avatar ?? Res.person,
-                              height: 90,
-                              width: 90,
+                    Container(
+                      margin: EdgeInsets.only(left: 10, right: 20, top: 60),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: Image.asset(
+                          LoginLogic.instance.currentUser?.avatar ?? Res.person,
+                          height: 97,
+                          width: 97,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 60),
+                          Container(
+                            margin: EdgeInsets.only(top: 10),
+                            child: Text(
+                              '昵称：${LoginLogic.instance.currentUser?.name ?? ''}',
+                              overflow: TextOverflow.ellipsis, //溢出显示几个点
+                              maxLines: 2,
+                              style: TextStyle(
+                                  fontFamily: 'draw',
+                                  fontSize: 20,
+                                  color: Colors.black),
+                              // '昵称：${LoginLogic.instance.currentUser?.name ?? ''}',
+                              /*style:
+                                  TextStyle(fontSize: 14, color: Colors.white),*/
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 30),
-                              Container(
-                                margin: EdgeInsets.only(top: 10),
-                                child: Text(
-                                  '昵称：${LoginLogic.instance.currentUser?.name ?? ''}',
-                                  overflow: TextOverflow.ellipsis,//溢出显示几个点
-                                  maxLines: 2,
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                 // '昵称：${LoginLogic.instance.currentUser?.name ?? ''}',
-                                  /*style:
-                                  TextStyle(fontSize: 14, color: Colors.white),*/
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 10, bottom: 8),
-                                child: Text(
-                                  '${LoginLogic.instance.currentUser?.content ?? '千里之行，始于足下'}',
-                                  style: TextStyle(fontSize: 13, color: Colors.black),
-                                  overflow: TextOverflow.ellipsis,//溢出显示几个点
-                                  maxLines: 1,
+                          Container(
+                            margin: EdgeInsets.only(top: 10, bottom: 8),
+                            child: Text(
+                              '${LoginLogic.instance.currentUser?.content ?? '千里之行，始于足下'}',
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.black),
+                              overflow: TextOverflow.ellipsis, //溢出显示几个点
+                              maxLines: 1,
 /*                                  '${LoginLogic.instance.currentUser?.content ?? '为了目标 每时每刻 砥砺前行'}',
                                   style:
                                   TextStyle(fontSize: 12, color: Colors.white),*/
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-
-             SizedBox(height: 40,),
-              Positioned(
-                left: 10,
-                child:
-                TextButton.icon(
-                    icon: Icon(Icons.settings,size: 30.0,color: Color(
-                        0xD903033F)),
-                    label: Text("个人中心",style: TextStyle(fontSize: 20, color: Color(
-                        0xD903033F))),
-                    style: ButtonStyle(
-                      textStyle: MaterialStateProperty.all(
-                          TextStyle(fontSize: 25)),
-                    ),
-                    onPressed:
-                    person
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          /*Positioned(
+            left: 10,
+            child: TextButton.icon(
+                icon:
+                    Icon(Icons.settings, size: 30.0, color: Color(0xD903033F)),
+                label: Text("个人中心",
+                    style: TextStyle(fontSize: 20, color: Color(0xD903033F))),
+                style: ButtonStyle(
+                  textStyle: MaterialStateProperty.all(TextStyle(fontSize: 25)),
                 ),
-              ),
+                onPressed: person),
+          ),
+          Divider(
+            color: Colors.grey,
+            height: 20,
+            thickness: 1,
+            indent: 20,
+            endIndent: 0,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Positioned(
+            left: 10,
+            child: TextButton.icon(
+                icon:
+                    Icon(Icons.settings, size: 30.0, color: Color(0xD903033F)),
+                label: Text(
+                  "个人设置",
+                  style: TextStyle(fontSize: 20, color: Color(0xD903033F)),
+                ),
+                style: ButtonStyle(
+                  textStyle: MaterialStateProperty.all(TextStyle(
+                    fontSize: 25,
+                  )),
+                ),
+                onPressed: setting),
+          ),
 
-              Divider(
-                color: Colors.grey,
+
+          Divider(
+                // color: Color(0xD0BBBB53),
                 height: 20,
                 thickness: 1,
                 indent: 20,
                 endIndent: 0,
-              ),
-              SizedBox(height: 20,),
-             Positioned(
-               left: 10,
-               child:
-             TextButton.icon(
-                 icon: Icon(Icons.settings,size: 30.0,color: Color(
-                     0xD903033F)),
-                 label: Text("个人设置",style: TextStyle(fontSize: 20, color: Color(
-                     0xD903033F)),),
-             style: ButtonStyle(
-                  textStyle: MaterialStateProperty.all(
-                     TextStyle(fontSize: 25,)),
-                         ),
-                 onPressed:
-                 setting
-             ),
-             ),
-
-
-
-
-/*              const ListTile(
-                leading: CircleAvatar(
-                  child: Icon(Icons.people),
-                ),
-                title: Text("个人中心"),
-              ),
-              Divider(
-                color: Colors.grey,
-                height: 20,
-                thickness: 1,
-                indent: 20,
-                endIndent: 0,
-              ),
-              ListTile(
-                leading: CircleAvatar(
-                  child: Icon(Icons.settings),
-                ),
-                title: Text("系统设置"),
               ),*/
-              Divider(
+          ListTile(
+            selected: true,
+            leading: Container(
+              width: 37,
+              //    color: Colors.yellow,
+              child: Icon(
+                Icons.face,
+                size: 28,
+                color: Colors.black,
+              ),
+            ),
+            title: Text(
+              "个人中心",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
+            ),
+            onTap: () {
+              person();
+            },
+            trailing: Icon(Icons.keyboard_arrow_right_rounded),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          ListTile(
+            selected: true,
+            leading: Container(
+                width: 37,
+                //    color: Colors.yellow,
+                child: Icon(
+                  Icons.create,
+                  size: 28,
+                  color: Colors.black,
+                )),
+            title: Text(
+              "信息修改",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
+            ),
+            onTap: () {
+              setting();
+            },
+            trailing: Icon(Icons.keyboard_arrow_right_rounded),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          ListTile(
+            selected: true,
+            leading: Container(
+                width: 37,
+                //    color: Colors.yellow,
+                child: Icon(
+                  Icons.event,
+                  size: 28,
+                  color: Colors.black,
+                )),
+            title: Text(
+              "设定目标",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
+            ),
+            onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FuturePage(),
+                  ),
+                );
+            },
+            trailing: Icon(Icons.keyboard_arrow_right_rounded),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          ListTile(
+            selected: true,
+            leading: Container(
+                width: 37,
+                //    color: Colors.yellow,
+                child: Icon(
+                  Icons.settings,
+                  size: 28,
+                  color: Colors.black,
+                )),
+            title: Text(
+              "系统设置",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
+            ),
+            onTap: () {
+              //setting();
+            },
+            trailing: Icon(Icons.keyboard_arrow_right_rounded),
+          ),
+
+/*              Divider(
                 color: Colors.grey,
                 height: 20,
                 thickness: 1,
                 indent: 20,
                 endIndent: 0,
-              ),
-              SizedBox(height: 330,),
-              item('退出登录', () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Login(),
-                    ),
-                        (route) => route.settings.name == '/');
-              }, textStyle: TextStyle(color: Colors.red, fontSize: 20)),
+              ),*/
 
-            ],
-          )
-      ),
-
-
-
+          SizedBox(
+            height: 30,
+          ),
+          item('退出登录', () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Login(),
+                ),
+                (route) => route.settings.name == '/');
+          }, textStyle: TextStyle(color: Colors.red, fontSize: 20)),
+        ],
+      )),
       floatingActionButton: Stack(
         children: [
           Positioned(
@@ -399,12 +490,10 @@ class _TableEventsPageState extends State<TableEventsPage> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-
-
-      body: Column(//待办画面
+      body: Column(
+        //待办画面
         children: [
           const SizedBox(height: 20),
-
           const SizedBox(height: 8.0),
           Expanded(
             child: ValueListenableBuilder<List<Todo>>(
@@ -468,4 +557,3 @@ class _TableEventsPageState extends State<TableEventsPage> {
     );
   }
 }
-

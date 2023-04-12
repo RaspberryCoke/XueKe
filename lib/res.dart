@@ -15,7 +15,6 @@ class Res {
   static const String bg_study_room_3 = "assets/bg_study_room_3.JPG";
   static const String bonfire_pure = "assets/bonfire_pure.mp3";
   static const String class_ring_2 = "assets/class_ring_2.mp3";
-
   static const String default_background_new_2 = "assets/default_background_new_2.JPG";
   static const String default_background_new_3 = "assets/default_background_new_3.jpg";
   static const String default_background_new_4 = "assets/default_background_new_4.JPG";
@@ -57,10 +56,6 @@ class Res {
   static const String logo = "assets/logo.png";
   static const String mp3_1 = "assets/mp3_1.mp3";
   static const String music_box = "assets/music_box.mp3";
-  static const String new_card_bg_1 = "assets/new_card_bg_1.png";
-  static const String new_card_bg_2 = "assets/new_card_bg_2.JPG";
-  static const String new_card_bg_3 = "assets/new_card_bg_3.jpg";
-  static const String new_card_bg_4 = "assets/new_card_bg_4.jpg";
   static const String card_bg_1 = "assets/card_bg_1.png";
   static const String card_bg_2 = "assets/card_bg_2.png";
   static const String card_bg_3 = "assets/card_bg_3.png";
@@ -79,4 +74,8 @@ class Res {
   static const String yinyuehe = "assets/yinyuehe.mp3";
   static const String senlin = "assets/senlin.mp3";
 
+  static const String new_card_bg_1 = "assets/new_card_bg_1.png";
+  static const String new_card_bg_2 = "assets/new_card_bg_2.JPG";
+  static const String new_card_bg_3 = "assets/new_card_bg_3.jpg";
+  static const String new_card_bg_4 = "assets/new_card_bg_4.jpg";
 }
