@@ -58,7 +58,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('修改密码'),
-        backgroundColor: Color(0xFF5789c2),
+  //      backgroundColor: Color(0xFF5789c2),
         elevation: 0,
       ),
       backgroundColor: Colors.grey[200],
@@ -92,7 +92,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           obscureText: true,
                           decoration: const InputDecoration(
                             isDense: true,
-                            isCollapsed: true,
+                   //         isCollapsed: true,
                             hintText: '输入原密码',
                             hintStyle:
                                 TextStyle(fontSize: 16, color: Colors.black12),
@@ -125,7 +125,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           keyboardType: TextInputType.visiblePassword,
                           decoration: const InputDecoration(
                             isDense: true,
-                            isCollapsed: true,
+                    //        isCollapsed: true,
                             hintText: '请输入密码',
                             hintStyle:
                                 TextStyle(fontSize: 16, color: Colors.black12),
@@ -158,7 +158,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           keyboardType: TextInputType.visiblePassword,
                           decoration: const InputDecoration(
                             isDense: true,
-                            isCollapsed: true,
+                  //          isCollapsed: true,
                             hintText: '请输入确认密码',
                             hintStyle:
                                 TextStyle(fontSize: 16, color: Colors.black12),
@@ -180,7 +180,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             child: ElevatedButton(
               onPressed: _register,
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFF2b354d),
+                primary: Color(0xff41d9a3),
               ),
               child: const Text('确认'),
             ),

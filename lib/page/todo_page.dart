@@ -144,10 +144,10 @@ class _TodoPageState extends State<TodoPage> {
                     ),
                     decoration: const InputDecoration(
                       hintText: '请输入标题',
-                      isCollapsed: true,
+              //        isCollapsed: true,
                       isDense: true,
                       hintStyle: TextStyle(fontSize: 14, color: Colors.black26),
-                      border: InputBorder.none,
+              //        border: InputBorder.none,
                     ),
                     onChanged: (value) {
                       _title = value;
@@ -189,7 +189,7 @@ class _TodoPageState extends State<TodoPage> {
                         color: duration == 0 ? Colors.black26 : Colors.black,
                       ),
                       decoration: const InputDecoration(
-                        isCollapsed: true,
+                    //    isCollapsed: true,
                         isDense: true,
                         hintStyle:
                         TextStyle(fontSize: 14, color: Colors.black26),
@@ -229,7 +229,7 @@ class _TodoPageState extends State<TodoPage> {
                         color: _date == 0 ? Colors.black26 : Colors.black,
                       ),
                       decoration: const InputDecoration(
-                        isCollapsed: true,
+             //           isCollapsed: true,
                         isDense: true,
                         hintStyle:
                         TextStyle(fontSize: 14, color: Colors.black26),
@@ -264,7 +264,7 @@ class _TodoPageState extends State<TodoPage> {
                     ),
                     decoration: const InputDecoration(
                       hintText: '请输入备注',
-                      isCollapsed: true,
+           //           isCollapsed: true,
                       isDense: true,
                       hintStyle: TextStyle(fontSize: 14, color: Colors.black26),
                       border: InputBorder.none,

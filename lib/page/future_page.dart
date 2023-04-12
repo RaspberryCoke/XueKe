@@ -65,7 +65,7 @@ class _FuturePageState extends State<FuturePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF5789c2),
+      //  backgroundColor: Color(0xFF5789c2),
         elevation: 0,
         title: const Text('未来倒计时'),
         actions: [
@@ -283,7 +283,7 @@ class _AddFuturePageState extends State<AddFuturePage> {
                     ),
                     decoration: const InputDecoration(
                       hintText: '请输入标题',
-                      isCollapsed: true,
+                 //     isCollapsed: true,
                       isDense: true,
                       hintStyle: TextStyle(fontSize: 14, color: Colors.black26),
                       border: InputBorder.none,
@@ -314,7 +314,7 @@ class _AddFuturePageState extends State<AddFuturePage> {
                     ),
                     decoration: const InputDecoration(
                       hintText: '请输入描述',
-                      isCollapsed: true,
+                //      isCollapsed: true,
                       isDense: true,
                       hintStyle: TextStyle(fontSize: 14, color: Colors.black26),
                       border: InputBorder.none,

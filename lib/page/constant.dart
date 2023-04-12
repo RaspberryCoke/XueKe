@@ -6,4 +6,5 @@ class Constant {
   static const String todoDetailPage = '/todoDetailPage';
   static const String todoPage = '/todoPage';
   static const String settingPage = '/settingPage';
+  static const String personPage = '/personPage';
 }

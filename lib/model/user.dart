@@ -4,21 +4,26 @@ class User {
   String? password;
   String? avatar;
   String? content;
-
+  String? email;
+  String? phonenum;
   User({
-    required this.name,
+    this.name,
     required this.account,
     required this.password,
     this.avatar,
     this.content,
+    this.email,
+    this.phonenum
   });
 
   User.fromJson(Map<String, dynamic> json) {
-    account = json['name'];
+    name = json['name'];
     account = json['account'];
     password = json['password'];
     avatar = json['avatar'];
     content = json['content'];
+    content = json['email'];
+    content = json['phonenum'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +33,8 @@ class User {
     _data['password'] = password;
     _data['avatar'] = avatar;
     _data['content'] = content;
+    _data['email'] = email;
+    _data['phonenum'] = phonenum;
     return _data;
   }
 }

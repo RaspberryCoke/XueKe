@@ -1,12 +1,12 @@
+import 'package:app_entrance/page/constant.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tomato_clock/logic/main_logic.dart';
-import 'package:tomato_clock/logic/play.dart';
-import 'package:tomato_clock/res.dart';
-import 'package:tomato_clock/utils/background_utils.dart';
-
+import 'package:app_entrance/logic/main_logic.dart';
+import 'package:app_entrance/logic/play.dart';
+import 'package:app_entrance/res.dart';
+import 'package:app_entrance/utils/background_utils.dart';
 import '../model/todo.dart';
 
 enum MusicStatus { start, pause, init, resume, complete, close }
@@ -23,48 +23,75 @@ class TodoDetailPage extends StatefulWidget {
 
 class _TodoDetailPageState extends State<TodoDetailPage> {
   List<String> musics = [
-    'music_box.mp3',
-    'ticking_new.mp3',
-    'class_ring_2.mp3',
-    'wind_leaf.mp3',
-    'kanoon.mp3',
-    'bonfire_pure.mp3',
+    'yinyuehe.mp3',
+    'fire.mp3',
+    'yusheng.mp3',
+    'guzheng.mp3',
+    'xishui.mp3',
+    'senlin.mp3',
   ];
+ back(){
+   Container(
+     width: 200,
+     height: 200,
+     decoration: BoxDecoration(
+       border: Border.all(
+         color: Colors.white10,
+         width: 2,
+       ),
+       color: Colors.white10,
+       borderRadius: BorderRadius.circular(100),
+     ),
+     child: Center(
+       child: Text(
+         '已完成',
+         style: TextStyle(
+             fontSize: 33.0,
+             color: Colors.white,
+             fontWeight: FontWeight.bold),
+       ),
+     ),
+   );
+   //Navigator.of(context).pop();
+  //Navigator.pushReplacementNamed(context, Constant.homePage) ;
+}
 
   List<String> musicText = [
     '音乐盒',
-    '时钟滴答-Free',
-    '雨声-普通版-Free',
-    '雨声-无损-Free',
-    '静心沉思-高清',
-    '笔触书香-无损',
+    '火焰声',
+    '下雨声',
+    '古筝音',
+    '溪水声',
+    '森林声',
   ];
 
   List<String> musicBg = [
     Res.ic_bgm_box,
-    Res.ic_bgm_clock,
+    Res.ic_bgm_fire,
     Res.ic_bgm_rain,
-    Res.ic_bgm_rain2,
-    Res.ic_bgm_think,
-    Res.ic_bgm_bookflip,
+    Res.ic_bgm_guzheng,
+    Res.ic_bgm_xishui,
+    Res.ic_bgm_senlin,
   ];
 
   List<String> bgs = [
-    Res.default_background_new_1,
-    Res.default_background_new_2,
-    Res.default_background_new_3,
-    Res.default_background_new_4,
-    Res.default_background_new_5,
-    Res.default_background_new_6,
-    Res.default_background_new_7,
+    Res.default_background_1,
+    Res.default_background_2,
+    Res.default_background_3,
+    Res.default_background_4,
+    Res.default_background_5,
+    Res.default_background_6,
+    Res.default_background_7,
   ];
   bool isDone = false;
   bool isStop = false;
   late Todo todo;
   MusicStatus type = MusicStatus.init;
   CountDownController controller = CountDownController();
+
   AudioPlayer player = AudioPlayer();
-  Source _source = AssetSource(Play.bgMusic);
+
+  Source _source = AssetSource(Play.t1);//初始音乐改为t1
   Source _timerSource = AssetSource(Play.instance.currentPlay());
   int musicIndex = 0;
   late String backgroundPicture = BackgroundUtils.randomBackground();
@@ -107,7 +134,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     if (type == MusicStatus.resume || type == MusicStatus.start) {
       await player.pause();
     }
-    if (type == MusicStatus.complete) {
+    if (type == MusicStatus.complete) {//循环
       await player.setSource(source);
       await player.stop();
       await player.play(source);
@@ -154,7 +181,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                   ),
                   child: Center(
                     child: Text(
-                      '默认背景音乐|白噪音',
+                      '默认背景音乐|音乐盒',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
@@ -176,6 +203,10 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                           onTap: () {
                             setState(() {
                               musicIndex = index;
+                              Source _source = AssetSource(musics[index]);//获取音乐的索引
+                              player.play(_source);
+                             // Navigator.pop(context);
+
                               if (type == MusicStatus.init) {
                                 type = MusicStatus.start;
                               }
@@ -262,7 +293,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
               if (!isDone) {
                 _showOutDialog();
               } else {
-                Navigator.pop(context);
+                Navigator.pop(context);//已做完
               }
             },
           ),
@@ -290,7 +321,9 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                 alignment: Alignment.center,
                 children: [
                   isDone
-                      ? Container(
+                       ?
+                  //back()
+                  Container(
                           width: 200,
                           height: 200,
                           decoration: BoxDecoration(
@@ -357,7 +390,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
 
                               // Text Style for Countdown Text.
                               textStyle: TextStyle(
-                                  fontSize: 33.0,
+                                  fontSize: 35.0,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
 
@@ -388,6 +421,8 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                                   type = MusicStatus.complete;
                                   setSource(type, res: _timerSource);
                                   MainLogic.instance.addCompleteEvent(todo);
+                                  player.stop();
+                                  Navigator.pushReplacementNamed(context, Constant.homePage) ;
                                 });
                               }),
                         ),
