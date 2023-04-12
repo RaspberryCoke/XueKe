@@ -4,6 +4,7 @@ import 'package:app_entrance/model/todo.dart';
 import 'package:app_entrance/page/change_password_page.dart';
 import 'package:app_entrance/page/constant.dart';
 import 'package:app_entrance/page/event.dart';
+import 'package:app_entrance/page/person_page.dart';
 import 'package:app_entrance/page/login.dart';
 import 'package:app_entrance/page/mine_setting_page.dart';
 import 'package:app_entrance/page/todo_detail_page.dart';
@@ -25,7 +26,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
   late final ValueNotifier<List<Todo>> _selectedEvents;
   List<String> cards = [
     Res.card_bg_2,
-    Res.card_bg_2,
     Res.card_bg_3,
     Res.card_bg_4,
     Res.card_bg_5,
@@ -34,6 +34,9 @@ class _TableEventsPageState extends State<TableEventsPage> {
 
   void setting(){
     Navigator.pushReplacementNamed(context, Constant.settingPage);
+  }
+  void person(){
+    Navigator.pushReplacementNamed(context, Constant.personPage);
   }
 
   bool _isDragging = false;
@@ -271,24 +274,23 @@ class _TableEventsPageState extends State<TableEventsPage> {
                 ),
               ),
 
-SizedBox(height: 20,),
-             Positioned(
-               left: 10,
-               child:
-             TextButton.icon(
-
-                 icon: Icon(Icons.settings,size: 37.0),
-                 label: Text("个人设置"),
-             style: ButtonStyle(
-                  textStyle: MaterialStateProperty.all(
-                     TextStyle(fontSize: 25)),
-                         ),
-                 onPressed:
-                 setting
-             ),
-             ),
-
-
+             SizedBox(height: 40,),
+              Positioned(
+                left: 10,
+                child:
+                TextButton.icon(
+                    icon: Icon(Icons.settings,size: 30.0,color: Color(
+                        0xD903033F)),
+                    label: Text("个人中心",style: TextStyle(fontSize: 20, color: Color(
+                        0xD903033F))),
+                    style: ButtonStyle(
+                      textStyle: MaterialStateProperty.all(
+                          TextStyle(fontSize: 25)),
+                    ),
+                    onPressed:
+                    person
+                ),
+              ),
 
               Divider(
                 color: Colors.grey,
@@ -297,7 +299,28 @@ SizedBox(height: 20,),
                 indent: 20,
                 endIndent: 0,
               ),
-              const ListTile(
+              SizedBox(height: 20,),
+             Positioned(
+               left: 10,
+               child:
+             TextButton.icon(
+                 icon: Icon(Icons.settings,size: 30.0,color: Color(
+                     0xD903033F)),
+                 label: Text("个人设置",style: TextStyle(fontSize: 20, color: Color(
+                     0xD903033F)),),
+             style: ButtonStyle(
+                  textStyle: MaterialStateProperty.all(
+                     TextStyle(fontSize: 25,)),
+                         ),
+                 onPressed:
+                 setting
+             ),
+             ),
+
+
+
+
+/*              const ListTile(
                 leading: CircleAvatar(
                   child: Icon(Icons.people),
                 ),
@@ -315,7 +338,7 @@ SizedBox(height: 20,),
                   child: Icon(Icons.settings),
                 ),
                 title: Text("系统设置"),
-              ),
+              ),*/
               Divider(
                 color: Colors.grey,
                 height: 20,
@@ -323,7 +346,15 @@ SizedBox(height: 20,),
                 indent: 20,
                 endIndent: 0,
               ),
-
+              SizedBox(height: 330,),
+              item('退出登录', () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Login(),
+                    ),
+                        (route) => route.settings.name == '/');
+              }, textStyle: TextStyle(color: Colors.red, fontSize: 20)),
 
             ],
           )

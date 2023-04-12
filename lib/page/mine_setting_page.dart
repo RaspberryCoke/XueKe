@@ -161,14 +161,7 @@ class _MineSettingPageState extends State<MineSettingPage> {
               return ChangePasswordPage();
             }));
           }),
-          item('退出登录', () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Login(),
-                ),
-                    (route) => route.settings.name == '/');
-          }, textStyle: TextStyle(color: Colors.red, fontSize: 16)),
+
         ],
       ),
     );

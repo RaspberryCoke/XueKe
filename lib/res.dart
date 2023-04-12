@@ -9,6 +9,7 @@ class Res {
   static const String art_card2 = "assets/art_card2.png";
   static const String avatar = "assets/avatar.png";
   static const String bg = "assets/bg.png";
+  static const String bg2 = "assets/bg2.jpg";
   static const String bg_study_room_1 = "assets/bg_study_room_1.jpg";
   static const String bg_study_room_2 = "assets/bg_study_room_2.jpg";
   static const String bg_study_room_3 = "assets/bg_study_room_3.JPG";

@@ -64,6 +64,8 @@ class LoginLogic extends ChangeNotifier {
       element.name=user.name;//修改
       element.avatar = user.avatar;
       element.content = user.content;
+      element.email = user.email;
+      element.phonenum = user.phonenum;
     });
     MainLogic.instance.sharedPreferences.setStringList(
         keyUser, users.map((e) => jsonEncode(e.toJson())).toList());
@@ -79,6 +81,7 @@ class LoginLogic extends ChangeNotifier {
     }
     List<User> list =
         users.where((element) => user.account == element.account).toList();
+
     if (list.isNotEmpty) {
       return false;
     }

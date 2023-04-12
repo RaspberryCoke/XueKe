@@ -205,6 +205,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "9.2.0"
+  glassmorphism:
+    dependency: "direct main"
+    description:
+      name: glassmorphism
+      sha256: e0bbe7616da2896f9bece484303887f2ea99d6190e4c1c94acf5af3f108d0e64
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.6"
   hexcolor:
     dependency: "direct main"
     description:
