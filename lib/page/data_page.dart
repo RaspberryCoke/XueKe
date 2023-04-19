@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'package:fl_chart/fl_chart.dart';
+
 /// 统计数据
 class DataPage extends StatefulWidget {
   const DataPage({Key? key}) : super(key: key);
@@ -54,11 +55,13 @@ class _DataPageState extends State<DataPage> {
   DateTime? _rangeEnd;
   late int date = DateTime.now().millisecondsSinceEpoch;
   late int curDate = DateTime.now().millisecondsSinceEpoch;
-
+//显示年-月-日
   String get dateStr =>
       TimeUtils.getTime(DateTime.fromMillisecondsSinceEpoch(date));
+  //显示月-日
   String get dateStr2 =>
-      TimeUtils.getTime(DateTime.fromMillisecondsSinceEpoch(date));
+      TimeUtils2.getTime2(DateTime.fromMillisecondsSinceEpoch(date));
+
 
 
 
@@ -69,23 +72,36 @@ class _DataPageState extends State<DataPage> {
 
   bool showAvg = false;
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    //底栏
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 16,
+      fontSize: 13,
     );
     Widget text;
     switch (value.toInt()) {
+      case 1:
+        text = Text('$dateStr2', style: style);
+        break;
       case 2:
-        text =  Text('$dateStr2', style: style);
+        text = Text('           $dateStr2           ', style: style);
+        break;
+      case 3:
+        text = Text('           $dateStr2           ', style: style);
+        break;
+      case 4:
+        text = Text('           $dateStr2           ', style: style);
         break;
       case 5:
-        text =  Text('JUN', style: style);
+        text = Text('           $dateStr2           ', style: style);
         break;
-      case 8:
-        text =  Text('SEP', style: style);
+      case 6:
+        text = Text('           $dateStr2           ', style: style);
+        break;
+      case 7:
+        text = Text('  $dateStr2   ', style: style);
         break;
       default:
-        text =  Text('', style: style);
+        text = Text('', style: style);
         break;
     }
 
@@ -98,7 +114,7 @@ class _DataPageState extends State<DataPage> {
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 15,
+      fontSize: 13,
     );
     String text;
     switch (value.toInt()) {
@@ -159,7 +175,7 @@ class _DataPageState extends State<DataPage> {
             showTitles: true,
             interval: 1,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
+            reservedSize: 25,
           ),
         ),
       ),
@@ -168,19 +184,21 @@ class _DataPageState extends State<DataPage> {
         border: Border.all(color: const Color(0xff37434d)),
       ),
       minX: 0,
-      maxX: 11,
+      maxX: 8,
       minY: 0,
-      maxY: 6,
+      maxY: 8,
       lineBarsData: [
         LineChartBarData(
           spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.5, 5),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
+            FlSpot(0, 0),
+            FlSpot(1, 5),
+            FlSpot(2, 5),
+            FlSpot(3, 3.1),
+            FlSpot(4, 4.2),
+            FlSpot(5, 3),
+            FlSpot(6, 3),
+            FlSpot(7, 4),
+            FlSpot(8, 0),
           ],
           isCurved: true,
           gradient: LinearGradient(
@@ -301,8 +319,6 @@ class _DataPageState extends State<DataPage> {
     );
   }
 
-
-
 /*  @override
   void initState() {
     super.initState();
@@ -327,7 +343,6 @@ class _DataPageState extends State<DataPage> {
     }
   }*/
 
-
   @override
   Widget build(BuildContext context) {
     return
@@ -348,24 +363,26 @@ class _DataPageState extends State<DataPage> {
         ),*/
 
         Scaffold(
-          backgroundColor: Color(0xd0f1f1c1),
-          appBar: AppBar(
-            //backgroundColor: Colors.transparent,
-            title: const Text(
-              '统计数据',
-              style: TextStyle(fontSize: 25,color: Colors.white,),
-            ),
-            elevation: 0,
-            systemOverlayStyle: SystemUiOverlayStyle.light,
+      backgroundColor: Color(0xd0f6f6f3),
+      // backgroundColor: Color(0xd0f1f1c1),
+      appBar: AppBar(
+        //backgroundColor: Colors.transparent,
+        title: const Text(
+          '统计数据',
+          style: TextStyle(
+            fontSize: 25,
+            color: Colors.white,
           ),
+        ),
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
 
-          body:
-          Container(
-
-            margin: const EdgeInsets.only(top: 10),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
+      body: Container(
+        margin: const EdgeInsets.only(top: 10),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
 /*                    TableCalendar<Todo>(
                       locale: 'zh_CN',
                       firstDay: kFirstDay,
@@ -411,343 +428,353 @@ class _DataPageState extends State<DataPage> {
                       },
                     ),*/
 
-                  Container(
-                    margin: const EdgeInsets.only(right: 12, left: 12),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                    //  color: Color(0xff86ee79),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
+              Container(
+                margin: const EdgeInsets.only(right: 12, left: 12),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  //  color: Color(0xff86ee79),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              '累计专注',
-                              style: TextStyle(
-                                color: Color(0xFF3e6fa5),
-                                fontSize: 14,
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Image.asset(
-                              Res.ic_action_bubble,
-                              width: 15,
-                              height: 15,
-                              color: Color(0xFF3e6fa5),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.only(left: 16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '次数',
-                                      style: TextStyle(
-                                        color: Color(0xFF3e6fa5),
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text:
-                                            '${MainLogic.instance.completeCount()}',
-                                            style: TextStyle(
-                                              color: Color(0xFF3e6fa5),
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '时长',
-                                    style: TextStyle(
-                                      color: Color(0xFF3e6fa5),
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  SizedBox(height: 5),
-                                  RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                          '${MainLogic.instance.completeTodoTime()}',
-                                          style: TextStyle(
-                                            color: Color(0xFF3e6fa5),
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: '分钟',
-                                          style: TextStyle(
-                                            color: Color(0xFF3e6fa5),
-                                            fontSize: 8,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                padding: EdgeInsets.only(right: 16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '日均时长',
-                                      style: TextStyle(
-                                        color: Color(0xFF3e6fa5),
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text:
-                                            '${MainLogic.instance.averageTodoTime()}',
-                                            style: TextStyle(
-                                              color: Color(0xFF3e6fa5),
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: '分钟',
-                                            style: TextStyle(
-                                              color: Color(0xFF3e6fa5),
-                                              fontSize: 8,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-
-                  Container(
-                    margin: const EdgeInsets.only(right: 12, left: 12, top: 10),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                 //     color: Color(0xff86ee79),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '当日专注   $dateStr',
-                              style: TextStyle(
-                                color: Color(0xFF3e6fa5),
-                                fontSize: 14,
-                              ),
-                            ),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  date =
-                                      DateTime.fromMillisecondsSinceEpoch(date)
-                                          .add(Duration(days: -1))
-                                          .millisecondsSinceEpoch;
-                                });
-                              },
-                              child: Icon(
-                                Icons.arrow_back_ios,
-                                size: 14,
-                                color: Color(0xFF3e6fa5),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (date >= curDate) {
-                                    return;
-                                  }
-                                  date =
-                                      DateTime.fromMillisecondsSinceEpoch(date)
-                                          .add(Duration(days: 1))
-                                          .millisecondsSinceEpoch;
-                                });
-                              },
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
-                                color: Color(0xFF3e6fa5),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.only(left: 16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '次数',
-                                      style: TextStyle(
-                                        color: Color(0xFF3e6fa5),
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text:
-                                            '${context.read<MainLogic>().searchDayCount(date)}',
-                                            style: TextStyle(
-                                              color: Color(0xFF3e6fa5),
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                padding: EdgeInsets.only(right: 16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '日均时长',
-                                      style: TextStyle(
-                                        color: Color(0xFF3e6fa5),
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text:
-                                            '${context.read<MainLogic>().searchDayMinute(date)}',
-                                            style: TextStyle(
-                                              color: Color(0xFF3e6fa5),
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: '分钟',
-                                            style: TextStyle(
-                                              color: Color(0xFF3e6fa5),
-                                              fontSize: 8,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-
-                Stack(
-                  children: <Widget>[
-                    AspectRatio(
-                      aspectRatio: 1.70,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          right: 16,
-                          left: 15,
-                          top: 24,
-                          bottom: 12,
-                        ),
-                        child: LineChart(
-                          showAvg ? avgData() : mainData(),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 60,
-                      height: 34,
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            showAvg = !showAvg;
-                          });
-                        },
-                        child: Text(
-                          'avg',
+                        Text(
+                          '累计专注',
                           style: TextStyle(
-                            fontSize: 12,
-                            color: showAvg ? Colors.white.withOpacity(0.5) : Colors.white,
+                            color: Color(0xFF3e6fa5),
+                            fontSize: 14,
                           ),
                         ),
-                      ),
+                        SizedBox(width: 5),
+                        Image.asset(
+                          Res.ic_action_bubble,
+                          width: 15,
+                          height: 15,
+                          color: Color(0xFF3e6fa5),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '次数',
+                                  style: TextStyle(
+                                    color: Color(0xFF3e6fa5),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            '${MainLogic.instance.completeCount()}',
+                                        style: TextStyle(
+                                          color: Color(0xFF3e6fa5),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '时长',
+                                style: TextStyle(
+                                  color: Color(0xFF3e6fa5),
+                                  fontSize: 12,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          '${MainLogic.instance.completeTodoTime()}',
+                                      style: TextStyle(
+                                        color: Color(0xFF3e6fa5),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: '分钟',
+                                      style: TextStyle(
+                                        color: Color(0xFF3e6fa5),
+                                        fontSize: 8,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(right: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '日均时长',
+                                  style: TextStyle(
+                                    color: Color(0xFF3e6fa5),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            '${MainLogic.instance.averageTodoTime()}',
+                                        style: TextStyle(
+                                          color: Color(0xFF3e6fa5),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '分钟',
+                                        style: TextStyle(
+                                          color: Color(0xFF3e6fa5),
+                                          fontSize: 8,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
-                )
-
-
-
-
-                ],
+                ),
               ),
-            ),
+              Container(
+                margin: const EdgeInsets.only(right: 12, left: 12, top: 10),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  //     color: Color(0xff86ee79),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          '当日专注   $dateStr',
+                          style: TextStyle(
+                            color: Color(0xFF3e6fa5),
+                            fontSize: 14,
+                          ),
+                        ),
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              date = DateTime.fromMillisecondsSinceEpoch(date)
+                                  .add(Duration(days: -1))
+                                  .millisecondsSinceEpoch;
+                            });
+                          },
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            size: 14,
+                            color: Color(0xFF3e6fa5),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (date >= curDate) {
+                                return;
+                              }
+                              date = DateTime.fromMillisecondsSinceEpoch(date)
+                                  .add(Duration(days: 1))
+                                  .millisecondsSinceEpoch;
+                            });
+                          },
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 14,
+                            color: Color(0xFF3e6fa5),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '次数',
+                                  style: TextStyle(
+                                    color: Color(0xFF3e6fa5),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            '${context.read<MainLogic>().searchDayCount(date)}',
+                                        style: TextStyle(
+                                          color: Color(0xFF3e6fa5),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(right: 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '日均时长',
+                                  style: TextStyle(
+                                    color: Color(0xFF3e6fa5),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            '${context.read<MainLogic>().searchDayMinute(date)}',
+                                        style: TextStyle(
+                                          color: Color(0xFF3e6fa5),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '分钟',
+                                        style: TextStyle(
+                                          color: Color(0xFF3e6fa5),
+                                          fontSize: 8,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+              Column(
+                children: <Widget>[
+                  Container(
+                    alignment:Alignment.topLeft ,
+                    margin: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                    child:Text(
+                      '近七天使用详情',
+                      style: TextStyle(
+                        color: Color(0xFF3e6fa5),
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  AspectRatio(
+                    aspectRatio: 1.70,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        right: 10,
+                        left: 16,
+                        top: 24,
+                        bottom: 12,
+                      ),
+                      child: LineChart(
+                        //是否显示平均数据
+                        showAvg ? avgData() : mainData(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 72,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(20) //配置圆角
+                        ),
+                    margin: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          showAvg = !showAvg;
+                        });
+                      },
+                      child: Text(
+                        showAvg ? '每日情况' : "日均情况",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: showAvg
+                              ? Colors.black.withOpacity(0.5)
+                              : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
+        ),
+      ),
       //  ),
-  //    ],
+      //    ],
     );
   }
 }
