@@ -53,6 +53,8 @@ dependencies:
   glassmorphism: ^1.0.4
   list_tile_more_customizable: ^1.2.2
   http: ^0.13.5
+  fl_chart: ^0.55.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
