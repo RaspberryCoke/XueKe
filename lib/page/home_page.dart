@@ -2,6 +2,7 @@ import 'package:tomato_clock/page/data_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tomato_clock/page/table_events_page.dart';
 import 'package:tomato_clock/page/lock_page/lock_page.dart';
+import 'package:tomato_clock/page/weChat_page/we_chat_page.dart';
 
 class HomePage extends StatefulWidget{
   const HomePage({super.key});
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage>{
     TableEventsPage(),
     LockPage(),
     DataPage(),
+    //WeChatPage(),//测试界面
   ];
   Widget build(BuildContext context){
     return Scaffold(
@@ -54,7 +56,7 @@ class _HomePageState extends State<HomePage>{
           BottomNavigationBarItem(icon:Icon(Icons.message_rounded), label: "待办",tooltip: ''),
           BottomNavigationBarItem(icon:Icon(Icons.lock), label: "锁屏",tooltip: ''),
           BottomNavigationBarItem(icon:Icon(Icons.data_thresholding_outlined), label: "数据",tooltip: ''),
-          //BottomNavigationBarItem(icon:Icon(Icons.people), label: "用户"),
+          //BottomNavigationBarItem(icon:Icon(Icons.people), label: "用户",tooltip: ''),
         ],
       ),
     );
