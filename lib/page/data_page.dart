@@ -62,8 +62,18 @@ class _DataPageState extends State<DataPage> {
   String get dateStr2 =>
       TimeUtils2.getTime2(DateTime.fromMillisecondsSinceEpoch(date));
 
-
-
+  String get dateStr3 => TimeUtils2.getTime2(//昨天
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -1)));
+  String get dateStr4 => TimeUtils2.getTime2(//前天
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -2)));
+  String get dateStr5 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -3)));
+  String get dateStr6 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -4)));
+  String get dateStr7 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -5)));
+  String get dateStr8 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -6)));
 
   List<Color> gradientColors = [
     AppColors.contentColorCyan,
@@ -80,22 +90,22 @@ class _DataPageState extends State<DataPage> {
     Widget text;
     switch (value.toInt()) {
       case 1:
-        text = Text('$dateStr2', style: style);
+        text = Text('$dateStr8', style: style);
         break;
       case 2:
-        text = Text('           $dateStr2           ', style: style);
+        text = Text('           $dateStr7           ', style: style);
         break;
       case 3:
-        text = Text('           $dateStr2           ', style: style);
+        text = Text('           $dateStr6           ', style: style);
         break;
       case 4:
-        text = Text('           $dateStr2           ', style: style);
+        text = Text('           $dateStr5           ', style: style);
         break;
       case 5:
-        text = Text('           $dateStr2           ', style: style);
+        text = Text('           $dateStr4           ', style: style);
         break;
       case 6:
-        text = Text('           $dateStr2           ', style: style);
+        text = Text('           $dateStr3           ', style: style);
         break;
       case 7:
         text = Text('  $dateStr2   ', style: style);
@@ -116,6 +126,7 @@ class _DataPageState extends State<DataPage> {
       fontWeight: FontWeight.bold,
       fontSize: 13,
     );
+
     String text;
     switch (value.toInt()) {
       case 1:
@@ -717,9 +728,9 @@ class _DataPageState extends State<DataPage> {
               Column(
                 children: <Widget>[
                   Container(
-                    alignment:Alignment.topLeft ,
+                    alignment: Alignment.topLeft,
                     margin: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-                    child:Text(
+                    child: Text(
                       '近七天使用详情',
                       style: TextStyle(
                         color: Color(0xFF3e6fa5),
@@ -736,10 +747,11 @@ class _DataPageState extends State<DataPage> {
                         top: 24,
                         bottom: 12,
                       ),
-                      child: LineChart(
+                      child:
+                      LineChart(
                         //是否显示平均数据
                         showAvg ? avgData() : mainData(),
-                      ),
+                      )
                     ),
                   ),
                   Container(
