@@ -103,13 +103,13 @@ class _DataPageState extends State<DataPage> {
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '10K';
+        text = '10分钟';
         break;
       case 3:
-        text = '30k';
+        text = '30分钟';
         break;
       case 5:
-        text = '50k';
+        text = '60分钟';
         break;
       default:
         return Container();
