@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tomato_clock/page/table_events_page.dart';
 import 'package:tomato_clock/page/lock_page/lock_page.dart';
 
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 class HomePage extends StatefulWidget{
   const HomePage({super.key});
 
@@ -18,6 +19,24 @@ class _HomePageState extends State<HomePage>{
     LockPage(),
     DataPage(),
   ];
+
+
+/*  TabController tabController;
+
+  List colors=[Colors.blue,Colors.pink,Colors.orange];
+
+  int currentIndex=0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    tabController = TabController(vsync: this, length: 3)..addListener((){
+      setState(() {
+        currentIndex=tabController.index;
+      });
+    });
+  }*/
   Widget build(BuildContext context){
     return Scaffold(
 
@@ -58,5 +77,8 @@ class _HomePageState extends State<HomePage>{
         ],
       ),
     );
+
+
+
   }
 }
