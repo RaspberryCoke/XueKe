@@ -7,7 +7,7 @@ class TimeUtils {
 }
 
 class TimeUtils2 {
-  static String getTime(DateTime dateTime, {String format = 'MM-dd'}) {
+  static String getTime2(DateTime dateTime, {String format = 'MM-dd'}) {
     return DateFormat(format).format(dateTime);
   }
 }
