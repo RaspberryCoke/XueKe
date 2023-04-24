@@ -121,6 +121,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.5"
+  curved_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: curved_navigation_bar
+      sha256: bf92257a7b95487e8299270d198974ad4e118c9cae8f1e1201ef678fb96d63ae
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.7"
   duration_picker:
     dependency: "direct main"
     description:

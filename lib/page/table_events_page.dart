@@ -41,6 +41,10 @@ class _TableEventsPageState extends State<TableEventsPage> {
     Navigator.pushReplacementNamed(context, Constant.personPage);
   }
 
+  void finish() {
+    Navigator.pushReplacementNamed(context, Constant.finishedPage);
+  }
+
 
   bool _isDragging = false;
   double _x = 0;
@@ -170,6 +174,35 @@ class _TableEventsPageState extends State<TableEventsPage> {
             fontSize: 25.0,
           ),
         ),
+
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (result){
+              setState(() {
+                finish();
+              });
+
+            },
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25)
+            ),
+            offset: Offset(0,46),
+            icon: const Icon(
+              Icons.more_horiz,
+              size: 37,
+              //color: Colors.green,
+            ),
+            itemBuilder: (context) {
+              return <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: '完成',
+                  child: Text('显示已完成记录'),
+                  textStyle: TextStyle(color: Colors.black,fontSize: 14),
+                ),
+              ];
+            },
+          )
+        ],
       ),
 
 
@@ -438,13 +471,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
             trailing: Icon(Icons.keyboard_arrow_right_rounded),
           ),
 
-/*              Divider(
-                color: Colors.grey,
-                height: 20,
-                thickness: 1,
-                indent: 20,
-                endIndent: 0,
-              ),*/
 
           SizedBox(
             height: 30,
