@@ -165,5 +165,4 @@ class PersonPageState extends State<PersonPage> {
       ),
     ),
   );
-
 }

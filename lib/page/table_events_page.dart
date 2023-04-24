@@ -438,13 +438,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
             trailing: Icon(Icons.keyboard_arrow_right_rounded),
           ),
 
-/*              Divider(
-                color: Colors.grey,
-                height: 20,
-                thickness: 1,
-                indent: 20,
-                endIndent: 0,
-              ),*/
 
           SizedBox(
             height: 30,

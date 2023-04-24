@@ -20,7 +20,7 @@ class DataPage extends StatefulWidget {
   State<DataPage> createState() => _DataPageState();
 }
 
-class AppColors {
+class AppColors {//颜色
   static const Color primary = contentColorCyan;
   static const Color menuBackground = Color(0xFF090912);
   static const Color itemsBackground = Color(0xFF1B2339);
