@@ -99,7 +99,7 @@ class _DataPageState extends State<DataPage> {
     //底栏
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 13,
+      fontSize: 9,
     );
     Widget text;
     switch (value.toInt()) {
@@ -138,19 +138,19 @@ class _DataPageState extends State<DataPage> {
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 13,
+      fontSize: 8,
     );
 
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '10min';
+        text = '10分钟';
         break;
       case 3:
-        text = '30min';
+        text = '30分钟';
         break;
       case 5:
-        text = '50min';
+        text = '50分钟';
         break;
       default:
         return Container();
@@ -351,7 +351,7 @@ class _DataPageState extends State<DataPage> {
     //底栏
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 13,
+      fontSize: 9,
     );
     Widget text;
     switch (value.toInt()) {
@@ -390,19 +390,19 @@ class _DataPageState extends State<DataPage> {
   Widget leftTitlemonWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 13,
+      fontSize: 8,
     );
 
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '10min';
+        text = '10分钟';
         break;
       case 3:
-        text = '30min';
+        text = '30分钟';
         break;
       case 5:
-        text = '50min';
+        text = '50分钟';
         break;
       default:
         return Container();
@@ -504,10 +504,10 @@ class _DataPageState extends State<DataPage> {
           gradient: LinearGradient(
             colors: gradientColors,
           ),
-          barWidth: 5,
+          barWidth: 4,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: false,
+            show: false,//显示节点
           ),
           belowBarData: BarAreaData(
             show: true,
@@ -548,9 +548,9 @@ class _DataPageState extends State<DataPage> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 30,
+            reservedSize: 25,
             getTitlesWidget: bottommonTitleWidgets,
-            interval: 1,
+            interval: 1,//每隔1个日期
           ),
         ),
         leftTitles: AxisTitles(
@@ -582,7 +582,6 @@ class _DataPageState extends State<DataPage> {
             FlSpot(1, 3.44),
 
             FlSpot(30, 3.44),
-
           ],
           isCurved: true,
           gradient: LinearGradient(
@@ -990,8 +989,8 @@ class _DataPageState extends State<DataPage> {
                     aspectRatio: 1.70,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                        right: 10,
-                        left: 16,
+                        right: 13,
+                        left: 5,
                         top: 24,
                         bottom: 12,
                       ),
@@ -1019,7 +1018,7 @@ class _DataPageState extends State<DataPage> {
                       child: Text(
                         showAvg ? '每日情况' : "日均情况",
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 9,
                           color: showAvg
                               ? Colors.black.withOpacity(0.5)
                               : Colors.black,
@@ -1042,11 +1041,11 @@ class _DataPageState extends State<DataPage> {
                     ),
                   ),
                   AspectRatio(
-                    aspectRatio: 1.70,
+                    aspectRatio: 1.7,
                     child: Padding(
                         padding: const EdgeInsets.only(
-                          right: 10,
-                          left: 16,
+                          right: 13,
+                          left: 5,
                           top: 24,
                           bottom: 12,
                         ),
@@ -1074,7 +1073,7 @@ class _DataPageState extends State<DataPage> {
                       child: Text(
                         showmonAvg ? '每日情况' : "日均情况",
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 9,
                           color: showmonAvg
                               ? Colors.black.withOpacity(0.5)
                               : Colors.black,
