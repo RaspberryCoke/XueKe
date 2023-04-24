@@ -75,12 +75,26 @@ class _DataPageState extends State<DataPage> {
   String get dateStr8 => TimeUtils2.getTime2(
       DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -6)));
 
+
+  String get dateStr9 => TimeUtils2.getTime2(//
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -10)));
+  String get dateStr10 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -15)));
+  String get dateStr11 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -20)));
+  String get dateStr12 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -25)));
+  String get dateStr13 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -29)));
   List<Color> gradientColors = [
     AppColors.contentColorCyan,
     AppColors.contentColorBlue,
   ];
 
   bool showAvg = false;
+  bool showmonAvg = false;
+
+//每周使用详情
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     //底栏
     const style = TextStyle(
@@ -130,13 +144,13 @@ class _DataPageState extends State<DataPage> {
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '10K';
+        text = '10min';
         break;
       case 3:
-        text = '30k';
+        text = '30min';
         break;
       case 5:
-        text = '50k';
+        text = '50min';
         break;
       default:
         return Container();
@@ -194,14 +208,13 @@ class _DataPageState extends State<DataPage> {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 0,
-      maxX: 8,
+      minX: 1,
+      maxX: 7,
       minY: 0,
       maxY: 8,
       lineBarsData: [
         LineChartBarData(
           spots: const [
-            FlSpot(0, 0),
             FlSpot(1, 5),
             FlSpot(2, 5),
             FlSpot(3, 3.1),
@@ -209,7 +222,6 @@ class _DataPageState extends State<DataPage> {
             FlSpot(5, 3),
             FlSpot(6, 3),
             FlSpot(7, 4),
-            FlSpot(8, 0),
           ],
           isCurved: true,
           gradient: LinearGradient(
@@ -268,7 +280,7 @@ class _DataPageState extends State<DataPage> {
           sideTitles: SideTitles(
             showTitles: true,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
+            reservedSize: 30,
             interval: 1,
           ),
         ),
@@ -283,20 +295,21 @@ class _DataPageState extends State<DataPage> {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 0,
-      maxX: 11,
+      minX: 1,
+      maxX: 7,
       minY: 0,
       maxY: 6,
       lineBarsData: [
         LineChartBarData(
           spots: const [
-            FlSpot(0, 3.44),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
+            FlSpot(1, 3.44),
+            FlSpot(2, 3.44),
+            FlSpot(3, 3.44),
+            FlSpot(4, 3.44),
+            FlSpot(5, 3.44),
+            FlSpot(6.5, 3.44),
+            FlSpot(7, 3.44),
+
           ],
           isCurved: true,
           gradient: LinearGradient(
@@ -330,50 +343,285 @@ class _DataPageState extends State<DataPage> {
     );
   }
 
-/*  @override
-  void initState() {
-    super.initState();
-    if (Platform.isAndroid) {
-      SystemUiOverlayStyle systemUiOverlayStyle =
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-    }
-  }*/
 
-/*  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
-      });
 
-      _selectedEvents.value = MainLogic.instance.getEventsForDay(selectedDay);
+
+//每30天使用详情
+  Widget bottommonTitleWidgets(double value, TitleMeta meta) {
+    //底栏
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 13,
+    );
+    Widget text;
+    switch (value.toInt()) {
+      case 1:
+        text = Text('$dateStr13', style: style);
+        break;
+      case 5:
+        text = Text('           $dateStr12           ', style: style);
+        break;
+      case 10:
+        text = Text('           $dateStr11           ', style: style);
+        break;
+      case 15:
+        text = Text('           $dateStr10           ', style: style);
+        break;
+      case 20:
+        text = Text('           $dateStr9           ', style: style);
+        break;
+      case 25:
+        text = Text('           $dateStr7           ', style: style);
+        break;
+      case 30:
+        text = Text('  $dateStr2   ', style: style);
+        break;
+      default:
+        text = Text('', style: style);
+        break;
     }
-  }*/
+
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: text,
+    );
+  }
+
+  Widget leftTitlemonWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 13,
+    );
+
+    String text;
+    switch (value.toInt()) {
+      case 1:
+        text = '10min';
+        break;
+      case 3:
+        text = '30min';
+        break;
+      case 5:
+        text = '50min';
+        break;
+      default:
+        return Container();
+    }
+
+    return Text(text, style: style, textAlign: TextAlign.left);
+  }
+
+  LineChartData mainmonData() {
+    return LineChartData(
+      gridData: FlGridData(
+        show: true,
+        drawVerticalLine: true,
+        horizontalInterval: 1,
+        verticalInterval: 1,
+        getDrawingHorizontalLine: (value) {
+          return FlLine(
+            color: AppColors.mainGridLineColor,
+            strokeWidth: 1,
+          );
+        },
+        getDrawingVerticalLine: (value) {
+          return FlLine(
+            color: AppColors.mainGridLineColor,
+            strokeWidth: 1,
+          );
+        },
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            interval: 1,
+            getTitlesWidget: bottommonTitleWidgets,
+          ),
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            interval: 1,
+            getTitlesWidget: leftTitlemonWidgets,
+            reservedSize: 25,
+          ),
+        ),
+      ),
+      borderData: FlBorderData(
+        show: true,
+        border: Border.all(color: const Color(0xff37434d)),
+      ),
+      minX: 1,
+      maxX: 30,
+      minY: 0,
+      maxY: 6,
+      lineBarsData: [
+        LineChartBarData(
+          spots: const [
+            FlSpot(1, 5),
+            FlSpot(2, 5),
+            FlSpot(3, 3.1),
+            FlSpot(4, 4.2),
+            FlSpot(5, 3),
+            FlSpot(6, 3),
+            FlSpot(7, 4),
+            FlSpot(8, 2),
+            FlSpot(9, 2),
+
+            FlSpot(10, 5),
+            FlSpot(11, 5),
+            FlSpot(12, 5),
+            FlSpot(13, 3.1),
+            FlSpot(14, 4.2),
+            FlSpot(15, 3),
+            FlSpot(16, 3),
+            FlSpot(17, 4),
+            FlSpot(18, 2),
+            FlSpot(19, 2),
+
+            FlSpot(20, 5),
+            FlSpot(21, 5),
+            FlSpot(22, 5),
+            FlSpot(23, 3.1),
+            FlSpot(24, 4.2),
+            FlSpot(25, 3),
+            FlSpot(26, 3),
+            FlSpot(27, 4),
+            FlSpot(28, 2),
+            FlSpot(29, 2),
+            FlSpot(30, 4),
+          ],
+          isCurved: true,
+          gradient: LinearGradient(
+            colors: gradientColors,
+          ),
+          barWidth: 5,
+          isStrokeCapRound: true,
+          dotData: FlDotData(
+            show: false,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              colors: gradientColors
+                  .map((color) => color.withOpacity(0.3))
+                  .toList(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  LineChartData avgmonData() {
+    return LineChartData(
+      lineTouchData: LineTouchData(enabled: false),
+      gridData: FlGridData(
+        show: true,
+        drawHorizontalLine: true,
+        verticalInterval: 1,
+        horizontalInterval: 1,
+        getDrawingVerticalLine: (value) {
+          return FlLine(
+            color: const Color(0xff37434d),
+            strokeWidth: 1,
+          );
+        },
+        getDrawingHorizontalLine: (value) {
+          return FlLine(
+            color: const Color(0xff37434d),
+            strokeWidth: 1,
+          );
+        },
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            getTitlesWidget: bottommonTitleWidgets,
+            interval: 1,
+          ),
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: leftTitlemonWidgets,
+            reservedSize: 30,
+            interval: 1,
+          ),
+        ),
+        topTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        rightTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+      ),
+      borderData: FlBorderData(
+        show: true,
+        border: Border.all(color: const Color(0xff37434d)),
+      ),
+      minX: 1,
+      maxX: 30,
+      minY: 0,
+      maxY: 6,
+      lineBarsData: [
+        LineChartBarData(
+          spots: const [
+            FlSpot(1, 3.44),
+
+            FlSpot(30, 3.44),
+
+          ],
+          isCurved: true,
+          gradient: LinearGradient(
+            colors: [
+              ColorTween(begin: gradientColors[0], end: gradientColors[1])
+                  .lerp(0.2)!,
+              ColorTween(begin: gradientColors[0], end: gradientColors[1])
+                  .lerp(0.2)!,
+            ],
+          ),
+          barWidth: 5,
+          isStrokeCapRound: true,
+          dotData: FlDotData(
+            show: false,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              colors: [
+                ColorTween(begin: gradientColors[0], end: gradientColors[1])
+                    .lerp(0.2)!
+                    .withOpacity(0.1),
+                ColorTween(begin: gradientColors[0], end: gradientColors[1])
+                    .lerp(0.2)!
+                    .withOpacity(0.1),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    return
-/*    Stack(
-      children: [
-        Positioned.fill(
-          child:Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                tileMode: TileMode.mirror,
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xfffafafa), Color(0xffd9b5b5)],
-                stops: [0.0, 1.0],
-              ),
-            ),
-          ),
-        ),*/
-
-        Scaffold(
+    return Scaffold(
       backgroundColor: Color(0xd0f6f6f3),
       // backgroundColor: Color(0xd0f1f1c1),
       appBar: AppBar(
@@ -773,6 +1021,61 @@ class _DataPageState extends State<DataPage> {
                         style: TextStyle(
                           fontSize: 10,
                           color: showAvg
+                              ? Colors.black.withOpacity(0.5)
+                              : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+
+
+                  SizedBox(height: 30),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    margin: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                    child: Text(
+                      '近一个月使用详情',
+                      style: TextStyle(
+                        color: Color(0xFF3e6fa5),
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  AspectRatio(
+                    aspectRatio: 1.70,
+                    child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 10,
+                          left: 16,
+                          top: 24,
+                          bottom: 12,
+                        ),
+                        child:
+                        LineChart(
+                          //是否显示平均数据
+                          showmonAvg ? avgmonData() : mainmonData(),
+                        )
+                    ),
+                  ),
+                  Container(
+                    width: 72,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(20) //配置圆角
+                    ),
+                    margin: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          showmonAvg = !showmonAvg;
+                        });
+                      },
+                      child: Text(
+                        showmonAvg ? '每日情况' : "日均情况",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: showmonAvg
                               ? Colors.black.withOpacity(0.5)
                               : Colors.black,
                         ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tomato_clock/page/table_events_page.dart';
 import 'package:tomato_clock/page/lock_page/lock_page.dart';
 
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
 class HomePage extends StatefulWidget{
   const HomePage({super.key});
 

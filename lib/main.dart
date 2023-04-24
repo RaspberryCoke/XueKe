@@ -2,6 +2,7 @@ import 'package:tomato_clock/logic/login_logic.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/login/registration_page.dart';
 import 'package:tomato_clock/page/constant.dart';
+import 'package:tomato_clock/page/finished_page.dart';
 import 'package:tomato_clock/page/login.dart';
 import 'package:tomato_clock/page/mine_setting_page.dart';
 import 'package:tomato_clock/page/splash_page.dart';
@@ -164,6 +165,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
               break;
             case Constant.personPage:
               widget = PersonPage();
+              break;
+            case Constant.finishedPage:
+              widget = FinishedPage();
               break;
             default:
               widget = TableEventsPage();
