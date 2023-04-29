@@ -1,6 +1,9 @@
+import 'package:tomato_clock/core/database/providers/todo_table_provider.dart';
+import 'package:tomato_clock/core/database/providers/user_table_provider.dart';
 import 'package:tomato_clock/logic/login_logic.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/login/registration_page.dart';
+import 'package:tomato_clock/model/todo.dart';
 import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/page/finished_page.dart';
 import 'package:tomato_clock/page/login.dart';
@@ -27,8 +30,20 @@ void main() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   MainLogic.instance.init(sharedPreferences);
   LoginLogic.instance.init();
+
+  ///////////
+  _createTables();
+
   runApp(MyApp());
 }
+
+void _createTables() async{
+  TodoTableProvider todoTableProvider = TodoTableProvider();
+  UserTableProvider userTableProvider = UserTableProvider();
+  await todoTableProvider.creatTable();
+  await userTableProvider.creatTable();
+}
+
 
 ThemeData _buildShrineTheme() {
   final ThemeData base = ThemeData.light();

@@ -65,8 +65,9 @@ class MainLogic extends ChangeNotifier {
   void convertCompletedListToMap(List<Todo> list) {
     for (Todo todo in list) {
       DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(todo.date!);
+      //添加了小时和分钟
       DateTime finalDate =
-          DateTime(dateTime.year, dateTime.month, dateTime.day);
+          DateTime(dateTime.year, dateTime.month, dateTime.day,dateTime.hour,dateTime.minute);
       List<Todo>? list = completedEvents[finalDate];
       if (list != null) {
         list.add(todo);
@@ -216,6 +217,26 @@ class MainLogic extends ChangeNotifier {
     return count;
   }
 
+  //当日完成总时长
+  int searchDaytotalMinute(int date) {
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(date);
+    int count = 0;
+    DateTime finalDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    print(finalDate);
+    print(completedEvents[finalDate]);
+    List<Todo> list = [];
+    if (completedEvents.containsKey(finalDate)) {
+      list = completedEvents[finalDate]!;
+      for (Todo todo in list) {
+        count += todo.duration ?? 0;
+      }
+      count = (count ~/60) ;
+      return count;
+    } else {
+      return 0;
+    }
+  }
+
   /// 当日完成平均时长
   int searchDayMinute(int date) {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(date);
@@ -233,6 +254,28 @@ class MainLogic extends ChangeNotifier {
     } else {
       return 0;
     }
+  }
+
+  //7天平均完成时长
+  int searchsevenDaysMinute() {
+    int count = 0;
+    completedEvents.forEach((key, value) {
+      for (Todo todo in value) {
+        count += todo.duration ?? 0;
+      }
+    });
+    return count == 0 ? 0 : (count / 60) ~/ 7;
+  }
+
+  //30天平均完成时长
+  int searchthirtyDaysMinute() {
+    int count = 0;
+    completedEvents.forEach((key, value) {
+      for (Todo todo in value) {
+        count += todo.duration ?? 0;
+      }
+    });
+    return count == 0 ? 0 : (count / 60) ~/ 30;
   }
 
   void deleteTodoById(int date) {

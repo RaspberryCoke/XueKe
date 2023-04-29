@@ -320,53 +320,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
           SizedBox(
             height: 15,
           ),
-          /*Positioned(
-            left: 10,
-            child: TextButton.icon(
-                icon:
-                    Icon(Icons.settings, size: 30.0, color: Color(0xD903033F)),
-                label: Text("个人中心",
-                    style: TextStyle(fontSize: 20, color: Color(0xD903033F))),
-                style: ButtonStyle(
-                  textStyle: MaterialStateProperty.all(TextStyle(fontSize: 25)),
-                ),
-                onPressed: person),
-          ),
-          Divider(
-            color: Colors.grey,
-            height: 20,
-            thickness: 1,
-            indent: 20,
-            endIndent: 0,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Positioned(
-            left: 10,
-            child: TextButton.icon(
-                icon:
-                    Icon(Icons.settings, size: 30.0, color: Color(0xD903033F)),
-                label: Text(
-                  "个人设置",
-                  style: TextStyle(fontSize: 20, color: Color(0xD903033F)),
-                ),
-                style: ButtonStyle(
-                  textStyle: MaterialStateProperty.all(TextStyle(
-                    fontSize: 25,
-                  )),
-                ),
-                onPressed: setting),
-          ),
 
-
-          Divider(
-                // color: Color(0xD0BBBB53),
-                height: 20,
-                thickness: 1,
-                indent: 20,
-                endIndent: 0,
-              ),*/
           ListTile(
             selected: true,
             leading: Container(
@@ -556,18 +510,18 @@ class _TableEventsPageState extends State<TableEventsPage> {
                           onTap: () {
 
                             /////////////////////
-                            GlobalData.plan_name=todo.title!;
+                            /*GlobalData.plan_name=todo.title!;
                             GlobalData.content=todo.content!;
                             GlobalData.minutes=todo.duration!~/60;
-                            Navigator.pushNamed(context, '/lock_page');
+                            Navigator.pushNamed(context, '/lock_page');*/
 
-                            // Navigator.pushNamed(
-                            //   context,
-                            //   Constant.todoDetailPage,
-                            //   arguments: {
-                            //     TodoDetailPage.keyId: todo.date,
-                            //   },
-                            // );
+                             Navigator.pushNamed(
+                               context,
+                               Constant.todoDetailPage,
+                               arguments: {
+                                 TodoDetailPage.keyId: todo.date,
+                               },
+                             );
                           },
                           title: Text(
                             '${todo.title}',

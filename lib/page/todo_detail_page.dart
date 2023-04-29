@@ -121,7 +121,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     _initAudio();
 
     Future.delayed(Duration.zero, () {
-      //controller.start();
+      controller.start();
       setSource(type);
       setState(() {
         type = MusicStatus.start;

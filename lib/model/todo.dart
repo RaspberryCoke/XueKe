@@ -45,7 +45,7 @@ class Todo {
 
   DateTime getYmd() {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(date!);
-    return DateTime(dateTime.year, dateTime.month, dateTime.day);
+    return DateTime(dateTime.year, dateTime.month, dateTime.day,);
   }
 
   String doneToString() {
@@ -54,7 +54,7 @@ class Todo {
 
   String lessDay() {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(date!);
-    DateTime finalDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    DateTime finalDate = DateTime(dateTime.year, dateTime.month, dateTime.day,dateTime.hour,dateTime.minute);
     Duration duration = finalDate.difference(DateTime.now());
     return duration.inDays.toString();
   }

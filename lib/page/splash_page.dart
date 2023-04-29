@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 //import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/res.dart';
 import 'package:tomato_clock/page/login.dart';
@@ -16,7 +17,8 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
 
-  void initState() {
+  void initState()
+  {
     super.initState();
     Future.delayed(const Duration(milliseconds: 2000), () {
       Navigator.pushReplacementNamed(context, Constant.login);
