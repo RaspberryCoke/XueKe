@@ -26,8 +26,8 @@ class Res {
   static const String default_background_2 = "assets/default_background_2.png";
   static const String default_background_3 = "assets/default_background_3.png";
   static const String default_background_4 = "assets/default_background_4.png";
-  static const String default_background_5 = "assets/default_background_5.png";
-  static const String default_background_6 = "assets/default_background_6.png";
+  static const String default_background_5 = "assets/newImages/cim0003.png";
+  static const String default_background_6 = "assets/newImages/colorful0001.png";
   static const String drawer_bg = "assets/drawer_bg.png";
   static const String drawer_bg2 = "assets/drawer_bg2.png";
   static const String ic_action_big_timeline = "assets/ic_action_big_timeline.png";

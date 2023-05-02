@@ -184,6 +184,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
             case Constant.finishedPage:
               widget = FinishedPage();
               break;
+            case Constant.lockPage:
+              widget = LockPage(args: args);
+              break;
             default:
               widget = TableEventsPage();
           }

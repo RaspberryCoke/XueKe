@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:tomato_clock/res.dart';
 import 'package:tomato_clock/page/todo_page.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:tomato_clock/page/lock_page/lock_page.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
 import 'package:list_tile_more_customizable/list_tile_more_customizable.dart';
 
@@ -515,12 +516,13 @@ class _TableEventsPageState extends State<TableEventsPage> {
                             GlobalData.minutes=todo.duration!~/60;
                             Navigator.pushNamed(context, '/lock_page');*/
 
+
                              Navigator.pushNamed(
                                context,
-                               Constant.todoDetailPage,
-                               arguments: {
-                                 TodoDetailPage.keyId: todo.date,
-                               },
+                               Constant.lockPage,
+                                arguments: {
+                                  LockPage.keyId: todo.date,
+                                },
                              );
                           },
                           title: Text(

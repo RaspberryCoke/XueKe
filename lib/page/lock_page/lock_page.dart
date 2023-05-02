@@ -1,6 +1,15 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
+import 'package:tomato_clock/logic/play.dart';
+import 'package:tomato_clock/model/todo.dart';
+import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/page/lock_page/wordart.dart';
+import 'package:tomato_clock/res.dart';
+import 'package:tomato_clock/utils/background_utils.dart';
+import 'package:tomato_clock/utils/word_utils.dart';
 import 'expands/top_button_expanded.dart';
 import 'expands/top_blank_expanded.dart';
 import 'expands/middle_timer_expanded.dart';
@@ -11,26 +20,110 @@ import 'expands/bottom_button_expanded.dart';
 import 'package:tomato_clock/page/back_to_app.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
 
+
+enum MusicStatus { start, pause, init, resume, complete, close }
+
 class LockPage extends StatefulWidget {
-  LockPage({Key? key}) : super(key: key);
+
+  static const String keyId = "key_id";
+  const LockPage({Key? key, this.args}) : super(key: key);
+  final Map<String, dynamic>? args;
 
   @override
-  _lock_page_state createState() => _lock_page_state();
+  State<LockPage> createState() => _lock_page_state();
 }
 
 class _lock_page_state extends State<LockPage> {
+  List<String> musics = [
+    'yinyuehe.mp3',
+    'fire.mp3',
+    'yusheng.mp3',
+    'guzheng.mp3',
+    'xishui.mp3',
+    'senlin.mp3',
+  ];
+
+  List<String> musicText = [
+    '音乐盒',
+    '火焰声',
+    '下雨声',
+    '古筝音',
+    '溪水声',
+    '森林声',
+  ];
+
+  List<String> musicBg = [
+    Res.ic_bgm_box,
+    Res.ic_bgm_fire,
+    Res.ic_bgm_rain,
+    Res.ic_bgm_guzheng,
+    Res.ic_bgm_xishui,
+    Res.ic_bgm_senlin,
+  ];
+
+  List<String> bgs = [
+    Res.default_background_1,
+    Res.default_background_2,
+    Res.default_background_3,
+    Res.default_background_4,
+    Res.default_background_5,
+    Res.default_background_6,
+    Res.default_background_7,
+  ];
+
+  bool isDone = false;
+  bool isStop = false;
+  late Todo todo;/////////
+  MusicStatus type = MusicStatus.init;
+ // CountDownController controller = CountDownController();
+
+  AudioPlayer player = AudioPlayer();
+
+  Source _source = AssetSource(Play.t1);//初始音乐改为t1
+  Source _timerSource = AssetSource(Play.instance.currentPlay());
+  int musicIndex = 0;
+   String backgroundPicture = BackgroundUtils.randomBackground();
+   String word = WordUtils.randomword();
+
+  void _initAudio() async {
+    await player.setSource(_source);
+    player.onPlayerComplete.listen((event) {
+      if (type != MusicStatus.complete && type != MusicStatus.close) {
+        player.play(_source);
+      }
+    });
+  }
+
+
   @override
   initState() {
     super.initState();
+
+    int? id = widget.args?[LockPage.keyId];
+    if (id != null) {
+      todo = MainLogic.instance.getTodoById(id)!;
+    }
+    _initAudio();
+    Future.delayed(Duration.zero, () {
+      controller.start();
+      setSource(type);
+      setState(() {
+        type = MusicStatus.start;
+      });
+    });
+
     _remain_time = false;
     _is_running = false;
     controller = CountDownController();
+
+/////////////////////////
     _circular = CircularCountDownTimer(
       isReverseAnimation: true,
       isReverse: true,
       width: 300,
       height: 300,
-      duration: GlobalData.minutes * 60,
+      duration: todo.duration!,///////
+      initialDuration: 0,////////
       strokeWidth: 10,
       fillColor: Colors.green[300]!,
       ringColor: Colors.white.withOpacity(0.5),
@@ -40,9 +133,152 @@ class _lock_page_state extends State<LockPage> {
           fontSize: 33.0, color: Colors.white, fontWeight: FontWeight.bold),
       onComplete: () {
         _is_running = false;
+        isDone = true;
+        if (!mounted) return;
+        setState(() {
+          type = MusicStatus.complete;
+          setSource(type, res: _timerSource);
+          MainLogic.instance.addCompleteEvent(todo);
+
+          player.stop();
+
+          Navigator.pushReplacementNamed(context, Constant.homePage) ;
+        });
       },
     );
   }
+
+
+  Future<void> setSource(MusicStatus type, {Source? res}) async {
+    Source source = res ?? _source;
+    if (type == MusicStatus.init) {
+      await player.play(source);
+    }
+    if (type == MusicStatus.pause) {
+      await player.resume();
+    }
+    if (type == MusicStatus.resume || type == MusicStatus.start) {
+      await player.pause();
+    }
+    if (type == MusicStatus.complete) {//循环
+      await player.setSource(source);
+      await player.stop();
+      await player.play(source);
+    }
+    if (type == MusicStatus.close) {
+      await player.stop();
+    }
+  }
+
+  int getCurrentDuration() {
+    DateTime dateTime = DateFormat("ms").parse(controller.getTime());
+    return dateTime.minute * 60 + dateTime.second;
+  }
+
+  @override
+  void dispose() {
+    player.stop();
+    super.dispose();
+  }
+
+  void _showMusicCard() {
+    showGeneralDialog(
+      context: context,
+      pageBuilder: (context, anim1, anim2) {
+        return Center(
+          child: Container(
+            width: 170,
+            height: 280,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '默认背景音乐|音乐盒',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: musics.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              musicIndex = index;
+                              Source _source = AssetSource(musics[index]);//获取音乐的索引
+                              player.play(_source);
+                              // Navigator.pop(context);
+
+                              if (type == MusicStatus.init) {
+                                type = MusicStatus.start;
+                              }
+                              setSource(MusicStatus.init);
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            height: 40,
+                            foregroundDecoration: BoxDecoration(//选择该音乐
+                              color: musicIndex != index
+                                  ? Colors.white70
+                                  : Colors.transparent,
+                            ),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(musicBg[index]),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                musicText[index],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      barrierDismissible: true,
+      barrierLabel: '',
+      barrierColor: Colors.black54,
+    );
+  }
+
 
   late CountDownController controller;
   late CircularCountDownTimer _circular;
@@ -61,7 +297,7 @@ class _lock_page_state extends State<LockPage> {
             decoration: BoxDecoration(
               //背景装饰
               image: DecorationImage(
-                image: AssetImage('assets/newImages/colorful0001.png'),
+                image: AssetImage(backgroundPicture),
                 fit: BoxFit.cover,
               ),
             ),
@@ -108,14 +344,14 @@ class _lock_page_state extends State<LockPage> {
                         ],
                       ),
                     ])),
-                TopTextExpanded(
-                    child: word_art(text: '              与其仰望\n他人，不如埋头奋斗')),
+                TopTextExpanded(//随机文字
+                    child: word_art(text: word)),
                 Spacer(flex: 5),
                 MiddleTimerExpanded(child: _circular),
                 Spacer(flex: 10),
                 BottomTextExpanded(
                     child: Text(
-                  GlobalData.plan_name,
+                      todo.title ?? "",
                   style: TextStyle(
                     letterSpacing: 1,
                     fontSize: 20,
@@ -139,7 +375,10 @@ class _lock_page_state extends State<LockPage> {
                       IconButton(
                         //注意：这是一个判断句，如果是true，就显示这个按钮，如果是false，就显示另一个按钮
                         onPressed:() async {
-                          bool? res = await showDialog(
+                          controller.pause();
+                          _is_running = false;
+
+                          /*bool? res = await showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return Dialog(
@@ -204,7 +443,7 @@ class _lock_page_state extends State<LockPage> {
                               });
                           if (res == true) {
                             Navigator.pop(context);
-                          } else return;
+                          } else return;*/
 
                         },
                         icon: Icon(
@@ -219,6 +458,7 @@ class _lock_page_state extends State<LockPage> {
                           ],
                         ),
                       ),
+
                       IconButton(
                           onPressed: () async {
                             bool? res = await showDialog(
@@ -303,8 +543,9 @@ class _lock_page_state extends State<LockPage> {
                           )),
                       IconButton(
 
-                        onPressed:() {
-
+                        onPressed:() {/////音乐按钮
+                          if (isDone) return;
+                          _showMusicCard();
                          },
                         icon: const Icon(
                           Icons.music_note_rounded,
