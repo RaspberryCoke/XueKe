@@ -119,7 +119,7 @@ class PersonPageState extends State<PersonPage> {
       Container(
           width: 170,
           child:Text(
-            '简介：${LoginLogic.instance.currentUser?.content ?? '千里之行，始于足下'}',
+            '简介：${LoginLogic.instance.currentUser?.content ?? '千里之行始于足下'}',
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             style: TextStyle(

@@ -19,7 +19,8 @@ class DataPage extends StatefulWidget {
   State<DataPage> createState() => _DataPageState();
 }
 
-class AppColors {//颜色
+class AppColors {
+  //颜色
   static const Color primary = contentColorCyan;
   static const Color menuBackground = Color(0xFF090912);
   static const Color itemsBackground = Color(0xFF1B2339);
@@ -75,7 +76,6 @@ DateTime day27 = today.subtract(Duration(days: 3));
 DateTime day28 = today.subtract(Duration(days: 2));
 DateTime day29 = today.subtract(Duration(days: 1));
 
-
 class _DataPageState extends State<DataPage> {
   late final ValueNotifier<List<Todo>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.week;
@@ -89,6 +89,7 @@ class _DataPageState extends State<DataPage> {
   late int date = DateTime.now().millisecondsSinceEpoch;
   //late int date2 = DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -1));
   late int curDate = DateTime.now().millisecondsSinceEpoch;
+
 
 
   late int day29Time = day29.millisecondsSinceEpoch;
@@ -121,8 +122,6 @@ class _DataPageState extends State<DataPage> {
   late int day2Time = day2.millisecondsSinceEpoch;
   late int day1Time = day1.millisecondsSinceEpoch;
 
-
-
 //显示年-月-日
   String get dateStr =>
       TimeUtils.getTime(DateTime.fromMillisecondsSinceEpoch(date));
@@ -130,7 +129,36 @@ class _DataPageState extends State<DataPage> {
   String get dateStr2 =>
       TimeUtils2.getTime2(DateTime.fromMillisecondsSinceEpoch(date));
 
+  String get dateStr1 => TimeUtils2.getTime2(//当天
+      DateTime.fromMillisecondsSinceEpoch(curDate));
   String get dateStr3 => TimeUtils2.getTime2(//昨天
+      DateTime.fromMillisecondsSinceEpoch(day29Time));
+  String get dateStr4 => TimeUtils2.getTime2(//前天
+      DateTime.fromMillisecondsSinceEpoch(day28Time));
+  String get dateStr5 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(day27Time));
+  String get dateStr6 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(day26Time));
+  String get dateStr7 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(day25Time));
+  String get dateStr8 => TimeUtils2.getTime2(
+      DateTime.fromMillisecondsSinceEpoch(day24Time));
+
+  String get dateStr9 => TimeUtils2.getTime2(//10天前
+      DateTime.fromMillisecondsSinceEpoch(day20Time));
+  String get dateStr10 => TimeUtils2.getTime2(//15天前
+      DateTime.fromMillisecondsSinceEpoch(day15Time));
+  String get dateStr11 => TimeUtils2.getTime2(//20天前
+      DateTime.fromMillisecondsSinceEpoch(day10Time));
+  String get dateStr12 => TimeUtils2.getTime2(//25天前
+      DateTime.fromMillisecondsSinceEpoch(day5Time));
+  String get dateStr13 => TimeUtils2.getTime2(//30天前
+      DateTime.fromMillisecondsSinceEpoch(day1Time));
+
+
+
+
+/*  String get dateStr3 => TimeUtils2.getTime2(//昨天
       DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -1)));
   String get dateStr4 => TimeUtils2.getTime2(//前天
       DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -2)));
@@ -143,7 +171,6 @@ class _DataPageState extends State<DataPage> {
   String get dateStr8 => TimeUtils2.getTime2(
       DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -6)));
 
-
   String get dateStr9 => TimeUtils2.getTime2(//
       DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -10)));
   String get dateStr10 => TimeUtils2.getTime2(
@@ -153,7 +180,7 @@ class _DataPageState extends State<DataPage> {
   String get dateStr12 => TimeUtils2.getTime2(
       DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -25)));
   String get dateStr13 => TimeUtils2.getTime2(
-      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -29)));
+      DateTime.fromMillisecondsSinceEpoch(date).add(Duration(days: -29)));*/
   List<Color> gradientColors = [
     AppColors.contentColorCyan,
     AppColors.contentColorBlue,
@@ -190,7 +217,7 @@ class _DataPageState extends State<DataPage> {
         text = Text('           $dateStr3           ', style: style);
         break;
       case 7:
-        text = Text('  $dateStr2   ', style: style);
+        text = Text('  $dateStr1   ', style: style);
         break;
       default:
         text = Text('', style: style);
@@ -273,7 +300,8 @@ class _DataPageState extends State<DataPage> {
           ),
         ),
       ),
-      borderData: FlBorderData(//显示边框
+      borderData: FlBorderData(
+        //显示边框
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
@@ -283,22 +311,38 @@ class _DataPageState extends State<DataPage> {
       maxY: 10,
       lineBarsData: [
         LineChartBarData(
-          spots:  [//7日每天总时长
-            FlSpot(1, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day24Time)}')),
-            FlSpot(2, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day25Time)}')),
-            FlSpot(3,double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day26Time)}')),
-            FlSpot(4, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day27Time)}')),
-            FlSpot(5, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day28Time)}')),
-            FlSpot(6, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day29Time)}')),
-            FlSpot(7, double.parse('${context.read<MainLogic>().searchDaytotalMinute(date)}')),
+          spots: [
+            //7日每天总时长
+            FlSpot(
+                1,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day24Time)}')),
+            FlSpot(
+                2,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day25Time)}')),
+            FlSpot(
+                3,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day26Time)}')),
+            FlSpot(
+                4,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day27Time)}')),
+            FlSpot(
+                5,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day28Time)}')),
+            FlSpot(
+                6,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day29Time)}')),
+            FlSpot(
+                7,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(curDate)}')),
           ],
-          isCurved: true,//是平滑曲线还是折线
+          isCurved: false, //是平滑曲线还是折线
           gradient: LinearGradient(
             colors: gradientColors,
           ),
@@ -306,9 +350,7 @@ class _DataPageState extends State<DataPage> {
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false, //显示节点
-
-
-    ),
+          ),
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
@@ -378,11 +420,13 @@ class _DataPageState extends State<DataPage> {
       maxY: 10,
       lineBarsData: [
         LineChartBarData(
-          spots:  [//7日平均时长
-            FlSpot(1,double.parse('${MainLogic.instance.searchsevenDaysMinute()}')),
+          spots: [
+            //7日平均时长
+            FlSpot(1,
+                double.parse('${MainLogic.instance.searchsevenDaysMinute()}')),
 
-            FlSpot(7,double.parse('${MainLogic.instance.searchsevenDaysMinute()}')),
-
+            FlSpot(7,
+                double.parse('${MainLogic.instance.searchsevenDaysMinute()}')),
           ],
           isCurved: true,
           gradient: LinearGradient(
@@ -416,9 +460,6 @@ class _DataPageState extends State<DataPage> {
     );
   }
 
-
-
-
 //每30天使用详情
   Widget bottommonTitleWidgets(double value, TitleMeta meta) {
     //底栏
@@ -447,7 +488,7 @@ class _DataPageState extends State<DataPage> {
         text = Text('           $dateStr7           ', style: style);
         break;
       case 30:
-        text = Text('  $dateStr2   ', style: style);
+        text = Text('  $dateStr1   ', style: style);
         break;
       default:
         text = Text('', style: style);
@@ -539,76 +580,136 @@ class _DataPageState extends State<DataPage> {
       maxY: 10,
       lineBarsData: [
         LineChartBarData(
-          spots:  [
-            FlSpot(1, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day1Time)}')),
-            FlSpot(2, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day2Time)}')),
-            FlSpot(3, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day3Time)}')),
-            FlSpot(4, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day4Time)}')),
-            FlSpot(5, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day5Time)}')),
-            FlSpot(6, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day6Time)}')),
-            FlSpot(7, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day7Time)}')),
-            FlSpot(8, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day8Time)}')),
-            FlSpot(9, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day9Time)}')),
-            FlSpot(10, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day10Time)}')),
-            FlSpot(11, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day11Time)}')),
-            FlSpot(12, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day12Time)}')),
-            FlSpot(13, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day13Time)}')),
-            FlSpot(14, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day14Time)}')),
-            FlSpot(15, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day15Time)}')),
-            FlSpot(16, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day16Time)}')),
-            FlSpot(17, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day17Time)}')),
-            FlSpot(18, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day18Time)}')),
-            FlSpot(19, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day19Time)}')),
-
-            FlSpot(20, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day20Time)}')),
-            FlSpot(21, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day21Time)}')),
-            FlSpot(22, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day22Time)}')),
-            FlSpot(23, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day23Time)}')),
-            FlSpot(24, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day24Time)}')),
-            FlSpot(25, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day25Time)}')),
-            FlSpot(26, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day26Time)}')),
-            FlSpot(27, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day27Time)}')),
-            FlSpot(28, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day28Time)}')),
-            FlSpot(29, double.parse('${context.read<MainLogic>().searchDaytotalMinute(
-                day29Time)}')),
-            FlSpot(30, double.parse('${context.read<MainLogic>().searchDaytotalMinute(date)}')),
+          spots: [
+            FlSpot(
+                1,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day1Time)}')),
+            FlSpot(
+                2,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day2Time)}')),
+            FlSpot(
+                3,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day3Time)}')),
+            FlSpot(
+                4,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day4Time)}')),
+            FlSpot(
+                5,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day5Time)}')),
+            FlSpot(
+                6,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day6Time)}')),
+            FlSpot(
+                7,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day7Time)}')),
+            FlSpot(
+                8,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day8Time)}')),
+            FlSpot(
+                9,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day9Time)}')),
+            FlSpot(
+                10,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day10Time)}')),
+            FlSpot(
+                11,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day11Time)}')),
+            FlSpot(
+                12,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day12Time)}')),
+            FlSpot(
+                13,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day13Time)}')),
+            FlSpot(
+                14,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day14Time)}')),
+            FlSpot(
+                15,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day15Time)}')),
+            FlSpot(
+                16,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day16Time)}')),
+            FlSpot(
+                17,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day17Time)}')),
+            FlSpot(
+                18,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day18Time)}')),
+            FlSpot(
+                19,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day19Time)}')),
+            FlSpot(
+                20,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day20Time)}')),
+            FlSpot(
+                21,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day21Time)}')),
+            FlSpot(
+                22,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day22Time)}')),
+            FlSpot(
+                23,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day23Time)}')),
+            FlSpot(
+                24,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day24Time)}')),
+            FlSpot(
+                25,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day25Time)}')),
+            FlSpot(
+                26,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day26Time)}')),
+            FlSpot(
+                27,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day27Time)}')),
+            FlSpot(
+                28,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day28Time)}')),
+            FlSpot(
+                29,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(day29Time)}')),
+            FlSpot(
+                30,
+                double.parse(
+                    '${context.read<MainLogic>().searchDaytotalMinute(curDate)}')),
           ],
-          isCurved: true,
+          isCurved: false,
           gradient: LinearGradient(
             colors: gradientColors,
           ),
           barWidth: 4,
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: false,//显示节点
+            show: false, //显示节点
           ),
           belowBarData: BarAreaData(
             show: true,
@@ -651,7 +752,7 @@ class _DataPageState extends State<DataPage> {
             showTitles: true,
             reservedSize: 25,
             getTitlesWidget: bottommonTitleWidgets,
-            interval: 1,//每隔1个日期
+            interval: 1, //每隔1个日期
           ),
         ),
         leftTitles: AxisTitles(
@@ -679,10 +780,11 @@ class _DataPageState extends State<DataPage> {
       maxY: 10,
       lineBarsData: [
         LineChartBarData(
-          spots:  [
-            FlSpot(1,  double.parse('${MainLogic.instance.searchthirtyDaysMinute()}')),
-
-            FlSpot(30, double.parse('${MainLogic.instance.searchthirtyDaysMinute()}')),
+          spots: [
+            FlSpot(1,
+                double.parse('${MainLogic.instance.searchthirtyDaysMinute()}')),
+            FlSpot(30,
+                double.parse('${MainLogic.instance.searchthirtyDaysMinute()}')),
           ],
           isCurved: true,
           gradient: LinearGradient(
@@ -715,9 +817,6 @@ class _DataPageState extends State<DataPage> {
       ],
     );
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -1089,18 +1188,16 @@ class _DataPageState extends State<DataPage> {
                   AspectRatio(
                     aspectRatio: 1.70,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 13,
-                        left: 5,
-                        top: 24,
-                        bottom: 12,
-                      ),
-                      child:
-                      LineChart(
-                        //是否显示平均数据
-                        showAvg ? avgData() : mainData(),
-                      )
-                    ),
+                        padding: const EdgeInsets.only(
+                          right: 13,
+                          left: 5,
+                          top: 24,
+                          bottom: 12,
+                        ),
+                        child: LineChart(
+                          //是否显示平均数据
+                          showAvg ? avgData() : mainData(),
+                        )),
                   ),
                   Container(
                     width: 72,
@@ -1127,8 +1224,6 @@ class _DataPageState extends State<DataPage> {
                       ),
                     ),
                   ),
-
-
                   SizedBox(height: 30),
                   Container(
                     alignment: Alignment.topLeft,
@@ -1150,12 +1245,10 @@ class _DataPageState extends State<DataPage> {
                           top: 24,
                           bottom: 12,
                         ),
-                        child:
-                        LineChart(
+                        child: LineChart(
                           //是否显示平均数据
                           showmonAvg ? avgmonData() : mainmonData(),
-                        )
-                    ),
+                        )),
                   ),
                   Container(
                     width: 72,
@@ -1163,7 +1256,7 @@ class _DataPageState extends State<DataPage> {
                     decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(20) //配置圆角
-                    ),
+                        ),
                     margin: const EdgeInsets.fromLTRB(10, 0, 0, 10),
                     child: ElevatedButton(
                       onPressed: () {

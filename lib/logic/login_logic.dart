@@ -61,7 +61,7 @@ class LoginLogic extends ChangeNotifier {
         .where((element) => element.account == user.account)
         .toList()
         .forEach((element) {
-      element.name=user.name;//修改
+      element.name = user.name;//修改
       element.avatar = user.avatar;
       element.content = user.content;
       element.email = user.email;
