@@ -24,7 +24,7 @@ class Res {
   static const String default_background_7 = "assets/default_background_7.png";
   static const String default_background_1 = "assets/default_background_1.png";
   static const String default_background_2 = "assets/default_background_2.png";
-  static const String default_background_3 = "assets/default_background_3.png";
+  static const String default_background_3 = "assets/default_background_new_2.png";
   static const String default_background_4 = "assets/default_background_4.png";
   static const String default_background_5 = "assets/newImages/cim0003.png";
   static const String default_background_6 = "assets/newImages/colorful0001.png";

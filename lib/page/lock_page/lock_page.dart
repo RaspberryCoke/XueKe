@@ -377,77 +377,40 @@ class _lock_page_state extends State<LockPage> {
                         onPressed:() async {
                           controller.pause();
                           _is_running = false;
+                          if (isDone && !isStop) {
+                            isStop = true;
+                            type = MusicStatus.close;
+                            setSource(type);
+                            return;
+                          }
+                          if (!mounted) return;
+                          if (type == MusicStatus.init) {
+                            controller.start();
+                            setSource(type);
+                            type = MusicStatus.start;
+                          } else if (type == MusicStatus.start ||
+                              type == MusicStatus.resume) {
+                            controller.pause();
+                            setSource(type);
+                            type = MusicStatus.pause;
+                          } else if (type == MusicStatus.pause) {
+                            controller.resume();
+                            setSource(type);
+                            type = MusicStatus.resume;
 
-                          /*bool? res = await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                                  child: Container(
-                                    height: 200,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                                        color: Colors.white),
-                                    padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          '请确定是否要退出倒计时',
-                                          style: TextStyle(color: Colors.black, fontSize: 18),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              //color: Color(0xFFF6F6F6),
-                                              borderRadius:
-                                              BorderRadius.all(Radius.circular(10)),
-                                            ),
-                                            child: Column(children: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context, true);
-                                                  BackToApp.is_set_to_keep_screen_on = false;
-                                                },
-                                                child: Text(
-                                                  "退出倒计时",
-                                                  style: TextStyle(
-                                                      color: Colors.black, fontSize: 18),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.white,
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context, false);
-                                                },
-                                                child: Text(
-                                                  "取消",
-                                                  style: TextStyle(
-                                                      color: Colors.black, fontSize: 18),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.white,
-                                                ),
-                                              ),
-                                            ]))
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              });
-                          if (res == true) {
-                            Navigator.pop(context);
-                          } else return;*/
-
+                          } else if (type == MusicStatus.complete) {
+                            type = MusicStatus.close;
+                            setSource(type);
+                          }
+                          setState(() {});
                         },
                         icon: Icon(
-                          Icons.pause_circle_outline,
+                          type == MusicStatus.start ||
+                              type == MusicStatus.resume
+                              ? Icons.pause_circle_outline:
+                          type == MusicStatus.complete
+                        ? Icons.stop_circle_outlined
+                            : Icons.play_circle_outline,
                           color: Colors.white,
                           size: 35,
                           shadows: [

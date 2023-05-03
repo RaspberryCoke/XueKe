@@ -12,6 +12,7 @@ class BackgroundUtils {
       Res.default_background_4,
       Res.default_background_5,
       Res.default_background_6,
+      Res.default_background_7
     ];
     return bgs[Random().nextInt(bgs.length)];
   }
