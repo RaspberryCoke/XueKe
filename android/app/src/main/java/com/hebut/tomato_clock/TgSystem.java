@@ -12,6 +12,17 @@ import java.util.List;
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public class TgSystem {
+//    public void init()
+//    {
+//        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+//        List<ActivityManager.RunningTaskInfo> taskInfos = am.getRunningTasks(1);
+//
+//        if (taskInfos != null && taskInfos.size() > 0) {
+//            return taskInfos.get(0).topActivity.getPackageName().equals(pkgName);
+//        }
+//        return false;
+//    }
+
 //    public static void startService(Context context, Intent intent) {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            //android8.0以上通过startForegroundService启动service
@@ -39,7 +50,6 @@ public class TgSystem {
                 return true;
             }
         }
-
         return false;
     }
 

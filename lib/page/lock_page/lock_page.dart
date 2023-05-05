@@ -8,17 +8,17 @@ import 'expands/top_text_expanded.dart';
 import 'expands/bottom_text_expanded.dart';
 import 'expands/bottom_blank_expanded.dart';
 import 'expands/bottom_button_expanded.dart';
-import 'package:tomato_clock/page/back_to_app.dart';
+import 'package:tomato_clock/page/supervise_controller.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
 
 class LockPage extends StatefulWidget {
-  LockPage({Key? key}) : super(key: key);
+  const LockPage({Key? key}) : super(key: key);
 
   @override
-  _lock_page_state createState() => _lock_page_state();
+  LockPageState createState() => LockPageState();
 }
 
-class _lock_page_state extends State<LockPage> {
+class LockPageState extends State<LockPage> {
   @override
   initState() {
     super.initState();
@@ -51,7 +51,7 @@ class _lock_page_state extends State<LockPage> {
 
   @override
   Widget build(BuildContext context) {
-    BackToApp.is_set_to_keep_screen_on = true;
+    SuperviseController.whetherSupervise = true;
 
     return WillPopScope(
         child: Container(
@@ -115,7 +115,7 @@ class _lock_page_state extends State<LockPage> {
                 Spacer(flex: 10),
                 BottomTextExpanded(
                     child: Text(
-                  GlobalData.plan_name,
+                  GlobalData.planName,
                   style: TextStyle(
                     letterSpacing: 1,
                     fontSize: 20,
@@ -139,73 +139,15 @@ class _lock_page_state extends State<LockPage> {
                       IconButton(
                         //注意：这是一个判断句，如果是true，就显示这个按钮，如果是false，就显示另一个按钮
                         onPressed:() async {
-                          bool? res = await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                                  child: Container(
-                                    height: 200,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                                        color: Colors.white),
-                                    padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          '请确定是否要退出倒计时',
-                                          style: TextStyle(color: Colors.black, fontSize: 18),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              //color: Color(0xFFF6F6F6),
-                                              borderRadius:
-                                              BorderRadius.all(Radius.circular(10)),
-                                            ),
-                                            child: Column(children: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context, true);
-                                                  BackToApp.is_set_to_keep_screen_on = false;
-                                                },
-                                                child: Text(
-                                                  "退出倒计时",
-                                                  style: TextStyle(
-                                                      color: Colors.black, fontSize: 18),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.white,
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context, false);
-                                                },
-                                                child: Text(
-                                                  "取消",
-                                                  style: TextStyle(
-                                                      color: Colors.black, fontSize: 18),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.white,
-                                                ),
-                                              ),
-                                            ]))
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              });
-                          if (res == true) {
-                            Navigator.pop(context);
-                          } else return;
-
+                          if(_is_running == false)
+                          {
+                            controller.resume();
+                            _is_running = true;
+                          }
+                          else {
+                            _is_running = false;
+                            controller.pause();
+                          }
                         },
                         icon: Icon(
                           Icons.pause_circle_outline,
@@ -220,76 +162,7 @@ class _lock_page_state extends State<LockPage> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () async {
-                            bool? res = await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(15))),
-                                    child: Container(
-                                      height: 200,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                                          color: Colors.white),
-                                      padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            '请确定是否要退出倒计时',
-                                            style: TextStyle(color: Colors.black, fontSize: 18),
-                                          ),
-                                          SizedBox(
-                                            height: 20,
-                                          ),
-                                          Container(
-                                              height: 100,
-                                              decoration: BoxDecoration(
-                                                //color: Color(0xFFF6F6F6),
-                                                borderRadius:
-                                                BorderRadius.all(Radius.circular(10)),
-                                              ),
-                                              child: Column(children: <Widget>[
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context, true);
-                                                    BackToApp.is_set_to_keep_screen_on = false;
-                                                  },
-                                                  child: Text(
-                                                    "退出倒计时",
-                                                    style: TextStyle(
-                                                        color: Colors.black, fontSize: 18),
-                                                  ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors.white,
-                                                  ),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context, false);
-                                                  },
-                                                  child: Text(
-                                                    "取消",
-                                                    style: TextStyle(
-                                                        color: Colors.black, fontSize: 18),
-                                                  ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors.white,
-                                                  ),
-                                                ),
-                                              ]))
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                });
-                            if (res == true) {
-                              Navigator.pop(context);
-                            } else return;
-
-                          },
-
+                          onPressed:showdialog,
                           icon: Icon(
                             Icons.stop_rounded,
                             color: Colors.white,
@@ -302,9 +175,7 @@ class _lock_page_state extends State<LockPage> {
                             ],
                           )),
                       IconButton(
-
                         onPressed:() {
-
                          },
                         icon: const Icon(
                           Icons.music_note_rounded,
@@ -323,74 +194,72 @@ class _lock_page_state extends State<LockPage> {
                 ))
               ],
             )),
-        onWillPop: () async {
-          bool? res = await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return Dialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                  child: Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        color: Colors.white),
-                    padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          '请确定是否要退出倒计时',
-                          style: TextStyle(color: Colors.black, fontSize: 18),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                              //color: Color(0xFFF6F6F6),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: Column(children: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, true);
-                                  BackToApp.is_set_to_keep_screen_on = false;
-                                },
-                                child: Text(
-                                  "退出倒计时",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context, false);
-                                },
-                                child: Text(
-                                  "取消",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                ),
-                              ),
-                            ]))
-                      ],
-                    ),
+        onWillPop:showdialog);
+  }
+  Future<bool> showdialog() async {
+    bool? res = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  color: Colors.white),
+              padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '请确定是否要退出倒计时',
+                    style: TextStyle(color: Colors.black, fontSize: 18),
                   ),
-                );
-              });
-          if (res == true) {
-            return true;
-          } else
-            return false;
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        //color: Color(0xFFF6F6F6),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Column(children: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, true);
+                            SuperviseController.whetherSupervise = false;
+                          },
+                          child: Text(
+                            "退出倒计时",
+                            style: TextStyle(color: Colors.black, fontSize: 18),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, false);
+                          },
+                          child: Text(
+                            "取消",
+                            style: TextStyle(color: Colors.black, fontSize: 18),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                      ]))
+                ],
+              ),
+            ),
+          );
         });
+    if (res == true) {
+      return true;
+    } else
+      return false;
   }
 }

@@ -1,9 +1,10 @@
+import 'package:device_apps/device_apps.dart';
 class GlobalData{
+  //被选中的代办事项
   static int minutes = 1;
-  static String  plan_name= '';
+  static String  planName= '';
   static String  content= '';
-  static data_handler() {
-    print('GlobalData.data_handler()');
-  }
-
+  //包信息
+  static Map<String,String> appNameToPackageName={};
+  static Map<String,bool> whiteAppsMap={};
 }

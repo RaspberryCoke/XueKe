@@ -54,6 +54,8 @@ dependencies:
   list_tile_more_customizable: ^1.2.2
   http: ^0.13.5
   fl_chart: ^0.55.1
+  device_apps: ^2.2.0
+  sqflite: ^2.2.8
 
 dev_dependencies:
   flutter_test:

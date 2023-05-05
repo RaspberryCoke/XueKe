@@ -1,5 +1,8 @@
 package com.hebut.tomato_clock;
 
+import android.content.ComponentName;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.util.Log;
 import android.util.EventLogTags;
 
@@ -26,28 +29,61 @@ import java.util.TimerTask;
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public class MainActivity extends FlutterActivity {
+
+    public static ArrayList<String> appList = new ArrayList<String>();
+    public MasterService masterService;
+    public ServiceConnection masterServiceConnection=new ServiceConnection(){
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.w(TAG, "---------MasterServicend  onServiceConnected------------");
+            MasterService.MasterServiceBinder binder = (MasterService.MasterServiceBinder) service;
+            masterService = binder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.w(TAG, "---------MasterServicend  DisConnected------------");
+            masterService=null;
+        }
+    };
     private static final String TAG = "MainActivity";
-    private static final String channel = "BackToApp";
+    private static final String WhetherSuperviseChannel = "WhetherSupervise";
+    private static final String PackageChangeChannel = "PackageChange";
+    private static final String BackToApp = "BackToApp";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(),channel).setMethodCallHandler(
-                new MethodChannel.MethodCallHandler() {
-                    @Override
-                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-                        if (methodCall.method.equals("take_to_top")) {
-                            result.success(take_to_top());
-                        } else {
-                            result.notImplemented();
-                        }
-                    }
-                }
-        );
+        //注册与主程序的通信渠道
+        registerChannel();
+        System.out.println("---------java  onCreate------------");
+        //启动监听服务
+        Intent bindIntent = new Intent(this,WindowChangeDetectingService.class);
+        startService(bindIntent);
+
+        //启动主服务
+        Intent MasterServicendIIntent = new Intent(this,MasterService.class);
+        boolean bindMasterServiceRes= bindService(MasterServicendIIntent,masterServiceConnection, Context.BIND_AUTO_CREATE);
+        if(!bindMasterServiceRes) {
+            Log.e(TAG, "---------MasterServicend  bindService fail------------");
+        }else{
+            Log.w(TAG, "---------MasterServicend  bindService succeed------------");
+        }
+
+        //获取监听应用列表
+        DBAdapter dbAdapter = new DBAdapter(this);
+        dbAdapter.open();
+
+        appList=dbAdapter.getAllPackage();
+        System.out.println(appList==null);
+        System.out.println(appList.isEmpty());
+
+        dbAdapter.close();
+        //注册Flutter插件
         GeneratedPluginRegistrant.registerWith(new FlutterEngine(this));
     }
 
-    boolean take_to_top() {
+    public boolean take_to_top() {
         Log.w(TAG, "---------java  take_to_top----start--------");
         Context context = getApplicationContext();
         if (TgSystem.isRunningForeground(context)) {
@@ -64,4 +100,70 @@ public class MainActivity extends FlutterActivity {
         }
         return true;
     }
+
+    public void registerChannel() {
+        new MethodChannel(
+                getFlutterEngine().getDartExecutor().getBinaryMessenger(), WhetherSuperviseChannel)
+                .setMethodCallHandler(
+                    (methodCall, result) ->
+                    {
+                        if (methodCall.method.equals("startSupervise")) {
+                            masterService.startSupervise();
+                            result.success(true);
+                        } else {
+                            result.notImplemented();//在发行版中可以去掉
+                        }
+                    }
+            );
+        new MethodChannel(
+            getFlutterEngine().getDartExecutor().getBinaryMessenger(), WhetherSuperviseChannel)
+            .setMethodCallHandler(
+                    (methodCall, result) ->
+                    {
+                        if (methodCall.method.equals("stopSupervise")) {
+                            masterService.stopSupervise();
+                            result.success(true);
+                        } else {
+                            result.notImplemented();
+                        }
+                    }
+            );
+        new MethodChannel(
+                getFlutterEngine().getDartExecutor().getBinaryMessenger(), PackageChangeChannel)
+                .setMethodCallHandler(
+                        (methodCall, result) ->
+                        {
+                            if (methodCall.method.equals("packageChange")) {
+                                masterService.PackageChange();
+                                result.success(true);
+                            } else {
+                                result.notImplemented();
+                            }
+                        }
+                );
+        new MethodChannel(
+                getFlutterEngine().getDartExecutor().getBinaryMessenger(), BackToApp)
+                .setMethodCallHandler(
+                        (methodCall, result) ->
+                        {
+                            if (methodCall.method.equals("backToApp")) {
+                                masterService.BackToApp();
+                                result.success(true);
+                            } else {
+                                result.notImplemented();
+                            }
+                        }
+                );
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.w(TAG, "---------java  onDestroy--------");
+        if (masterService != null) {
+            unbindService(masterServiceConnection);
+        }
+    }
 }
+
+

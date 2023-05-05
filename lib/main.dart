@@ -1,3 +1,5 @@
+import 'package:tomato_clock/logic/GlobalData.dart';
+import 'package:tomato_clock/logic/PackageDB.dart';
 import 'package:tomato_clock/logic/login_logic.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/login/registration_page.dart';
@@ -14,11 +16,15 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomato_clock/page/lock_page/lock_page.dart';
 import 'package:tomato_clock/page/home_page.dart';
-import 'package:tomato_clock/page/back_to_app.dart';
+import 'package:tomato_clock/page/supervise_controller.dart';
+import 'package:tomato_clock/page/white_app_page/white_app_page.dart';
 import 'colors.dart';
 import 'package:tomato_clock/page/person_page.dart';
 import 'model/cut_corners_border.dart';
+import 'package:tomato_clock/page/setting_page/SettingPage.dart';
 import 'page/todo_detail_page.dart';
+import 'package:device_apps/device_apps.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() async {
   print("------------------main start-----------------------");
@@ -26,6 +32,7 @@ void main() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   MainLogic.instance.init(sharedPreferences);
   LoginLogic.instance.init();
+  initWhiteApp();
   runApp(MyApp());
 }
 
@@ -94,15 +101,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 //处在不活动状态，无法处理用户响应。界面退到后台或弹出对话框情况下， 即失去了焦点但仍可以执行drawframe回调 类似于Android的onPause
       case AppLifecycleState.inactive:
       {
-        if(BackToApp.is_set_to_keep_screen_on)
-          BackToApp.back_to_app();
+        if(SuperviseController.whetherSupervise)
+          SuperviseController.backToApp();
         break;
       }
 //不可见并不能响应用户的输入，但是在后台继续活动中。应用挂起，比如退到后台，失去了焦点且不会收到drawframe回调. 类似于Android的onStop
       case AppLifecycleState.paused:
       {
-        if(BackToApp.is_set_to_keep_screen_on)
-          BackToApp.back_to_app();
+        if(SuperviseController.whetherSupervise)
+          SuperviseController.backToApp();
         break;
       }
 //APP结束时调用. 类似于Android的onDestroy
@@ -122,6 +129,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
       child: MaterialApp(
         routes: {
           '/lock_page': (context) => LockPage(),
+          '/setting_page': (context) => SettingPage(),
+          '/white_app_page': (context) => WhiteAppPage(),
         },
         theme: _buildShrineTheme(),
         builder: EasyLoading.init(),
@@ -176,4 +185,33 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
       ),
     );
   }
+
+
+}
+
+Future<void> initWhiteApp()async
+{
+  await DeviceApps.getInstalledApplications().then((value)
+  {
+    for(var app in value)
+    {
+      GlobalData.whiteAppsMap[app.appName] = false;
+      GlobalData.appNameToPackageName[app.appName] = app.packageName;
+    }
+  });
+
+  //获取白名单
+  List<String> res = await PackageDB().query();
+  debugPrint(res.toString());
+  for(var app in res)
+  {//在whiteAppsMap中设置为true
+    GlobalData.whiteAppsMap[app] = true;
+  }
+  GlobalData.whiteAppsMap["学刻"]=true;
+
+  //debug
+  GlobalData.whiteAppsMap.forEach((key, value) {
+    debugPrint(key+" : "+value.toString());
+  });
+
 }

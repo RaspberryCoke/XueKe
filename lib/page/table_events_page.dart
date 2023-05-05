@@ -433,6 +433,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
                   fontWeight: FontWeight.w500),
             ),
             onTap: () {
+              Navigator.pushNamed(context,'/setting_page');
               //setting();
             },
             trailing: Icon(Icons.keyboard_arrow_right_rounded),
@@ -445,6 +446,35 @@ class _TableEventsPageState extends State<TableEventsPage> {
                 indent: 20,
                 endIndent: 0,
               ),*/
+
+        //for test
+          ListTile(
+            selected: true,
+            leading: Container(
+                width: 37,
+                //    color: Colors.yellow,
+                child: Icon(
+                  Icons.settings,
+                  size: 28,
+                  color: Colors.black,
+                )),
+            title: Text(
+              "test",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context,'/test_page');
+              //setting();
+            },
+            trailing: Icon(Icons.keyboard_arrow_right_rounded),
+          ),
+
+
+
+
 
           SizedBox(
             height: 30,
@@ -530,7 +560,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
                           onTap: () {
 
                             /////////////////////
-                            GlobalData.plan_name=todo.title!;
+                            GlobalData.planName=todo.title!;
                             GlobalData.content=todo.content!;
                             GlobalData.minutes=todo.duration!~/60;
                             Navigator.pushNamed(context, '/lock_page');
