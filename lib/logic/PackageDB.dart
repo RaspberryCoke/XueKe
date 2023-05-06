@@ -31,7 +31,22 @@ import 'package:path/path.dart';
 ///
 /// 以上就是初始化工作。
 ///
+///2.用户更改白名单的运行逻辑
+/// 用户点开白名单页面，白名单页面使用whiteAppsMap进行初始化，构造所用的Item。
+/// 一旦用户更改了某一项的状态，如果是从true变为false，那么就从数据库中删除这一项。
+/// 如果是从false变为true，那么就向数据库中插入这一项。
 ///
+/// 在数据库中进行修改之后，再把全局数据进行修改。把对应的两个数据结构
+///  whiteAppsMap，和whitePackagesMap中的对应项设置为true或者false。
+///
+/// 最后，调用SuperviseController.packageChange()函数发送包改变信号，
+/// 让Java中的代码查询数据库，进行同步的改变。
+///
+/// 3.值得注意的是，对于“学刻”和“com.hebut.tomato_clock”这两项，
+/// 他们并不保存在数据库中。再进行初始化的时候，对于flutter中的程序而言，
+/// 是在main.dart的initWhiteApp函数中，在加载完其他数据之后在对他们进行单独处理。
+/// 同理，再Java程序中，也是在初始化的时候，对他们进行单独处理。
+/// 具体来说是在每次query时，返回查询结果之前添加packageName即可。
 
 class PackageDB{
   static String DATABASE_NAME='white_package.db';

@@ -1,3 +1,4 @@
+import 'package:flutter_accessibility_service/flutter_accessibility_service.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
 import 'package:tomato_clock/logic/PackageDB.dart';
 import 'package:tomato_clock/logic/login_logic.dart';
@@ -7,7 +8,9 @@ import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/page/login.dart';
 import 'package:tomato_clock/page/mine_setting_page.dart';
 import 'package:tomato_clock/page/splash_page.dart';
+import 'package:tomato_clock/page/start_white_app/StartWhiteApp.dart';
 import 'package:tomato_clock/page/table_events_page.dart';
+import 'package:tomato_clock/page/test_page.dart';
 import 'package:tomato_clock/page/todo_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -33,6 +36,22 @@ void main() async {
   MainLogic.instance.init(sharedPreferences);
   LoginLogic.instance.init();
   initWhiteApp();
+
+  final bool status = await FlutterAccessibilityService.isAccessibilityPermissionEnabled();
+  if (status) {
+    print('Accessibility permission is granted.');
+  } else {
+    print('Accessibility permission is not granted.');
+    final bool res = await FlutterAccessibilityService.requestAccessibilityPermission();
+  }
+
+  FlutterAccessibilityService.accessStream.listen((event) {
+    print(event.eventType);
+    print(event.packageName);
+    print(event.actionType);
+    print(event.windowType);
+  });
+
   runApp(MyApp());
 }
 
@@ -130,7 +149,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
         routes: {
           '/lock_page': (context) => LockPage(),
           '/setting_page': (context) => SettingPage(),
+          '/test_page': (context) => TestPage(),
           '/white_app_page': (context) => WhiteAppPage(),
+          '/start_white_app': (context) => StartWhiteAppPage(),
         },
         theme: _buildShrineTheme(),
         builder: EasyLoading.init(),
@@ -189,6 +210,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
 }
 
+
+
 Future<void> initWhiteApp()async
 {
   await DeviceApps.getInstalledApplications().then((value)
@@ -201,6 +224,9 @@ Future<void> initWhiteApp()async
       GlobalData.PackageNameToappName[app.packageName] = app.appName;
     }
   });
+
+  GlobalData.appNameToPackageName["学刻"] = "com.hebut.tomato_clock";
+  GlobalData.PackageNameToappName["com.hebut.tomato_clock"] = "学刻";
 
   //获取白名单
   List<Map<String,dynamic>> res = await PackageDB().query();
@@ -222,5 +248,6 @@ Future<void> initWhiteApp()async
   GlobalData.whiteAppsMap.forEach((key, value) {
     debugPrint(key+" : "+value.toString());
   });
-  await SuperviseController.packageChange();
+  bool res2= await SuperviseController.packageChange();
+  debugPrint("res2 : "+res2.toString());
 }

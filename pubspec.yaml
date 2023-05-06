@@ -57,6 +57,8 @@ dependencies:
   device_apps: ^2.2.0
   sqflite: ^2.2.8
 
+  flutter_accessibility_service: ^0.2.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

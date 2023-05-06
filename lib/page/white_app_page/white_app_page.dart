@@ -91,7 +91,7 @@ class _MySwitchListTileState extends State<MySwitchListTile> {
     GlobalData.whiteAppsMap[title]=true;
     GlobalData.whitePackagesMap[GlobalData.appNameToPackageName[title]!]=true;
     if(res>=0)debugPrint("insert success");
-    PackageDB().query().then((value) => debugPrint("all allowed apps: "+value.toString()));
+    PackageDB().query().then((value) => debugPrint("all allowed apps(without main): "+value.toString()));
     SuperviseController.packageChange();
   }
 
@@ -101,7 +101,7 @@ class _MySwitchListTileState extends State<MySwitchListTile> {
     GlobalData.whiteAppsMap[title]=false;
     GlobalData.whitePackagesMap[GlobalData.appNameToPackageName[title]!]=false;
     if(res>=0)debugPrint("delete success");
-    PackageDB().query().then((value) => debugPrint("all allowed apps: "+value.toString()));
+    PackageDB().query().then((value) => debugPrint("all allowed apps(without main): "+value.toString()));
     SuperviseController.packageChange();
   }
 

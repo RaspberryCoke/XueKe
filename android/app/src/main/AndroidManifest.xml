@@ -7,6 +7,7 @@
         android:icon="@mipmap/logo2">
         <activity
             android:name=".MainActivity"
+            android:excludeFromRecents="false"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -48,6 +49,16 @@
            android:name=".MasterService"
            android:enabled="true"
            android:exported="true">
+           <intent-filter>
+               <action android:name="com.hebut.broadcast.ResponseOfStatus" />
+           </intent-filter>
+       </service>
+       <service android:name="slayer.accessibility.service.flutter_accessibility_service.AccessibilityListener"
+           android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="false">
+           <intent-filter>
+               <action android:name="android.accessibilityservice.AccessibilityService" />
+           </intent-filter>
+           <meta-data android:name="android.accessibilityservice" android:resource="@xml/accessibilityservice" />
        </service>
 
        <receiver
@@ -67,22 +78,6 @@
            </intent-filter>
        </receiver>
        <receiver
-           android:name=".RequestAliveStatus"
-           android:enabled="true"
-           android:exported="true">
-           <intent-filter>
-               <action android:name="com.hebut.broadcast.RequestAliveStatus" />
-           </intent-filter>
-       </receiver>
-       <receiver
-           android:name=".CheckAlive"
-           android:enabled="true"
-           android:exported="true">
-           <intent-filter>
-               <action android:name="com.hebut.broadcast.ResponseOfStatus" />
-           </intent-filter>
-       </receiver>
-       <receiver
            android:name=".WindowChange"
            android:enabled="true"
            android:exported="true">
@@ -96,4 +91,5 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.REORDER_TASKS"/>
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.MANAGE_RECENT_TASKS " />
 </manifest>

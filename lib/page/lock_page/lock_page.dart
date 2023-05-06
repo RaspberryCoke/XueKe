@@ -6,14 +6,12 @@ import 'expands/top_blank_expanded.dart';
 import 'expands/middle_timer_expanded.dart';
 import 'expands/top_text_expanded.dart';
 import 'expands/bottom_text_expanded.dart';
-import 'expands/bottom_blank_expanded.dart';
 import 'expands/bottom_button_expanded.dart';
 import 'package:tomato_clock/page/supervise_controller.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
 
 class LockPage extends StatefulWidget {
   const LockPage({Key? key}) : super(key: key);
-
   @override
   LockPageState createState() => LockPageState();
 }
@@ -50,9 +48,9 @@ class LockPageState extends State<LockPage> {
   late bool _is_running;
 
   @override
-  Widget build(BuildContext context) {
-    SuperviseController.whetherSupervise = true;
-
+  Widget build(BuildContext context){
+    SuperviseController.startSupervise();
+    debugPrint("LockPage build, whetherSupervise = true");
     return WillPopScope(
         child: Container(
             //最外层被容器包裹，从而占满整个屏幕
@@ -189,6 +187,22 @@ class LockPageState extends State<LockPage> {
                           ],
                         ),
                       ),
+                      IconButton(
+                        onPressed:() async{
+                          Navigator.pushNamed(context, '/start_white_app');
+                        },
+                        icon: const Icon(
+                          Icons.app_blocking_rounded,
+                          color: Colors.white,
+                          size: 35,
+                          shadows: [
+                            Shadow(
+                                color: Colors.black45,
+                                offset: Offset(2, 2),
+                                blurRadius: 2),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ))
@@ -229,7 +243,7 @@ class LockPageState extends State<LockPage> {
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context, true);
-                            SuperviseController.whetherSupervise = false;
+                            SuperviseController.stopSupervise();
                           },
                           child: Text(
                             "退出倒计时",
