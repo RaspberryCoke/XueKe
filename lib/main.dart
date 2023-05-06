@@ -101,15 +101,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 //处在不活动状态，无法处理用户响应。界面退到后台或弹出对话框情况下， 即失去了焦点但仍可以执行drawframe回调 类似于Android的onPause
       case AppLifecycleState.inactive:
       {
-        if(SuperviseController.whetherSupervise)
-          SuperviseController.backToApp();
+        // if(SuperviseController.whetherSupervise)
+          // SuperviseController.backToApp();
         break;
       }
 //不可见并不能响应用户的输入，但是在后台继续活动中。应用挂起，比如退到后台，失去了焦点且不会收到drawframe回调. 类似于Android的onStop
       case AppLifecycleState.paused:
       {
-        if(SuperviseController.whetherSupervise)
-          SuperviseController.backToApp();
+        // if(SuperviseController.whetherSupervise)
+        //   SuperviseController.backToApp();
         break;
       }
 //APP结束时调用. 类似于Android的onDestroy
@@ -196,22 +196,31 @@ Future<void> initWhiteApp()async
     for(var app in value)
     {
       GlobalData.whiteAppsMap[app.appName] = false;
+      GlobalData.whitePackagesMap[app.packageName] = false;
       GlobalData.appNameToPackageName[app.appName] = app.packageName;
+      GlobalData.PackageNameToappName[app.packageName] = app.appName;
     }
   });
 
   //获取白名单
-  List<String> res = await PackageDB().query();
-  debugPrint(res.toString());
+  List<Map<String,dynamic>> res = await PackageDB().query();
+  res.forEach((element) {
+    debugPrint(element.toString());
+  });
+
   for(var app in res)
   {//在whiteAppsMap中设置为true
-    GlobalData.whiteAppsMap[app] = true;
+    GlobalData.whitePackagesMap[app[PackageDB.COLUMN_PACKAGE_NAME]] = true;
+    GlobalData.whiteAppsMap[app[PackageDB.COLUMN_APP_NAME]] = true;
   }
+
   GlobalData.whiteAppsMap["学刻"]=true;
+  GlobalData.whitePackagesMap['com.hebut.tomato_clock'] = true;
 
   //debug
+  debugPrintStack();
   GlobalData.whiteAppsMap.forEach((key, value) {
     debugPrint(key+" : "+value.toString());
   });
-
+  await SuperviseController.packageChange();
 }

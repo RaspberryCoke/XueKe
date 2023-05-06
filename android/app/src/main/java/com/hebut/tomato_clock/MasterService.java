@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -79,12 +81,21 @@ public class MasterService extends Service {
     {
         Intent intent = new Intent(PACKAGE_CHANGE);
         Bundle bundle = new Bundle();
+
+        DBAdapter dbAdapter = new DBAdapter(this);
+        dbAdapter.open();
+        ArrayList<String> appList=dbAdapter.getAllPackage();
+        if(!appList.contains("com.hebut.tomato_clock"))
+            appList.add("com.hebut.tomato_clock");
+        dbAdapter.close();
+
         String [] packageList = new String[appList.size()];
         packageList=appList.toArray(packageList);
         bundle.putStringArray("package",packageList);
         intent.putExtras(bundle);
         sendBroadcast(intent);
     }
+
     private final IBinder iBinder = new MasterServiceBinder();
 
     public void BackToApp() {

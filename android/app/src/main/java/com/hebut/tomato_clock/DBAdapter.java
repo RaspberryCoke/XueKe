@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 public class DBAdapter {
-    private static final String DB_NAME = "package.db";
-    private static final String DB_TABLE = "packages";
+    private static final String DB_NAME = "packageName.db";
+    private static final String DB_TABLE = "packagesName";
     private static final int DB_VERSION = 1;
     private SQLiteDatabase db;
     private final Context context;
@@ -25,7 +25,7 @@ public class DBAdapter {
             super(context, name, factory, version);
         }
         private static final String DB_CREATE = "create table " +
-                DB_TABLE + " (name varchar(30));";
+                DB_TABLE + " (name TEXT);";
 
         public void onCreate(SQLiteDatabase _db) {
             _db.execSQL(DB_CREATE);
@@ -44,9 +44,9 @@ public class DBAdapter {
         dbOpenHelper = new DBOpenHelper(context, DB_NAME, null, DB_VERSION);
         try {
             db = dbOpenHelper.getWritableDatabase();
-            ContentValues newValues =new ContentValues();
-            newValues.put("name","学刻");
-            db.insert(DB_TABLE,null,newValues);
+            //ContentValues newValues =new ContentValues();
+            //newValues.put("name","学刻");
+            //db.insert(DB_TABLE,null,newValues);
         }
         catch (SQLiteException ex) {
             db = dbOpenHelper.getReadableDatabase();

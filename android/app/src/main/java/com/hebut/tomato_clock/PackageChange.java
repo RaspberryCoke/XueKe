@@ -13,7 +13,6 @@ public class PackageChange extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         if(bundle==null)return;
         appList.clear();
-        appList.add("com.hebut.tomato_clock");
         appList.addAll(Arrays.asList(bundle.getStringArray("package")));
     }
 }

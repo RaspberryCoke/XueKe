@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import static android.content.Context.ACTIVITY_SERVICE;
@@ -70,17 +71,21 @@ public class MainActivity extends FlutterActivity {
             Log.w(TAG, "---------MasterServicend  bindService succeed------------");
         }
 
+        //注册Flutter插件
+        GeneratedPluginRegistrant.registerWith(new FlutterEngine(this));
+    }
+
+
+
+    public  ArrayList<String> getDBAppList(){
         //获取监听应用列表
         DBAdapter dbAdapter = new DBAdapter(this);
         dbAdapter.open();
-
-        appList=dbAdapter.getAllPackage();
-        System.out.println(appList==null);
-        System.out.println(appList.isEmpty());
-
+        ArrayList<String> appList=dbAdapter.getAllPackage();
+        if(!appList.contains("com.hebut.tomato_clock"))
+            appList.add("com.hebut.tomato_clock");
         dbAdapter.close();
-        //注册Flutter插件
-        GeneratedPluginRegistrant.registerWith(new FlutterEngine(this));
+        return appList;
     }
 
     public boolean take_to_top() {
@@ -134,7 +139,8 @@ public class MainActivity extends FlutterActivity {
                         (methodCall, result) ->
                         {
                             if (methodCall.method.equals("packageChange")) {
-                                masterService.PackageChange();
+                                appList.clear();
+                                masterService.PackageChange();//发送改变信号，在处理函数中进行更新包的操作
                                 result.success(true);
                             } else {
                                 result.notImplemented();
