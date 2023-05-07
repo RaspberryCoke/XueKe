@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter_accessibility_service/accessibility_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,9 +11,9 @@ import 'package:flutter/services.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
+
   @override
-  TestPageState createState()
-  {
+  TestPageState createState() {
     return TestPageState();
   }
 }
@@ -19,13 +21,13 @@ class TestPage extends StatefulWidget {
 class TestPageState extends State<TestPage> {
   //lists=[];
   @override
-  initState(){
+  initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-
-      return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("test白名单"),
         leading: Builder(builder: (BuildContext context) {
@@ -42,21 +44,35 @@ class TestPageState extends State<TestPage> {
         }),
       ),
       body: Center(
-        child: ElevatedButton(
-          child: Text('Check Accessibility Permission'),
-          onPressed: () async {
-            final bool status = await FlutterAccessibilityService.isAccessibilityPermissionEnabled();
-            if (status) {
-              print('Accessibility permission is granted.');
-            } else {
-              print('Accessibility permission is not granted.');
-              final bool res = await FlutterAccessibilityService.requestAccessibilityPermission();
-              FlutterAccessibilityService.accessStream.listen((event) {
-                log("Current Event: $event");
-              });
-            }
-              },
-        ),
+        child: Column(children: <Widget>[
+          ElevatedButton(
+            child: Text(''),
+            onPressed: ()  {
+              DeviceApps.openApp("com.tencent.mm");
+              sleep(Duration(seconds: 3));
+              DeviceApps.openApp("com.hebut.tomato_clock");
+            },
+          ),
+
+
+          ElevatedButton(
+            child: Text('Check Accessibility Permission'),
+            onPressed: () async {
+              final bool status = await FlutterAccessibilityService
+                  .isAccessibilityPermissionEnabled();
+              if (status) {
+                print('Accessibility permission is granted.');
+              } else {
+                print('Accessibility permission is not granted.');
+                final bool res = await FlutterAccessibilityService
+                    .requestAccessibilityPermission();
+                FlutterAccessibilityService.accessStream.listen((event) {
+                  log("Current Event: $event");
+                });
+              }
+            },
+          ),
+        ]),
       ),
     );
   }

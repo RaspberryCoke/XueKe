@@ -1,7 +1,10 @@
 import 'package:tomato_clock/page/data_page.dart';
 import 'package:flutter/material.dart';
+import 'package:tomato_clock/page/supervise_controller.dart';
 import 'package:tomato_clock/page/table_events_page.dart';
 import 'package:tomato_clock/page/lock_page/lock_page.dart';
+
+import '../main.dart';
 
 class HomePage extends StatefulWidget{
   const HomePage({super.key});
@@ -37,24 +40,24 @@ class _HomePageState extends State<HomePage>{
         // 显示选中的文字
         type: BottomNavigationBarType.fixed,
 
-        onTap: (index){
-          setState(() {
+        onTap: (index)async{
             if(index==1)
             {
-              //全屏页面的跳转的实现
-
+              bool res=await chackAndGetPermission();
+              if(!res) return;
+              SuperviseController.isSupervised=true;
               Navigator.pushNamed(context, '/lock_page');
             }
             else
-              _currentIndex=index;
-          });
+              setState(() {
+                _currentIndex=index;
+              });
         },
 
         items: const [
           BottomNavigationBarItem(icon:Icon(Icons.message_rounded), label: "待办",tooltip: ''),
           BottomNavigationBarItem(icon:Icon(Icons.lock), label: "锁屏",tooltip: ''),
           BottomNavigationBarItem(icon:Icon(Icons.data_thresholding_outlined), label: "数据",tooltip: ''),
-          //BottomNavigationBarItem(icon:Icon(Icons.people), label: "用户"),
         ],
       ),
     );

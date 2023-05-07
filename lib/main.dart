@@ -29,6 +29,7 @@ import 'page/todo_detail_page.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:sqflite/sqflite.dart';
 
+
 void main() async {
   print("------------------main start-----------------------");
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,8 @@ void main() async {
     final bool res = await FlutterAccessibilityService.requestAccessibilityPermission();
   }
 
+  chackAndGetPermission();
+
   FlutterAccessibilityService.accessStream.listen((event) {
     print(event.eventType);
     print(event.packageName);
@@ -52,7 +55,22 @@ void main() async {
     print(event.windowType);
   });
 
+
   runApp(MyApp());
+}
+
+Future<bool> chackAndGetPermission()async
+{
+  bool res=false;
+  bool status = await FlutterAccessibilityService.isAccessibilityPermissionEnabled();
+  if (status) {
+    print('Accessibility permission is granted.');
+    return true;
+  } else {
+    print('Accessibility permission is not granted.');
+    await FlutterAccessibilityService.requestAccessibilityPermission();
+  }
+  return (await FlutterAccessibilityService.isAccessibilityPermissionEnabled());
 }
 
 ThemeData _buildShrineTheme() {
@@ -115,27 +133,40 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     {
       case AppLifecycleState.resumed:
       {
+        if(SuperviseController.isSupervised){
+          debugPrint("resumed stopSupervise");
+          SuperviseController.setToBackground();
+        }
         break;
       }
 //处在不活动状态，无法处理用户响应。界面退到后台或弹出对话框情况下， 即失去了焦点但仍可以执行drawframe回调 类似于Android的onPause
       case AppLifecycleState.inactive:
       {
-        // if(SuperviseController.whetherSupervise)
-          // SuperviseController.backToApp();
+        if(SuperviseController.isSupervised){
+          debugPrint("inactive startSupervise");
+          SuperviseController.setToForeground();
+        }
         break;
       }
 //不可见并不能响应用户的输入，但是在后台继续活动中。应用挂起，比如退到后台，失去了焦点且不会收到drawframe回调. 类似于Android的onStop
       case AppLifecycleState.paused:
       {
-        // if(SuperviseController.whetherSupervise)
-        //   SuperviseController.backToApp();
+        if(SuperviseController.isSupervised){
+          debugPrint("paused startSupervise");
+          SuperviseController.setToForeground();
+        }
         break;
       }
 //APP结束时调用. 类似于Android的onDestroy
       case AppLifecycleState.detached:
       {
+        if(SuperviseController.isSupervised){
+          debugPrint("detached startSupervise");
+          SuperviseController.setToForeground();
+        }
           break;
       }
+
     }
   }
 
@@ -209,8 +240,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
 
 }
-
-
 
 Future<void> initWhiteApp()async
 {

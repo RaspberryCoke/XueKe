@@ -8,33 +8,35 @@ import '../supervise_controller.dart';
 
 class StartWhiteAppPage extends StatefulWidget {
   const StartWhiteAppPage({Key? key}) : super(key: key);
+
   @override
-  StartWhiteAppState createState() {return StartWhiteAppState();}
+  StartWhiteAppState createState() {
+    return StartWhiteAppState();
+  }
 }
 
 class StartWhiteAppState extends State<StartWhiteAppPage> {
-  List<ListTile> lists=[];
+  List<ListTile> lists = [];
+
   @override
-  initState(){
+  initState() {
     super.initState();
     GlobalData.whiteAppsMap.forEach((key, value) {
-      if(value==true)
-      lists.add(
-          ListTile(
-            title: Text(key),
-            trailing: ElevatedButton(
-                onPressed: (){
-                  DeviceApps.openApp( GlobalData.appNameToPackageName[key]!);
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                ),
-                child: Text("打开")
-            ),
-          ));
-    }
-    );
-
+      if (value == true&&key!="学刻") {
+        lists.add(ListTile(
+          title: Text(key),
+          trailing: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                DeviceApps.openApp(GlobalData.appNameToPackageName[key]!);
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue),
+              ),
+              child: Text("打开")),
+        ));
+      }
+    });
   }
 
   @override
@@ -59,4 +61,3 @@ class StartWhiteAppState extends State<StartWhiteAppPage> {
     );
   }
 }
-

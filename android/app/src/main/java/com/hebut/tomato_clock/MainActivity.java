@@ -1,5 +1,6 @@
 package com.hebut.tomato_clock;
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
@@ -15,12 +16,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends FlutterActivity {
 
-    public DBAdapter dbAdapter;
+//    public DBAdapter dbAdapter;
     public static ArrayList<String> appList = new ArrayList<String>();
     public MasterService masterService;
+    public KeepAliveService keepAliveService;
     public ServiceConnection masterServiceConnection=new ServiceConnection(){
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -35,10 +38,74 @@ public class MainActivity extends FlutterActivity {
             masterService=null;
         }
     };
+
+    public ServiceConnection keepAliveServiceConnection=new ServiceConnection(){
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.w(TAG, "---------KeepAliveService  onServiceConnected------------");
+            KeepAliveService.KeepAliveServiceBinder binder = (KeepAliveService.KeepAliveServiceBinder) service;
+            keepAliveService = binder.getService();
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.w(TAG, "---------KeepAliveService  DisConnected------------");
+            keepAliveService=null;
+        }
+    };
+    private Context context;
+    public int taskID;
+    public ActivityManager activityManager;
+    public ActivityManager init_activityManager()
+    {
+        return (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+    }
+    public void setTopApp() {
+        if (isRunningForeground()) {
+            return;
+        }
+        activityManager.moveTaskToFront(taskID, 0);
+    }
+    public  boolean isRunningForeground() {
+//        activityManager = init_activityManager();
+        List<ActivityManager.RunningAppProcessInfo> appProcessInfoList = activityManager.getRunningAppProcesses();
+
+        for (ActivityManager.RunningAppProcessInfo appProcessInfo : appProcessInfoList) {
+            if (appProcessInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                    && appProcessInfo.processName.equals(context.getApplicationInfo().processName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    @Override
+    protected void onStart() {
+        System.out.println("---------java  onStart------------");
+        super.onStart();
+        context=this;
+        System.out.println("---------context init,context is:"+context.toString());
+        activityManager=init_activityManager();
+        System.out.println("---------activityManager init,activityManager is:"+activityManager.toString());
+        List<ActivityManager.RunningTaskInfo> taskInfoList = activityManager.getRunningTasks(100);
+        System.out.println("---------taskInfoList init,taskInfoList is:"+taskInfoList.toString());
+        boolean search=false;
+        for (ActivityManager.RunningTaskInfo taskInfo : taskInfoList) {
+            if (taskInfo.topActivity.getPackageName().equals(context.getPackageName())) {
+                taskID=taskInfo.id;
+                search=true;
+                break;
+            }
+        }
+        if(!search)
+        {
+            System.out.println("---------taskID init fail------------");
+        }else{
+            System.out.println("---------taskID init succeed:"+taskID+"-----");
+        }
+    }
     private static final String TAG = "MainActivity";
     private static final String WhetherSuperviseChannel = "WhetherSupervise";
     private static final String PackageChangeChannel = "PackageChange";
-//    private static final String BackToApp = "BackToApp";
+    private static final String ForegroundChangeChannel = "ForegroundChange";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +125,20 @@ public class MainActivity extends FlutterActivity {
         }else{
             Log.w(TAG, "---------MasterServicend  bindService succeed------------");
         }
-        //打开数据库
-        dbAdapter = new DBAdapter(this);
-        dbAdapter.open();
-        System.out.println("---------java  onCreate------------");
-        System.out.println("dbAdapter==null?"+dbAdapter==null);
+
+        //启动后台监测服务
+        Intent ForegroundIIntent = new Intent(this,KeepAliveService.class);
+        boolean ForegroundServiceRes= bindService(ForegroundIIntent,keepAliveServiceConnection, Context.BIND_AUTO_CREATE);
+        if(!ForegroundServiceRes) {
+            Log.e(TAG, "---------ForegroundService  bindService fail------------");
+        }else{
+            Log.w(TAG, "---------ForegroundService  bindService succeed------------");
+        }
 
         //注册Flutter插件
         GeneratedPluginRegistrant.registerWith(new FlutterEngine(this));
     }
+
 
     public void registerChannel() {
         new MethodChannel(
@@ -86,29 +158,27 @@ public class MainActivity extends FlutterActivity {
                     }
             );
 
-        new MethodChannel(
-                getFlutterEngine().getDartExecutor().getBinaryMessenger(), PackageChangeChannel)
-                .setMethodCallHandler(
-                        (methodCall, result) ->
-                        {
-                            if (methodCall.method.equals("packageChange")) {
-                                appList.clear();
-                                appList=methodCall.arguments();
-                                assert appList != null;
-                                System.out.println("appList.size()="+appList.size());
-                                for(int i=0;i<appList.size();i++){
-                                    System.out.println("appList.get("+i+")="+appList.get(i));
-                                }
-//                                masterService.PackageChange();//发送改变信号，在处理函数中进行更新包的操作
-                                result.success(true);
-                            } else {
-                                result.notImplemented();
-                            }
-                        }
-                );
-//11
+        new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), PackageChangeChannel).setMethodCallHandler(
+            (methodCall, result) -> {
+            if (methodCall.method.equals("packageChange")) {
+               appList.clear();
+               appList=methodCall.arguments();
+               result.success(true);
+            } else {result.notImplemented();}});
+        new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), ForegroundChangeChannel).setMethodCallHandler(
+            (methodCall, result) -> {
+               if (methodCall.method.equals("setToForeground")) {
+               keepAliveService.startForeground();
+               result.success(true);
+               } else if (methodCall.method.equals("setToBackground"))
+               {
+                   keepAliveService.stopForeground();
+                   result.success(true);
+               }
+               else{
+                   result.notImplemented();
+               }});
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -116,39 +186,10 @@ public class MainActivity extends FlutterActivity {
         if (masterService != null) {
             unbindService(masterServiceConnection);
         }
-        if(dbAdapter!=null&&dbAdapter.isOpen())
-            dbAdapter.close();
+        if(keepAliveService != null) {
+            unbindService(keepAliveServiceConnection);
+        }
     }
-
-//    public static ArrayList<String> getDBAppList(Context context) {
-//        //获取监听应用列表
-//        DBAdapter dbAdapter = new DBAdapter(context);
-//        dbAdapter.open();
-//        ArrayList<String> appList=dbAdapter.query();
-//        if(!appList.contains("com.hebut.tomato_clock"))
-//            appList.add("com.hebut.tomato_clock");
-//        dbAdapter.close();
-//        return appList;
-//    }
-
-//    public boolean take_to_top() {
-//        Log.w(TAG, "---------java  take_to_top----start--------");
-//        Context context = getApplicationContext();
-//        if (TgSystem.isRunningForeground(context)) {
-//            Log.w(TAG, "---------java  this app is already on the top-------");
-//        } else {
-//            TgSystem.setTopApp(context);
-//            if (TgSystem.isRunningForeground(context)){
-//                Log.w(TAG, "---------java take_to_top succeed-------");
-//                return true;
-//            }else{
-//                Log.w(TAG, "---------java take_to_top fail-------");
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-
 }
 
 

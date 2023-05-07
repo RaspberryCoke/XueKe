@@ -242,6 +242,7 @@ class LockPageState extends State<LockPage> {
                       child: Column(children: <Widget>[
                         TextButton(
                           onPressed: () {
+                            SuperviseController.isSupervised = false;
                             Navigator.pop(context, true);
                             SuperviseController.stopSupervise();
                           },

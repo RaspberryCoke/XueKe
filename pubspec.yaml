@@ -56,7 +56,6 @@ dependencies:
   fl_chart: ^0.55.1
   device_apps: ^2.2.0
   sqflite: ^2.2.8
-
   flutter_accessibility_service: ^0.2.2
 
 dev_dependencies:

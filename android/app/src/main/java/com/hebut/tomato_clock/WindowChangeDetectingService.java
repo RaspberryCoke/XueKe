@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class WindowChangeDetectingService extends AccessibilityService {
     public static Set<String> PACKAGES = new HashSet<>();
-    public static boolean shouldSupervise = true;
+    public static boolean shouldSupervise = false;
     private final String WINDOW_CHANGE = "com.hebut.broadcast.WindowChange";
     private final String WHETHER_SUPERVISE = "com.hebut.broadcast.WhetherSupervise";
     private final String PACKAGE_CHANGE = "com.hebut.broadcast.PackageChange";
@@ -50,7 +50,7 @@ public class WindowChangeDetectingService extends AccessibilityService {
     protected void onServiceConnected() {
         AccessibilityServiceInfo info = getServiceInfo();
         // 设置监听间隔为2
-        info.notificationTimeout = 1200;
+        info.notificationTimeout = 500;
         setServiceInfo(info);
         super.onServiceConnected();
     }
