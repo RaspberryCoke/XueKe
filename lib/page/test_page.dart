@@ -28,6 +28,60 @@ class TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: Column(
+          children: [
+            // 图片和文本部分
+            Container(
+              height: 250,
+              child: Stack(
+                children: [
+                  // 图片
+                  Image.network(
+                    'https://picsum.photos/200/300',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                  // 文本
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'Drawer Header',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // 列表部分
+            Expanded(
+              child: ListView(
+                children: [
+                  ListTile(
+                    title: Text('Item 1'),
+                  ),
+                  ListTile(
+                    title: Text('Item 2'),
+                  ),
+                  ListTile(
+                    title: Text('Item 3'),
+                  ),
+                  // 在此添加更多的列表项
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+
       appBar: AppBar(
         title: Text("test白名单"),
         leading: Builder(builder: (BuildContext context) {
@@ -38,7 +92,8 @@ class TestPageState extends State<TestPage> {
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Scaffold.of(context).openDrawer();
+              //Navigator.pop(context);
             },
           );
         }),

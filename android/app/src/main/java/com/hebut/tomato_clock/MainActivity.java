@@ -15,13 +15,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.hebut.tomato_clock.flutter_app_keep_alive.KeepAliveService;
+import com.hebut.tomato_clock.white_app.MasterService;
+import com.hebut.tomato_clock.white_app.WindowChangeDetectingService;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MainActivity extends FlutterActivity {
 
 //    public DBAdapter dbAdapter;
     public static ArrayList<String> appList = new ArrayList<String>();
+    public static Map<String,String> filterSet=new HashMap<>();
+    public static ConcurrentHashMap<String,List<String>> packageToFilter=new ConcurrentHashMap<>();
+
     public MasterService masterService;
     public KeepAliveService keepAliveService;
     public ServiceConnection masterServiceConnection=new ServiceConnection(){
@@ -107,6 +119,9 @@ public class MainActivity extends FlutterActivity {
     private static final String PackageChangeChannel = "PackageChange";
     private static final String ForegroundChangeChannel = "ForegroundChange";
 
+    private static final String NotificationChangeChannel="NotificationChange";
+    private static final String GetPermissionChannel="GetPermission";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +129,7 @@ public class MainActivity extends FlutterActivity {
         registerChannel();
         System.out.println("---------java  onCreate------------");
         //启动监听服务
-        Intent bindIntent = new Intent(this,WindowChangeDetectingService.class);
+        Intent bindIntent = new Intent(this, WindowChangeDetectingService.class);
         startService(bindIntent);
 
         //启动主服务
@@ -134,10 +149,11 @@ public class MainActivity extends FlutterActivity {
         }else{
             Log.w(TAG, "---------ForegroundService  bindService succeed------------");
         }
-
+        //jumpNotificationAccessSetting(this);
         //注册Flutter插件
         GeneratedPluginRegistrant.registerWith(new FlutterEngine(this));
     }
+
 
 
     public void registerChannel() {
@@ -178,6 +194,40 @@ public class MainActivity extends FlutterActivity {
                else{
                    result.notImplemented();
                }});
+        new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), NotificationChangeChannel).setMethodCallHandler(
+                (methodCall, result) -> {
+                    if (methodCall.method.equals("notificationChange")) {
+                        filterSet.clear();
+                        filterSet=methodCall.arguments();
+                        packageToFilter.clear();
+                        for(Map.Entry<String, String> item: filterSet.entrySet())
+                        {
+                            List<String> _list= Arrays.asList(item.getValue().split(","));
+                            packageToFilter.put(item.getKey(),_list);
+                        }
+                        Log.i(TAG, "---------java  notificationChange------------");
+                        Log.i(TAG,"---------------遍历所有拦截包：--------------------");
+                        for(Map.Entry<String, List<String>> entry: MainActivity.packageToFilter.entrySet()) {
+                            Log.i(TAG, "debug :  包名：" + entry.getKey());
+                            List<String> filterList = entry.getValue();
+                            if (filterList.contains("")) {
+                                Log.i(TAG, "debug :  其中的关键字包含空字符串，全部阻塞");
+                            }
+                            for (String filter : filterList) {
+                                Log.i(TAG, "debug :  其中的关键字：" + filter);
+                            }
+
+                        }
+
+                        result.success(true);
+                    } else {result.notImplemented();}});
+
+        new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), GetPermissionChannel).setMethodCallHandler(
+                (methodCall, result) -> {
+                    if (methodCall.method.equals("notification")) {
+                        jumpNotificationAccessSetting(this);
+                        result.success(true);
+                    } else {result.notImplemented();}});
     }
     @Override
     protected void onDestroy() {
@@ -190,6 +240,17 @@ public class MainActivity extends FlutterActivity {
             unbindService(keepAliveServiceConnection);
         }
     }
+
+    private void jumpNotificationAccessSetting(Context context) {
+        try {
+            Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 

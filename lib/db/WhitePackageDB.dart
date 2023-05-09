@@ -48,17 +48,17 @@ import 'package:path/path.dart';
 /// 同理，再Java程序中，也是在初始化的时候，对他们进行单独处理。
 /// 具体来说是在每次query时，返回查询结果之前添加packageName即可。
 
-class PackageDB{
+class WhitePackageDB{
   static String DATABASE_NAME='white_package.db';
   static String TABLE_NAME='packages';
   static String COLUMN_APP_NAME='AppName';
   static String COLUMN_PACKAGE_NAME='PackageName';
-  static final PackageDB _instance = PackageDB._internal();
+  static final WhitePackageDB _instance = WhitePackageDB._internal();
   Database? _database;
-  factory PackageDB() {
+  factory WhitePackageDB() {
     return _instance;
   }
-  PackageDB._internal();
+  WhitePackageDB._internal();
   Future<Database> get database async {
     if (_database != null) {
       return _database!;

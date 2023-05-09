@@ -6,7 +6,10 @@ class GlobalData{
   static String  content= '';
   //包信息
   static Map<String,String> appNameToPackageName={};
-  static Map<String,String> PackageNameToappName={};
+  static Map<String,String> packageNameToAppName={};
   static Map<String,bool> whiteAppsMap={};
   static Map<String,bool> whitePackagesMap={};
+  //以下代码和通知有关
+  static Map<String,bool> packageWhetherFilter={};
+  static Map<String,String> packageFilterString={};
 }

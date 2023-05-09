@@ -1,5 +1,5 @@
-package com.hebut.tomato_clock;
-import static com.hebut.tomato_clock.WindowChangeDetectingService.shouldSupervise;
+package com.hebut.tomato_clock.white_app;
+import static com.hebut.tomato_clock.white_app.WindowChangeDetectingService.shouldSupervise;
 
 import android.content.BroadcastReceiver;
 import android.os.Bundle;

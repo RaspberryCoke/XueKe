@@ -1,6 +1,7 @@
 import 'package:flutter_accessibility_service/flutter_accessibility_service.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
-import 'package:tomato_clock/logic/PackageDB.dart';
+import 'package:tomato_clock/db/NotificationFilterDB.dart';
+import 'package:tomato_clock/db/WhitePackageDB.dart';
 import 'package:tomato_clock/logic/login_logic.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/login/registration_page.dart';
@@ -13,6 +14,7 @@ import 'package:tomato_clock/page/table_events_page.dart';
 import 'package:tomato_clock/page/test_page.dart';
 import 'package:tomato_clock/page/todo_page.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -27,8 +29,10 @@ import 'model/cut_corners_border.dart';
 import 'package:tomato_clock/page/setting_page/SettingPage.dart';
 import 'page/todo_detail_page.dart';
 import 'package:device_apps/device_apps.dart';
+import 'package:tomato_clock/page/white_notification_page/notification_filter_page.dart';
 import 'package:sqflite/sqflite.dart';
-
+import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
 
 void main() async {
   print("------------------main start-----------------------");
@@ -37,32 +41,46 @@ void main() async {
   MainLogic.instance.init(sharedPreferences);
   LoginLogic.instance.init();
   initWhiteApp();
+  initNotificationFilter();
 
-  final bool status = await FlutterAccessibilityService.isAccessibilityPermissionEnabled();
+  final bool status =
+      await FlutterAccessibilityService.isAccessibilityPermissionEnabled();
   if (status) {
     print('Accessibility permission is granted.');
   } else {
     print('Accessibility permission is not granted.');
-    final bool res = await FlutterAccessibilityService.requestAccessibilityPermission();
+    final bool res =
+        await FlutterAccessibilityService.requestAccessibilityPermission();
   }
 
   chackAndGetPermission();
 
-  FlutterAccessibilityService.accessStream.listen((event) {
-    print(event.eventType);
-    print(event.packageName);
-    print(event.actionType);
-    print(event.windowType);
-  });
+  // FlutterAccessibilityService.accessStream.listen((event) {
+  //   print(event.eventType);
+  //   print(event.packageName);
+  //   print(event.actionType);
+  //   print(event.windowType);
+  // });
 
+//debug
+//   String the_path = join(await getDatabasesPath(), 'notification_filter.db');
+  //
+  // final file = File(the_path);
+  //
+  // if (file.existsSync()) {
+  //   file.deleteSync();
+  //   print('文件已成功删除');
+  // } else {
+  //   print('找不到要删除的文件');
+  // }
 
   runApp(MyApp());
 }
 
-Future<bool> chackAndGetPermission()async
-{
-  bool res=false;
-  bool status = await FlutterAccessibilityService.isAccessibilityPermissionEnabled();
+Future<bool> chackAndGetPermission() async {
+  bool res = false;
+  bool status =
+      await FlutterAccessibilityService.isAccessibilityPermissionEnabled();
   if (status) {
     print('Accessibility permission is granted.');
     return true;
@@ -107,8 +125,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
-
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     print("------------------_MyAppState initState-----------------------");
@@ -123,50 +140,49 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     super.dispose();
   }
 
-
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("------------------_MyAppState didChangeAppLifecycleState-----------------------");
-    print("------------------_MyAppState didChangeAppLifecycleState-------state:${state}-----------");
+    print(
+        "------------------_MyAppState didChangeAppLifecycleState-----------------------");
+    print(
+        "------------------_MyAppState didChangeAppLifecycleState-------state:${state}-----------");
     super.didChangeAppLifecycleState(state);
-    switch (state)
-    {
+    switch (state) {
       case AppLifecycleState.resumed:
-      {
-        if(SuperviseController.isSupervised){
-          debugPrint("resumed stopSupervise");
-          SuperviseController.setToBackground();
+        {
+          if (SuperviseController.isSupervised) {
+            debugPrint("resumed stopSupervise");
+            SuperviseController.setToBackground();
+          }
+          break;
         }
-        break;
-      }
 //处在不活动状态，无法处理用户响应。界面退到后台或弹出对话框情况下， 即失去了焦点但仍可以执行drawframe回调 类似于Android的onPause
       case AppLifecycleState.inactive:
-      {
-        if(SuperviseController.isSupervised){
-          debugPrint("inactive startSupervise");
-          SuperviseController.setToForeground();
+        {
+          if (SuperviseController.isSupervised) {
+            debugPrint("inactive startSupervise");
+            SuperviseController.setToForeground();
+          }
+          break;
         }
-        break;
-      }
 //不可见并不能响应用户的输入，但是在后台继续活动中。应用挂起，比如退到后台，失去了焦点且不会收到drawframe回调. 类似于Android的onStop
       case AppLifecycleState.paused:
-      {
-        if(SuperviseController.isSupervised){
-          debugPrint("paused startSupervise");
-          SuperviseController.setToForeground();
+        {
+          if (SuperviseController.isSupervised) {
+            debugPrint("paused startSupervise");
+            SuperviseController.setToForeground();
+          }
+          break;
         }
-        break;
-      }
 //APP结束时调用. 类似于Android的onDestroy
       case AppLifecycleState.detached:
-      {
-        if(SuperviseController.isSupervised){
-          debugPrint("detached startSupervise");
-          SuperviseController.setToForeground();
-        }
+        {
+          if (SuperviseController.isSupervised) {
+            debugPrint("detached startSupervise");
+            SuperviseController.setToForeground();
+          }
           break;
-      }
-
+        }
     }
   }
 
@@ -183,6 +199,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
           '/test_page': (context) => TestPage(),
           '/white_app_page': (context) => WhiteAppPage(),
           '/start_white_app': (context) => StartWhiteAppPage(),
+          '/notification_page': (context) => NotificationFilterPage(),
         },
         theme: _buildShrineTheme(),
         builder: EasyLoading.init(),
@@ -237,46 +254,68 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
       ),
     );
   }
-
-
 }
 
-Future<void> initWhiteApp()async
-{
-  await DeviceApps.getInstalledApplications().then((value)
-  {
-    for(var app in value)
-    {
+Future<void> initWhiteApp() async {
+  await DeviceApps.getInstalledApplications().then((value) {
+    for (var app in value) {
       GlobalData.whiteAppsMap[app.appName] = false;
       GlobalData.whitePackagesMap[app.packageName] = false;
       GlobalData.appNameToPackageName[app.appName] = app.packageName;
-      GlobalData.PackageNameToappName[app.packageName] = app.appName;
+      GlobalData.packageNameToAppName[app.packageName] = app.appName;
     }
   });
 
   GlobalData.appNameToPackageName["学刻"] = "com.hebut.tomato_clock";
-  GlobalData.PackageNameToappName["com.hebut.tomato_clock"] = "学刻";
+  GlobalData.packageNameToAppName["com.hebut.tomato_clock"] = "学刻";
 
   //获取白名单
-  List<Map<String,dynamic>> res = await PackageDB().query();
+  List<Map<String, dynamic>> res = await WhitePackageDB().query();
   res.forEach((element) {
     debugPrint(element.toString());
   });
 
-  for(var app in res)
-  {//在whiteAppsMap中设置为true
-    GlobalData.whitePackagesMap[app[PackageDB.COLUMN_PACKAGE_NAME]] = true;
-    GlobalData.whiteAppsMap[app[PackageDB.COLUMN_APP_NAME]] = true;
+  for (var app in res) {
+    //在whiteAppsMap中设置为true
+    GlobalData.whitePackagesMap[app[WhitePackageDB.COLUMN_PACKAGE_NAME]] = true;
+    GlobalData.whiteAppsMap[app[WhitePackageDB.COLUMN_APP_NAME]] = true;
   }
 
-  GlobalData.whiteAppsMap["学刻"]=true;
+  GlobalData.whiteAppsMap["学刻"] = true;
   GlobalData.whitePackagesMap['com.hebut.tomato_clock'] = true;
 
   //debug
   debugPrintStack();
   GlobalData.whiteAppsMap.forEach((key, value) {
-    debugPrint(key+" : "+value.toString());
+    debugPrint(key + " : " + value.toString());
   });
-  bool res2= await SuperviseController.packageChange();
-  debugPrint("res2 : "+res2.toString());
+  bool res2 = await SuperviseController.packageChange();
+  debugPrint("res2 : " + res2.toString());
+}
+
+Future<void> initNotificationFilter() async {
+  await DeviceApps.getInstalledApplications().then((value) {
+    for (var app in value) {
+      GlobalData.packageWhetherFilter[app.packageName] = false;
+    }
+  });
+
+  List<Map<String, dynamic>> res = await NotificationFilterDB().query();
+
+  for (var item in res) {
+    //在whiteAppsMap中设置为true
+    GlobalData.packageWhetherFilter[item['PackageName']] = true;
+    GlobalData.packageFilterString[item['PackageName']] =
+        item['FilterString'] == null ? "" : item['FilterString'];
+  }
+  GlobalData.packageWhetherFilter.remove("com.hebut.tomato_clock");
+  GlobalData.packageFilterString.remove("com.hebut.tomato_clock");
+
+  SuperviseController.notificationChange();
+  // //debug
+  // GlobalData.whiteAppsMap.forEach((key, value) {
+  //   debugPrint(key+" : "+value.toString());
+  // });
+  // bool res2= await SuperviseController.packageChange();
+  // debugPrint("res2 : "+res2.toString());
 }

@@ -69,7 +69,7 @@ class SettingPageState extends State<SettingPage> {
                     color: Colors.black,
                   )),
               title: Text(
-                "白名单",
+                "应用白名单",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -77,6 +77,29 @@ class SettingPageState extends State<SettingPage> {
               ),
               onTap: () {
                 Navigator.pushNamed(context, '/white_app_page');
+
+              },
+              trailing: Icon(Icons.keyboard_arrow_right_rounded),
+            ),
+            ListTile(
+              selected: true,
+              leading: Container(
+                  width: 37,
+                  //    color: Colors.yellow,
+                  child: Icon(
+                    Icons.event,
+                    size: 28,
+                    color: Colors.black,
+                  )),
+              title: Text(
+                "通知白名单",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/notification_page');
 
               },
               trailing: Icon(Icons.keyboard_arrow_right_rounded),

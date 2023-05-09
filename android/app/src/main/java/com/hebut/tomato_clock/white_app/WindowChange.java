@@ -1,8 +1,7 @@
-package com.hebut.tomato_clock;
+package com.hebut.tomato_clock.white_app;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 import static com.hebut.tomato_clock.MainActivity.appList;
-import static com.hebut.tomato_clock.WindowChangeDetectingService.shouldSupervise;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
@@ -23,6 +22,7 @@ public class WindowChange extends BroadcastReceiver {
         if (!WindowChangeDetectingService.shouldSupervise) {
             return;
         }
+        //下面的逻辑是：一旦发现当前页面不被允许，马上跳转回本应用。
         if (!appList.contains(_new)) {
             //获取ActivityManager
             ActivityManager activityManager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);

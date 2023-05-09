@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
 
-import '../../logic/PackageDB.dart';
+import '../../db/WhitePackageDB.dart';
 import '../supervise_controller.dart';
 
 class StartWhiteAppPage extends StatefulWidget {

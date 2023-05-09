@@ -177,42 +177,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
           //backgroundColor: Colors.white,
           child: Column(
         children: [
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  tileMode: TileMode.mirror,
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFf689ad3), Color(0xD9B5B5FF)],
-                  stops: [0.0, 1.0],
-                ),
-              ),
-            ),
-          ),
-/*              Row(
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: UserAccountsDrawerHeader(
-                          accountName: Text(LoginLogic.instance.currentUser?.name ?? '',
-                            style: TextStyle(fontSize: 16, color: Colors.black),),
-                          accountEmail: Text('${LoginLogic.instance.currentUser?.content ?? '千里之行，始于足下'}',
-                            style: TextStyle(fontSize: 13, color: Colors.black),),
-                          currentAccountPicture: CircleAvatar(
-                              backgroundImage: new ExactAssetImage('assets/person.png')
-                          ),
-                          decoration: BoxDecoration(//背景
-                            image: DecorationImage(
-                              image: new ExactAssetImage('assets/person_bg.png'),
-                              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.dstATop),
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                      ))
-                ],
-              ),*/
-
           Container(
             width: double.infinity,
             height: 200,
@@ -258,9 +222,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
                                   fontFamily: 'draw',
                                   fontSize: 20,
                                   color: Colors.black),
-                              // '昵称：${LoginLogic.instance.currentUser?.name ?? ''}',
-                              /*style:
-                                  TextStyle(fontSize: 14, color: Colors.white),*/
                             ),
                           ),
                           Container(
@@ -271,9 +232,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
                                   TextStyle(fontSize: 15, color: Colors.black),
                               overflow: TextOverflow.ellipsis, //溢出显示几个点
                               maxLines: 1,
-/*                                  '${LoginLogic.instance.currentUser?.content ?? '为了目标 每时每刻 砥砺前行'}',
-                                  style:
-                                  TextStyle(fontSize: 12, color: Colors.white),*/
                             ),
                           ),
                         ],
@@ -287,53 +245,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
           SizedBox(
             height: 15,
           ),
-          /*Positioned(
-            left: 10,
-            child: TextButton.icon(
-                icon:
-                    Icon(Icons.settings, size: 30.0, color: Color(0xD903033F)),
-                label: Text("个人中心",
-                    style: TextStyle(fontSize: 20, color: Color(0xD903033F))),
-                style: ButtonStyle(
-                  textStyle: MaterialStateProperty.all(TextStyle(fontSize: 25)),
-                ),
-                onPressed: person),
-          ),
-          Divider(
-            color: Colors.grey,
-            height: 20,
-            thickness: 1,
-            indent: 20,
-            endIndent: 0,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Positioned(
-            left: 10,
-            child: TextButton.icon(
-                icon:
-                    Icon(Icons.settings, size: 30.0, color: Color(0xD903033F)),
-                label: Text(
-                  "个人设置",
-                  style: TextStyle(fontSize: 20, color: Color(0xD903033F)),
-                ),
-                style: ButtonStyle(
-                  textStyle: MaterialStateProperty.all(TextStyle(
-                    fontSize: 25,
-                  )),
-                ),
-                onPressed: setting),
-          ),
-
-
-          Divider(
-                // color: Color(0xD0BBBB53),
-                height: 20,
-                thickness: 1,
-                indent: 20,
-                endIndent: 0,
-              ),*/
           ListTile(
             selected: true,
             leading: Container(
@@ -439,13 +350,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
             trailing: Icon(Icons.keyboard_arrow_right_rounded),
           ),
 
-/*              Divider(
-                color: Colors.grey,
-                height: 20,
-                thickness: 1,
-                indent: 20,
-                endIndent: 0,
-              ),*/
+
 
         //for test
           ListTile(

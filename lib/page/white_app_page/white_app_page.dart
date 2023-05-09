@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
 
-import '../../logic/PackageDB.dart';
+import '../../db/WhitePackageDB.dart';
 import '../supervise_controller.dart';
 
 class WhiteAppPage extends StatefulWidget {
@@ -87,21 +87,21 @@ class _MySwitchListTileState extends State<MySwitchListTile> {
 
   Future<void> turnTrue() async{
     debugPrint("insert "+title);
-    int res=await PackageDB().insert(title,GlobalData.appNameToPackageName[title]!);
+    int res=await WhitePackageDB().insert(title,GlobalData.appNameToPackageName[title]!);
     GlobalData.whiteAppsMap[title]=true;
     GlobalData.whitePackagesMap[GlobalData.appNameToPackageName[title]!]=true;
     if(res>=0)debugPrint("insert success");
-    PackageDB().query().then((value) => debugPrint("all allowed apps(without main): "+value.toString()));
+    WhitePackageDB().query().then((value) => debugPrint("all allowed apps(without main): "+value.toString()));
     SuperviseController.packageChange();
   }
 
   Future<void> turnFalse() async{
     debugPrint("delete "+title);
-    int res=await PackageDB().deleteAppName(title);
+    int res=await WhitePackageDB().deleteAppName(title);
     GlobalData.whiteAppsMap[title]=false;
     GlobalData.whitePackagesMap[GlobalData.appNameToPackageName[title]!]=false;
     if(res>=0)debugPrint("delete success");
-    PackageDB().query().then((value) => debugPrint("all allowed apps(without main): "+value.toString()));
+    WhitePackageDB().query().then((value) => debugPrint("all allowed apps(without main): "+value.toString()));
     SuperviseController.packageChange();
   }
 

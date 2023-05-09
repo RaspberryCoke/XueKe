@@ -1,4 +1,4 @@
-package com.hebut.tomato_clock;
+package com.hebut.tomato_clock.white_app;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
@@ -15,11 +15,7 @@ public class WindowChangeDetectingService extends AccessibilityService {
     public static boolean shouldSupervise = false;
     private final String WINDOW_CHANGE = "com.hebut.broadcast.WindowChange";
     private final String WHETHER_SUPERVISE = "com.hebut.broadcast.WhetherSupervise";
-    private final String PACKAGE_CHANGE = "com.hebut.broadcast.PackageChange";
-//    private final String REQUEST_ALIVE_STATUS = "com.hebut.broadcast.RequestAliveStatus";
     private final Intent intentWindowChange = new Intent(WINDOW_CHANGE);
-//    private final RequestAliveStatus _RequestAliveStatus = new RequestAliveStatus();
-    //private final PackageChange _packageChange = new PackageChange();
     private final WhetherSupervise _whetherSupervise = new WhetherSupervise();
 
     @Override
@@ -27,9 +23,6 @@ public class WindowChangeDetectingService extends AccessibilityService {
         if (shouldSupervise &&
                 event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             String _name = event.getPackageName().toString();
-            String _class = event.getClassName().toString();
-            Log.i("onAccessibilityEvent", "name: " + _name);
-            Log.i("onAccessibilityEvent", "class: " + _class);
             intentWindowChange.putExtra("new", _name);
             sendBroadcast(intentWindowChange);
         }
@@ -37,13 +30,11 @@ public class WindowChangeDetectingService extends AccessibilityService {
     @Override
     public void onCreate() {
         super.onCreate();
-//        registerReceiver(_RequestAliveStatus, new IntentFilter(REQUEST_ALIVE_STATUS));
         registerReceiver(_whetherSupervise, new IntentFilter(WHETHER_SUPERVISE));
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        unregisterReceiver(_RequestAliveStatus);
         unregisterReceiver(_whetherSupervise);
     }
     @Override

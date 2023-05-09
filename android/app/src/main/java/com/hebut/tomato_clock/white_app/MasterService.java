@@ -1,22 +1,13 @@
-package com.hebut.tomato_clock;
-
-import static android.os.SystemClock.sleep;
-
-import static com.hebut.tomato_clock.MainActivity.appList;
+package com.hebut.tomato_clock.white_app;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MasterService extends Service {
     private final WindowChange windowChange = new WindowChange();
@@ -49,7 +40,7 @@ public class MasterService extends Service {
     }
     private final IBinder iBinder = new MasterServiceBinder();
     public class MasterServiceBinder extends Binder {
-        MasterService getService() {
+        public MasterService getService() {
             //返回MyBinderService实例，以便客户端可以调用公共方法
             return MasterService.this;
         }

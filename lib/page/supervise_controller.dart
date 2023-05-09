@@ -8,6 +8,8 @@ class SuperviseController{
   static const WhetherSuperviseChannel = MethodChannel( "WhetherSupervise");
   static const PackageChangeChannel = MethodChannel( "PackageChange");
   static const ForegroundChangeChannel = MethodChannel( "ForegroundChange");
+  static const NotificationChangeChannel = MethodChannel( "NotificationChange");
+  static const GetPermissionChannel = MethodChannel( "GetPermission");
 
   static Future<bool> startSupervise() async {
     try {
@@ -57,6 +59,25 @@ class SuperviseController{
           }
       });
       final bool res = await PackageChangeChannel.invokeMethod('packageChange',allPackages);
+      return Future.value(res);
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      return Future.value(false);
+    }
+  }
+  static Future<bool>  notificationChange() async {
+    try {
+
+      final bool res = await NotificationChangeChannel.invokeMethod('notificationChange',GlobalData.packageFilterString);
+      return Future.value(res);
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      return Future.value(false);
+    }
+  }
+  static Future<bool>  getPermission_notification() async {
+    try {
+      final bool res = await GetPermissionChannel.invokeMethod('notification');
       return Future.value(res);
     } on PlatformException catch (e) {
       debugPrint(e.toString());
