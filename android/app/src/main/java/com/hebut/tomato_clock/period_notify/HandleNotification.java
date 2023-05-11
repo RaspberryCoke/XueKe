@@ -4,19 +4,21 @@ package com.hebut.tomato_clock.period_notify;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
+
+import com.hebut.tomato_clock.MainActivity;
 import com.hebut.tomato_clock.R;
 
 public class HandleNotification extends Service {
-    private final int NOTIFICATION_PERIOD_ID =63751;
-
-    private static final String PERIOD_NOTIFICATION_CHANNEL = "PERIOD_NOTIFICATION_CHANNEL";
-    private static final int NOTIFICATION_ID = 1;
+    private  final int NOTIFICATION_PERIOD_ID =63751;
+    private  final String PERIOD_NOTIFICATION_CHANNEL = "PERIOD_NOTIFICATION_CHANNEL";
+    private  final int NOTIFICATION_ID = 1;
     NotificationChannel PERIOD_CHANNEL =null;
     NotificationManager NOTIFICATION_PERIOD_MANAGE =null;
 
@@ -37,9 +39,16 @@ public class HandleNotification extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("HandleNotification onStartCommand-------------start-----------");
+        // 创建返回应用的 Intent
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+// 创建一个 PendingIntent
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_MUTABLE);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, PERIOD_NOTIFICATION_CHANNEL)
                 .setContentTitle("学刻").setContentText("正在后台运行")
+                .setContentIntent(resultPendingIntent)  // 设置 PendingIntent
                 .setSmallIcon(R.drawable.tomato);
         Notification notification = builder.build();
 
@@ -55,19 +64,7 @@ public class HandleNotification extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-//    public void startForeground(int time_second) {
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {return;}
-//        if(time_second<=0)return;
-//        //创建通知
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "TOMATO_CLOCK_PERIOD_NOTIFICATION_CHANNEL")
-//                .setContentTitle("学刻").setContentText("剩余时间："+(time_second/60==0?"最后一分钟":(time_second/60+"分钟")))
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT).setSmallIcon(R.drawable.launch_background);
-//        Notification notification = builder.build();
-//        //发送通知的同时，设置为前台服务
-//        startForeground(NOTIFICATION_PERIOD_ID, notification);
-//    }
-
-    public void updateTime(int time_second) {
+    public  void updateTime(int time_second) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {return;}
         if(time_second<=0)return;
         //创建新的通知
@@ -78,13 +75,7 @@ public class HandleNotification extends Service {
         //更新通知，要保证id一致
         NOTIFICATION_PERIOD_MANAGE.notify(NOTIFICATION_PERIOD_ID, notification);
     }
-//    public void sendFinishNotification() {
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {return;}
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "sendFinishNotification")
-//                .setContentTitle("学刻").setContentText("计时已结束").setPriority(NotificationCompat.PRIORITY_HIGH).setSmallIcon(R.drawable.launch_background);
-//        Notification notification = builder.build();
-//        NOTIFICATION_FINISH_MANAGE.notify(NOTIFICATION_FINISH_ID, notification);
-//    }
+
     public void stopForeground() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {return;}
         //取消前台服务
@@ -104,5 +95,4 @@ public class HandleNotification extends Service {
     public boolean onUnbind(Intent intent) {
         return super.onUnbind(intent);
     }
-
 }

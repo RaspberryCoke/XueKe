@@ -78,28 +78,28 @@ class LockPageState extends State<LockPage> {
         SuperviseController.periodNotification(_remain_time);
       },
     );
-    _timer = Timer.periodic(_period, (timer) {
-      _remain_time -= 60;
-      // 调用回调函数
-      if (_remain_time <= 0) {
-        // 停止计时器
-        _timer.cancel();
-        // 调用结束回调函数
-        onFinish();
-      }else{
-        onTick(_remain_time);
-      }
-    });
+    // _timer = Timer.periodic(_period, (timer) {
+    //   _remain_time -= 60;
+    //   // 调用回调函数
+    //   if (_remain_time <= 0) {
+    //     // 停止计时器
+    //     _timer.cancel();
+    //     // 调用结束回调函数
+    //     onFinish();
+    //   }else{
+    //     onTick(_remain_time);
+    //   }
+    // });
   }
 
   void onTick(int remain_time) {
     // 调用JAVA代码，更新通知栏
-    SuperviseController.periodNotification(remain_time);
+    //SuperviseController.periodNotification(remain_time);
   }
 
   void onFinish() {
     // 调用JAVA代码，结束监督
-    SuperviseController.stopSuperviseAndNotify();
+    //SuperviseController.stopSuperviseAndNotify();
     // 跳转到主界面
     Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
   }
@@ -109,8 +109,8 @@ class LockPageState extends State<LockPage> {
   late CircularCountDownTimer _circular;
   late int _remain_time=GlobalData.minutes * 60;
   late bool _is_running;
-  late Timer _timer;//计时器，每隔一分钟调用一次JAVA代码
-  Duration _period = const Duration(seconds: 10);//周期为一分钟
+  //late Timer _timer;//计时器，每隔一分钟调用一次JAVA代码
+  //Duration _period = const Duration(seconds: 10);//周期为一分钟
 
 
   @override

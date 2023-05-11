@@ -1,6 +1,7 @@
 package com.hebut.tomato_clock;
 
 import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.Build;
@@ -164,32 +165,13 @@ public class MainActivity extends FlutterActivity {
             Log.w(TAG, "---------MasterServicend  bindService succeed------------");
         }
 
-        //启动发送通知服务
-
-
+        //启动发送常驻通知，这个通知会在程序启动之后一直存在，直到程序退出。
+        //但是程序不会自动退出，必须要手动杀死程序。这是一个问题。但没必要现在就解决。
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent HandleNotificationServicendIIntent = new Intent(this,HandleNotification.class);
-            System.out.println("---------HandleNotificationServicend  before startForegroundService------------");
             startForegroundService(HandleNotificationServicendIIntent);
-            //boolean bindHandleNotificationSeviceRes= bindService(HandleNotificationServicendIIntent,HandleNotificationserviceConnection, Context.BIND_AUTO_CREATE);
-//            if(!bindHandleNotificationSeviceRes) {
-//                Log.e(TAG, "---------HandleNotificationServicend  bindService fail------------");
-//            }else{
-//                Log.w(TAG, "---------HandleNotificationServicend  bindService succeed------------");
-//            }
-//            System.out.println("---------HandleNotificationServicend  end startForegroundService------------");
         }
 
-
-        //启动后台监测服务
-//        Intent ForegroundIIntent = new Intent(this,KeepAliveService.class);
-//        boolean ForegroundServiceRes= bindService(ForegroundIIntent,keepAliveServiceConnection, Context.BIND_AUTO_CREATE);
-//        if(!ForegroundServiceRes) {
-//            Log.e(TAG, "---------ForegroundService  bindService fail------------");
-//        }else{
-//            Log.w(TAG, "---------ForegroundService  bindService succeed------------");
-//        }
-        //jumpNotificationAccessSetting(this);
         //注册Flutter插件
         GeneratedPluginRegistrant.registerWith(new FlutterEngine(this));
     }
@@ -211,19 +193,7 @@ public class MainActivity extends FlutterActivity {
                appList=methodCall.arguments();
                result.success(true);
             } else {result.notImplemented();}});
-//        new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), ForegroundChangeChannel).setMethodCallHandler(
-//            (methodCall, result) -> {
-//               if (methodCall.method.equals("setToForeground")) {
-//               keepAliveService.startForeground();
-//               result.success(true);
-//               } else if (methodCall.method.equals("setToBackground"))
-//               {
-//                   keepAliveService.stopForeground();
-//                   result.success(true);
-//               }
-//               else{
-//                   result.notImplemented();
-//               }});
+
         new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), NotificationChangeChannel).setMethodCallHandler(
                 (methodCall, result) -> {
                     if (methodCall.method.equals("notificationChange")) {
@@ -233,14 +203,6 @@ public class MainActivity extends FlutterActivity {
                         for(Map.Entry<String, String> item: filterSet.entrySet()) {
                             List<String> _list= Arrays.asList(item.getValue().split(","));
                             packageToFilter.put(item.getKey(),_list);}
-                        Log.i(TAG, "---------java  notificationChange------------");
-                        Log.i(TAG,"---------------遍历所有拦截包：--------------------");
-                        for(Map.Entry<String, List<String>> entry: MainActivity.packageToFilter.entrySet()) {
-                            Log.i(TAG, "debug :  包名：" + entry.getKey());
-                            List<String> filterList = entry.getValue();
-                            if (filterList.contains("")) {Log.i(TAG, "debug :  其中的关键字包含空字符串，全部阻塞");}
-                            for (String filter : filterList) {Log.i(TAG, "debug :  其中的关键字：" + filter);}
-                        }
                         result.success(true);}
                     else {result.notImplemented();}});
         new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), GetPermissionChannel).setMethodCallHandler(
@@ -267,13 +229,13 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(getFlutterEngine().getDartExecutor().getBinaryMessenger(), PeriodNotifyChannel).setMethodCallHandler(
             (methodCall, result) -> {
                 if (methodCall.method.equals("periodNotify")) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){}
-//                        handleNotification.updateTime(methodCall.arguments()==null?0:methodCall.arguments());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        //handleNotification.updateTime(methodCall.arguments() == null ? 0 : methodCall.arguments());
+                    }
                     result.success(true);
                 } else if(methodCall.method.equals("stopNotify")) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        handleNotification.stopForeground();
-//                        handleNotification.sendFinishNotification();
+                       //handleNotification.sendFinishNotification();
                     }
                     result.success(true);}
                 else {result.notImplemented();}});
