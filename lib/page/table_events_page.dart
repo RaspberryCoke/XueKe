@@ -1,20 +1,16 @@
 import 'package:tomato_clock/logic/login_logic.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/model/todo.dart';
-import 'package:tomato_clock/page/change_password_page.dart';
 import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/page/event.dart';
 import 'package:tomato_clock/page/future_page.dart';
-import 'package:tomato_clock/page/person_page.dart';
 import 'package:tomato_clock/page/login.dart';
-import 'package:tomato_clock/page/mine_setting_page.dart';
-import 'package:tomato_clock/page/todo_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tomato_clock/res.dart';
 import 'package:tomato_clock/page/todo_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
-import 'package:list_tile_more_customizable/list_tile_more_customizable.dart';
+
 
 class TableEventsPage extends StatefulWidget {
   const TableEventsPage({Key? key}) : super(key: key);
@@ -34,7 +30,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
   ];
 
   void setting() {
-    Navigator.pushReplacementNamed(context, Constant.settingPage);
+    Navigator.pushReplacementNamed(context, Constant.changeInfoPage);
   }
 
   void person() {
@@ -264,7 +260,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
                   fontWeight: FontWeight.w500),
             ),
             onTap: () {
-              person();
+              Navigator.pushNamed(context, '/personPage');
             },
             trailing: Icon(Icons.keyboard_arrow_right_rounded),
           ),
@@ -289,6 +285,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
                   fontWeight: FontWeight.w500),
             ),
             onTap: () {
+              Navigator.pushNamed(context, '/changeInfoPage');
               setting();
             },
             trailing: Icon(Icons.keyboard_arrow_right_rounded),

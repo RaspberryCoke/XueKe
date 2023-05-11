@@ -32,7 +32,7 @@ public class NotificationListener extends NotificationListenerService {
 
 
         //debug
-        Log.i("NotificationListener","------------------debug--------------------");
+        Log.i("NotificationListener","------------------开始debug--------------------");
         Bundle the_extras = sbn.getNotification().extras;
         if(the_extras==null)
         {
@@ -64,71 +64,87 @@ public class NotificationListener extends NotificationListenerService {
             }
         }
         Log.i("NotificationListener","---------------继续代码的执行------------------");
-
         //debug
+        //debug
+
+
         String package_name=sbn.getPackageName();
+        if(package_name==null){
+            Log.e("NotificationListener","debug :  sbn.getPackageName()==null");
+            Log.e("NotificationListener","debug :  异常的通知，放行");
+            super.onNotificationPosted(sbn);
+            return;
+        }
+
+
         List<String> filterList=MainActivity.packageToFilter.get(package_name);
+        if(filterList==null){
+            Log.i("NotificationListener","debug :  filterList==null");
+            super.onNotificationPosted(sbn);
+            return;
+        }
+
         Log.w("NotificationListener","debug :  当前包名为的全局过滤词有："+filterList.size()+"个");
-        if(filterList!=null){
-            Log.i("NotificationListener","debug :  发现需要拦截的包名");
-            Log.i("NotificationListener","debug :  该包的关键词有："+filterList.size()+"个");
-            for(String filter:filterList){
-                Log.i("NotificationListener","debug :  "+filter);
-            }
-            //全部都要阻塞?
-            if(filterList.size()==0||
-                    (filterList.size()==1&&filterList.contains(""))){
-                cancelNotification(sbn.getKey());
+
+
+        Log.i("NotificationListener","debug :  发现需要拦截的包名");
+        Log.i("NotificationListener","debug :  该包的关键词有："+filterList.size()+"个");
+
+
+        Log.i("NotificationListener","debug :  遍历关键词");
+        for(String filter:filterList){
+            Log.i("NotificationListener","debug :  "+filter);
+        }
+
+
+        //全部都要阻塞?
+        if(filterList.size()==0|| (filterList.size()==1&&filterList.contains(""))){
+            cancelNotification(sbn.getKey());
+            super.onNotificationPosted(sbn);
+            Log.i("NotificationListener","debug :  没有放行关键字,或者包含空字符串，全部都要阻塞");
+            return;
+        }else//消息过滤
+        {
+            boolean _contain=false;
+            String title;
+            String content;
+            String sub_text;
+            Bundle extras = sbn.getNotification().extras;
+
+
+            if(extras==null) {//异常
                 super.onNotificationPosted(sbn);
-                Log.i("NotificationListener","debug :  没有放行关键字,或者包含空字符串，全部都要阻塞");
+                Log.i("NotificationListener","debug : extras==null,异常的通知，放行");
                 return;
-            }else//消息过滤
-            {
-                boolean _contain=false;
-                String title;
-                String content;
-                String sub_text;
-                Bundle extras = sbn.getNotification().extras;
+            }
 
 
-                if(extras==null) {
-                    super.onNotificationPosted(sbn);
-                    Log.i("NotificationListener","debug : extras==null,异常的通知，放行");
-                    return;
-                }
+            title = extras.getString(Notification.EXTRA_TITLE, "");
+            content = extras.getString(Notification.EXTRA_TEXT, "");
+            sub_text = extras.getString(Notification.EXTRA_SUB_TEXT, "");
+            Log.i("NotificationListener", "title:" + title);
+            Log.i("NotificationListener", "content:" + content );
+            Log.i("NotificationListener", "subtext:" + sub_text);
 
-                try {
-                    // 获取通知标题
-                    title = extras.getString(Notification.EXTRA_TITLE, "");
-                    // 获取通知内容
-                    content = extras.getString(Notification.EXTRA_TEXT, "");
-                    sub_text = extras.getString(Notification.EXTRA_SUB_TEXT, "");
-                    Log.i("NotificationListener", "title:" + title);
-                    Log.i("NotificationListener", "content:" + content );
-                    Log.i("NotificationListener", "subtext:" + sub_text);
-                    Log.i("NotificationListener", "debug :  开始检查关键字,分别检查三个内容中是否包含关键字。");
-                }catch (Exception e){
-                    Log.e("NotificationListener","debug :  extras.getString wrong,异常的通知，放行");
-                    super.onNotificationPosted(sbn);
-                    return;
-                }
 
-                for(String filter:filterList){
-                    if(title.contains(filter)||content.contains(filter)||sub_text.contains(filter)){
-                        Log.w("NotificationListener","title:"+title+",contains filter:"+filter+" is "+title.contains(filter));
-                        Log.w("NotificationListener","content:"+content+",contains filter:"+filter+" is "+content.contains(filter));
-                        Log.w("NotificationListener","sub_text:"+sub_text+",contains filter:"+filter+" is "+sub_text.contains(filter));
-                        _contain=true;
-                        break;
-                    }
+            Log.i("NotificationListener", "debug :  开始检查关键字,分别检查三个内容中是否包含关键字。");
+            for(String filter:filterList){
+                if(title.contains(filter)||content.contains(filter)||sub_text.contains(filter)){
+                    Log.w("NotificationListener","title:"+title+",contains filter:"+filter+" is "+title.contains(filter));
+                    Log.w("NotificationListener","content:"+content+",contains filter:"+filter+" is "+content.contains(filter));
+                    Log.w("NotificationListener","sub_text:"+sub_text+",contains filter:"+filter+" is "+sub_text.contains(filter));
+                    _contain=true;
+                    break;
                 }
-                if(_contain) {
-                    super.onNotificationPosted(sbn);
-                    Log.i("NotificationListener","debug :  找到关键字，放行");
-                    return;
-                }
+            }
+            if(_contain) {
+                super.onNotificationPosted(sbn);
+                Log.i("NotificationListener","debug :  找到关键字，放行");
+                return;
             }
         }
+
+
         Log.i("NotificationListener","debug :  没有找到关键字，阻塞");
         cancelNotification(sbn.getKey());
         super.onNotificationPosted(sbn);

@@ -41,14 +41,14 @@ class _HomePageState extends State<HomePage>{
         type: BottomNavigationBarType.fixed,
 
         onTap: (index)async{
-            if(index==1)
-            {
-              bool res=await chackAndGetPermission();
-              if(!res) return;
-              SuperviseController.isSupervised=true;
-              Navigator.pushNamed(context, '/lock_page');
-            }
-            else
+            // if(index==1)
+            // {
+            //   bool res=await chackAndGetPermission();
+            //   if(!res) return;
+            //   SuperviseController.isSupervised=true;
+            //   Navigator.pushNamed(context, '/lock_page');
+            // }
+            // else
               setState(() {
                 _currentIndex=index;
               });
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage>{
 
         items: const [
           BottomNavigationBarItem(icon:Icon(Icons.message_rounded), label: "待办",tooltip: ''),
-          BottomNavigationBarItem(icon:Icon(Icons.lock), label: "锁屏",tooltip: ''),
+          // BottomNavigationBarItem(icon:Icon(Icons.lock), label: "锁屏",tooltip: ''),
           BottomNavigationBarItem(icon:Icon(Icons.data_thresholding_outlined), label: "数据",tooltip: ''),
         ],
       ),

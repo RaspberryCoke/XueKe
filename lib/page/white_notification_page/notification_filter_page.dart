@@ -12,8 +12,10 @@ class NotificationFilterPage extends StatefulWidget {
 
 class NotificationFilterState extends State<NotificationFilterPage> {
   List<MySwitchListTile> lists=[];
+  bool needGetPermmision=false;
   @override
   initState(){
+    debugPrint("NotificationFilterPage initState");
     super.initState();
     GlobalData.packageWhetherFilter.forEach((key, value) {
         lists.add(
@@ -24,6 +26,12 @@ class NotificationFilterState extends State<NotificationFilterPage> {
             ));
       }
     );
+
+    //这是一个异步函数，当获取结果之后，刷新页面。
+    SuperviseController.checkPermission_notification().then((value) => {setState(() {
+      needGetPermmision=value;
+    })  });
+
   }
   @override
   Widget build(BuildContext context) {
@@ -31,9 +39,10 @@ class NotificationFilterState extends State<NotificationFilterPage> {
 
       appBar: AppBar(
         actions: <Widget>[
-          TextButton(
+
+          needGetPermmision?TextButton(
               onPressed: (){SuperviseController.getPermission_notification();},
-              child: Text('获取权限',style: TextStyle(color: Colors.white),))],
+              child: Text('获取权限',style: TextStyle(color: Colors.white),)):Text('')],
         title: Text("通知过滤"),
         leading: Builder(builder: (BuildContext context) {
           return IconButton(
@@ -50,6 +59,12 @@ class NotificationFilterState extends State<NotificationFilterPage> {
       ),
       body: ListView(children: lists),
     );
+  }
+
+  @override
+  void dispose() {
+    debugPrint("NotificationFilterPage dispose");
+    super.dispose();
   }
 }
 

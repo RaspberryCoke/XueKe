@@ -12,9 +12,11 @@ class WhiteAppPage extends StatefulWidget {
 }
 
 class WhiteAppState extends State<WhiteAppPage> {
+  bool needGetPermmision=false;
   List<MySwitchListTile> lists=[];
   @override
   initState(){
+    debugPrint("WhiteAppPage initState");
     super.initState();
     GlobalData.whiteAppsMap.forEach((key, value) {
       lists.add(
@@ -26,12 +28,28 @@ class WhiteAppState extends State<WhiteAppPage> {
     }
     );
 
+    //这是一个异步函数，当获取结果之后，刷新页面。
+    SuperviseController.checkPermission_accessibility().then((value) => {setState(() {
+      needGetPermmision=value;
+    })  });
+
+  }
+
+  @override
+  void dispose() {
+    debugPrint("WhiteAppPage dispose");
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+
+          needGetPermmision?TextButton(
+              onPressed: (){SuperviseController.getPermission_accessibility();},
+              child: Text('获取权限',style: TextStyle(color: Colors.white),)):Text('')],
         title: Text("白名单"),
         leading: Builder(builder: (BuildContext context) {
           return IconButton(

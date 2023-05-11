@@ -27,7 +27,14 @@ class SettingPage extends StatefulWidget {
 class SettingPageState extends State<SettingPage> {
   @override
   initState() {
+    debugPrint("SettingPageState initState");
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    debugPrint("SettingPageState dispose");
+    super.dispose();
   }
 
   @override

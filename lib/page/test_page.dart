@@ -1,11 +1,8 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 import 'package:device_apps/device_apps.dart';
-import 'package:flutter_accessibility_service/accessibility_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_accessibility_service/flutter_accessibility_service.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
 import 'package:flutter/services.dart';
 
@@ -23,6 +20,11 @@ class TestPageState extends State<TestPage> {
   @override
   initState() {
     super.initState();
+  }
+  @override
+  void dispose() {
+    debugPrint('TestPage  dispose');
+    super.dispose();
   }
 
   @override
@@ -106,25 +108,6 @@ class TestPageState extends State<TestPage> {
               DeviceApps.openApp("com.tencent.mm");
               sleep(Duration(seconds: 3));
               DeviceApps.openApp("com.hebut.tomato_clock");
-            },
-          ),
-
-
-          ElevatedButton(
-            child: Text('Check Accessibility Permission'),
-            onPressed: () async {
-              final bool status = await FlutterAccessibilityService
-                  .isAccessibilityPermissionEnabled();
-              if (status) {
-                print('Accessibility permission is granted.');
-              } else {
-                print('Accessibility permission is not granted.');
-                final bool res = await FlutterAccessibilityService
-                    .requestAccessibilityPermission();
-                FlutterAccessibilityService.accessStream.listen((event) {
-                  log("Current Event: $event");
-                });
-              }
             },
           ),
         ]),

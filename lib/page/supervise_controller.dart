@@ -10,6 +10,29 @@ class SuperviseController{
   static const ForegroundChangeChannel = MethodChannel( "ForegroundChange");
   static const NotificationChangeChannel = MethodChannel( "NotificationChange");
   static const GetPermissionChannel = MethodChannel( "GetPermission");
+  static const CheckPermissionChannel = MethodChannel( "CheckPermission");
+  static const PeriodNotifyChannel = MethodChannel( "PeriodNotify");
+  static const StopSuperviseAndNotifyChannel = MethodChannel( "StopSuperviseAndNotify");
+  static Future<bool>  checkPermission_notification() async {
+    try {
+      final bool res = await CheckPermissionChannel.invokeMethod('notification');
+      return Future.value(res);
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      return Future.value(false);
+    }
+  }
+
+  static Future<bool>  checkPermission_accessibility() async {
+    try {
+      final bool res = await CheckPermissionChannel.invokeMethod('accessibility');
+      return Future.value(res);
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      return Future.value(false);
+    }
+  }
+
 
   static Future<bool> startSupervise() async {
     try {
@@ -29,24 +52,8 @@ class SuperviseController{
       return Future.value(false);
     }
   }
-  static Future<bool> setToForeground() async {
-    try {
-      final bool res = await ForegroundChangeChannel.invokeMethod('setToForeground');
-      return Future.value(res);
-    } on PlatformException catch (e) {
-      debugPrint(e.toString());
-      return Future.value(false);
-    }
-  }
-  static Future<bool> setToBackground() async {
-    try {
-      final bool res = await ForegroundChangeChannel.invokeMethod('setToBackground');
-      return Future.value(res);
-    } on PlatformException catch (e) {
-      debugPrint(e.toString());
-      return Future.value(false);
-    }
-  }
+
+
   static Future<bool> packageChange() async {
     try {//直接发送信号。逻辑处理已经在white_app_page.dart中的turnTure和turnFalse中完成
       //也就是说，已经更新了全局数据，同时也进行了持久化。
@@ -78,6 +85,48 @@ class SuperviseController{
   static Future<bool>  getPermission_notification() async {
     try {
       final bool res = await GetPermissionChannel.invokeMethod('notification');
+      return Future.value(res);
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      return Future.value(false);
+    }
+  }
+
+  static Future<bool>  getPermission_accessibility() async {
+    try {
+      final bool res = await GetPermissionChannel.invokeMethod('accessibility');
+      return Future.value(res);
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      return Future.value(false);
+    }
+  }
+
+  static Future<bool> periodNotification(int remain_time) async{
+    try {
+      final bool res = await PeriodNotifyChannel.invokeMethod('periodNotify',remain_time);
+      return Future.value(res);
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      return Future.value(false);
+    }
+  }
+
+
+  static Future<bool> stopPeriodNotification() async{
+    try {//注意：这里一旦停止周期性通知，会发送finish通知。
+      final bool res = await PeriodNotifyChannel.invokeMethod('stopNotify');
+      return Future.value(res);
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      return Future.value(false);
+    }
+  }
+
+
+  static Future<bool> stopSuperviseAndNotify()async {
+    try {
+      final bool res = await StopSuperviseAndNotifyChannel.invokeMethod('stopSuperviseAndNotify');
       return Future.value(res);
     } on PlatformException catch (e) {
       debugPrint(e.toString());

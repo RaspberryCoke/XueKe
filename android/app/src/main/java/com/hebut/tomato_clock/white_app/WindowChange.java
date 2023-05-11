@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 
 import java.util.List;
+import java.util.Objects;
 
 public class WindowChange extends BroadcastReceiver {
     @Override
@@ -52,7 +53,18 @@ public class WindowChange extends BroadcastReceiver {
                 System.out.println("WindowChange onReceive:the process is killed,so stop supervise!");
             }
         }
+        //发现该应用是白名单应用
+        if(Objects.equals(_new, "com.hebut.tomato_clock") ||Objects.equals(_new, "com.android.systemui") )
+            return;
 
+
+        //其他白名单应用
+        //应该发送常驻通知，提醒用户
+        //同时有开启一个定时器，每隔一分钟更新时间
+        //一旦完成计时，取消这个常驻通知
+        //转而发送一个重要通知，提醒已经完成
+        //完成之后马上保存好数据
+        //注意：一旦跳转回到了本应用，就应该停止发送消息，撤回所有消息。
     }
     private final String WHETHER_SUPERVISE = "com.hebut.broadcast.WhetherSupervise";
 }

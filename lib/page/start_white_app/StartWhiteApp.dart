@@ -20,6 +20,7 @@ class StartWhiteAppState extends State<StartWhiteAppPage> {
 
   @override
   initState() {
+    debugPrint(" StartWhiteAppPage initState");
     super.initState();
     GlobalData.whiteAppsMap.forEach((key, value) {
       if (value == true&&key!="学刻") {
@@ -59,5 +60,11 @@ class StartWhiteAppState extends State<StartWhiteAppPage> {
       ),
       body: ListView(children: lists),
     );
+  }
+
+  @override
+  void dispose() {
+    debugPrint(" StartWhiteAppPage dispose");
+    super.dispose();
   }
 }

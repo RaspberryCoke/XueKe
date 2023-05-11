@@ -163,6 +163,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
   @override
   void dispose() {
     player.stop();
+    debugPrint("todo_detail_page  dispose");
     super.dispose();
   }
   ////////
@@ -1625,4 +1626,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
       ),
     );
   }
+
+
+
 }

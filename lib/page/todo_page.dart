@@ -23,8 +23,16 @@ class _TodoPageState extends State<TodoPage> {
 
   @override
   void initState() {
+    debugPrint('TodoPage  initState');
     super.initState();
   }
+  @override
+  void dispose() {
+    debugPrint('TodoPage  dispose');
+    super.dispose();
+  }
+
+
 
   void _showDate(BuildContext context) {
     showDatePicker(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:tomato_clock/page/lock_page/wordart.dart';
@@ -17,10 +19,38 @@ class LockPage extends StatefulWidget {
 }
 
 class LockPageState extends State<LockPage> {
+  // @override
+  // void dispose() {
+  //   debugPrint("lock_page is disposed!!!");
+  //   super.dispose();
+  // }
+  // @override
+  // didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   debugPrint("LockPage didChangeDependencies");
+  // }
+  // @override
+  // deactivate(){
+  //   super.deactivate();
+  //   debugPrint("LockPage deactivate");
+  // }
+  // @override
+  // didUpdateWidget(covariant LockPage oldWidget){
+  //   super.didUpdateWidget(oldWidget);
+  //   debugPrint("LockPage didUpdateWidget");
+  // }
+  //
+  // @override
+  // void setState(VoidCallback fn) {
+  //   // TODO: implement setState
+  //   super.setState(fn);
+  //   debugPrint("LockPage setState");
+  // }
+
   @override
   initState() {
     super.initState();
-    _remain_time = false;
+    debugPrint("LockPage initState");
     _is_running = false;
     controller = CountDownController();
     _circular = CircularCountDownTimer(
@@ -28,7 +58,7 @@ class LockPageState extends State<LockPage> {
       isReverse: true,
       width: 300,
       height: 300,
-      duration: GlobalData.minutes * 60,
+      duration: _remain_time,
       strokeWidth: 10,
       fillColor: Colors.green[300]!,
       ringColor: Colors.white.withOpacity(0.5),
@@ -38,18 +68,54 @@ class LockPageState extends State<LockPage> {
           fontSize: 33.0, color: Colors.white, fontWeight: FontWeight.bold),
       onComplete: () {
         _is_running = false;
+        SuperviseController.stopSupervise();
+        SuperviseController.stopPeriodNotification();
+        Navigator.pop(context);
+      },
+      onStart: () {
+        _is_running = true;
+        SuperviseController.startSupervise();
+        SuperviseController.periodNotification(_remain_time);
       },
     );
+    _timer = Timer.periodic(_period, (timer) {
+      _remain_time -= 60;
+      // 调用回调函数
+      if (_remain_time <= 0) {
+        // 停止计时器
+        _timer.cancel();
+        // 调用结束回调函数
+        onFinish();
+      }else{
+        onTick(_remain_time);
+      }
+    });
   }
+
+  void onTick(int remain_time) {
+    // 调用JAVA代码，更新通知栏
+    SuperviseController.periodNotification(remain_time);
+  }
+
+  void onFinish() {
+    // 调用JAVA代码，结束监督
+    SuperviseController.stopSuperviseAndNotify();
+    // 跳转到主界面
+    Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+  }
+
 
   late CountDownController controller;
   late CircularCountDownTimer _circular;
-  late bool _remain_time;
+  late int _remain_time=GlobalData.minutes * 60;
   late bool _is_running;
+  late Timer _timer;//计时器，每隔一分钟调用一次JAVA代码
+  Duration _period = const Duration(seconds: 10);//周期为一分钟
+
 
   @override
   Widget build(BuildContext context){
-    SuperviseController.startSupervise();
+
     debugPrint("LockPage build, whetherSupervise = true");
     return WillPopScope(
         child: Container(
@@ -139,10 +205,12 @@ class LockPageState extends State<LockPage> {
                         onPressed:() async {
                           if(_is_running == false)
                           {
+                            debugPrint("LockPage clock, resume");
                             controller.resume();
                             _is_running = true;
                           }
                           else {
+                            debugPrint("LockPage clock, pause");
                             _is_running = false;
                             controller.pause();
                           }
@@ -277,4 +345,7 @@ class LockPageState extends State<LockPage> {
     } else
       return false;
   }
+
+
+
 }
