@@ -10,28 +10,19 @@ import '../page/event.dart';
 
 class MainLogic extends ChangeNotifier {
   static const String keyTodoList = 'todo_list';
-
   // 累计完成次数
   static const String keyTodoCount = 'todo_count';
-
   // 未来倒计时
   static const String keyFutureTodoList = 'future_todo_list';
 
   MainLogic._();
-
   static final MainLogic _instance = MainLogic._();
-
   static MainLogic get instance => _instance;
-
   late SharedPreferences sharedPreferences;
-
   late LinkedHashMap<DateTime, List<Todo>> map;
-
   /// completed events
   late LinkedHashMap<DateTime, List<Todo>> completedEvents;
-
   EventNotifier<List<Todo>> refreshNotifier = EventNotifier([]);
-
   List<Todo> futureTodoList = [];
 
   init(SharedPreferences sharedPreferences) {

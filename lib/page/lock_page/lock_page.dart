@@ -18,34 +18,6 @@ class LockPage extends StatefulWidget {
 }
 
 class LockPageState extends State<LockPage> {
-  // @override
-  // void dispose() {
-  //   debugPrint("lock_page is disposed!!!");
-  //   super.dispose();
-  // }
-  // @override
-  // didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   debugPrint("LockPage didChangeDependencies");
-  // }
-  // @override
-  // deactivate(){
-  //   super.deactivate();
-  //   debugPrint("LockPage deactivate");
-  // }
-  // @override
-  // didUpdateWidget(covariant LockPage oldWidget){
-  //   super.didUpdateWidget(oldWidget);
-  //   debugPrint("LockPage didUpdateWidget");
-  // }
-  //
-  // @override
-  // void setState(VoidCallback fn) {
-  //   // TODO: implement setState
-  //   super.setState(fn);
-  //   debugPrint("LockPage setState");
-  // }
-
   @override
   initState() {
     super.initState();
@@ -227,7 +199,10 @@ class LockPageState extends State<LockPage> {
                         ),
                       ),
                       IconButton(
-                          onPressed:showdialog,
+                          onPressed:()async {
+                            bool res=await showdialog();
+                            if(res==true) Navigator.pop(context);
+                            },
                           icon: Icon(
                             Icons.stop_rounded,
                             color: Colors.white,

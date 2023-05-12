@@ -57,6 +57,13 @@ dependencies:
   device_apps: ^2.2.0
   sqflite: ^2.2.8
   mutex: ^3.0.1
+  tencent_kit: ^5.0.2
+  flutter_cache_manager: ^3.0.0
+  json_annotation: ^4.5.0
+
+tencent_kit:
+  app_id: '102050200'
+
 
 dev_dependencies:
   flutter_test:
@@ -88,7 +95,7 @@ flutter:
       - assets/newImages/
       - assets/fonts/
       - assets/fonts/wanghongziti.ttf
-
+      - assets/fonts/liu.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -104,6 +111,11 @@ flutter:
      - family: wanghongziti
        fonts:
          - asset: assets/fonts/wanghongziti.ttf
+
+     - family: liu
+       fonts:
+         - asset: assets/fonts/liu.ttf
+
          #- asset: fonts/Schyler-Italic.ttf
          #  style: italic
 #     - family: Trajan Pro

@@ -4,6 +4,7 @@ import 'package:tomato_clock/db/WhitePackageDB.dart';
 import 'package:tomato_clock/logic/login_logic.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/login/registration_page.dart';
+import 'package:tomato_clock/page/qq_login_page/qq_login_page.dart';
 import 'package:tomato_clock/page/setting_page/SettingPage.dart';
 import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/page/login.dart';
@@ -40,17 +41,6 @@ void main() async {
   LoginLogic.instance.init();
   initWhiteApp();
   initNotificationFilter();
-//debug
-//   String the_path = join(await getDatabasesPath(), 'notification_filter.db');
-  //
-  // final file = File(the_path);
-  //
-  // if (file.existsSync()) {
-  //   file.deleteSync();
-  //   print('文件已成功删除');
-  // } else {
-  //   print('找不到要删除的文件');
-  // }
   runApp(MyApp());
 }
 
@@ -83,7 +73,6 @@ ThemeData _buildShrineTheme() {
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -109,39 +98,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     print("------------------_MyAppState didChangeAppLifecycleState-------state:${state}-----------");
     super.didChangeAppLifecycleState(state);
     switch (state) {
-      case AppLifecycleState.resumed:{
-          // if (SuperviseController.isSupervised) {
-          //   debugPrint("resumed stopSupervise");
-          //   SuperviseController.setToBackground();
-          // }
-          break;
-        }
-
-      case AppLifecycleState.inactive:{
-          // if (SuperviseController.isSupervised) {
-          //   debugPrint("inactive startSupervise");
-          //   SuperviseController.setToForeground();
-          // }
-          break;
-        }
-
-      case AppLifecycleState.paused:{
-          // if (SuperviseController.isSupervised) {
-          //   debugPrint("paused startSupervise");
-          //   //替换掉这个
-          //   SuperviseController.setToForeground();
-          // }
-          break;
-        }
+      case AppLifecycleState.resumed:{break;}
+      case AppLifecycleState.inactive:{break;}
+      case AppLifecycleState.paused:{break;}
 //APP结束时调用. 类似于Android的onDestroy
-      case AppLifecycleState.detached:{
-          // if (SuperviseController.isSupervised) {
-          //   debugPrint("detached startSupervise");
-          //   //替换掉这个
-          //   SuperviseController.setToForeground();
-          // }
-          break;
-        }
+      case AppLifecycleState.detached:{break;}
     }
   }
 
@@ -161,6 +122,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/notification_page': (context) => NotificationFilterPage(),
           '/personPage':(context)=>PersonPage(),
           '/changeInfoPage':(context)=>MineSettingPage(),
+          '/QQLoginPageState':(context)=>QQLoginPage(),
         },
         theme: _buildShrineTheme(),
         builder: EasyLoading.init(),

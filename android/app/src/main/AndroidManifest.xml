@@ -5,7 +5,12 @@
    <application
         android:label="学刻"
         android:name="${applicationName}"
-        android:icon="@mipmap/logo2">
+        android:icon="@mipmap/t_406">
+
+       <meta-data
+           android:name="com.tencent.mm.sdk.constants.ACTION_REFRESH_WXAPP"
+       android:value="102050200" />
+
         <activity
             android:name=".MainActivity"
             android:excludeFromRecents="false"

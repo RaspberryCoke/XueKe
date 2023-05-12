@@ -49,8 +49,8 @@ public class HandleNotification extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, PERIOD_NOTIFICATION_CHANNEL)
                 .setContentTitle("学刻").setContentText("正在后台运行")
                 .setContentIntent(resultPendingIntent)  // 设置 PendingIntent
-                .setLargeIcon(R.drawable.tomato)
-                .setSmallIcon(R.drawable.tomato);
+                //.setLargeIcon(R.drawable.tomato)
+                .setSmallIcon(R.drawable.t_28);
         Notification notification = builder.build();
 
         assert NOTIFICATION_PERIOD_MANAGE != null;

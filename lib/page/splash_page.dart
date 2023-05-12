@@ -1,92 +1,64 @@
 import 'package:flutter/material.dart';
-//import 'package:tomato_clock/page/constant.dart';
-import 'package:tomato_clock/res.dart';
-import 'package:tomato_clock/page/login.dart';
 import 'dart:async';
-import 'package:tomato_clock/page/constant.dart';
+
 
 class SplashPage extends StatefulWidget {
    const SplashPage({Key? key}) : super(key: key);
-
-   //final String title;
 
   @override
   State<SplashPage> createState() => _SplashPageState();
 }
 
 class _SplashPageState extends State<SplashPage> {
+  int _opacity=0;
 
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 2000), () {
-      Navigator.pushReplacementNamed(context, Constant.login);
+
+    Future.delayed(const Duration(milliseconds: 200), () {
+      setState(() {
+        _opacity=1;
+      });
+    });
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      Navigator.pushReplacementNamed(context, '/QQLoginPageState');
     });
   }
-
-  //打开app的延时显示
-  /*bool _isVisible = false;
-  _SplashScreenState(){
-
-    new Timer(const Duration(milliseconds: 2000), (){
-      setState(() {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => Login()), (route) => false);
-      });
-    });
-
-    new Timer(
-        Duration(milliseconds: 10),(){
-      setState(() {
-        _isVisible = true; // Now it is showing fade effect and navigating to Login page
-      });
-    }
-    );*/
-
-
   @override
   Widget build(BuildContext context) {
      return Container(
-
-       decoration: new BoxDecoration(
-         gradient: new LinearGradient(
-           colors: [
-             Color(0xFFE8E53E),
-             Color(0xFF91E18C),
-           ],
-           //colors: [Theme.of(context).accentColor,Theme.of(context).primaryColor:Colors.Colors.white],
-             begin: const FractionalOffset(0,0),
-             end: const FractionalOffset(1, 0),
-             stops: [0,1],
-           tileMode: TileMode.clamp,
-         )
-       ),
-       child: AnimatedOpacity(
-         opacity: 1, duration: Duration(milliseconds: 1000),
-         child: Center(
-           child: Container(
-           height:140,
-           width: 140,
+       child:  Column(
+           children:<Widget> [
+             SizedBox(height: 200),
+             Container(
+               height:140,
+               width: 300,
              child: Container(
-               child: ClipOval(
-                 child: Image.asset('assets/logo2.png'),
-               ),
+               child: Text("学刻",
+                 textAlign: TextAlign.center,
+                 style: TextStyle(
+                  fontSize: 80,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "liu",
+                ),
+               )
              ),
-             decoration: BoxDecoration(
-               shape: BoxShape.circle,
-               color: Colors.white,
-               boxShadow:[
-                 BoxShadow(
-                   color: Colors.amber.withOpacity(0.3),
-                   blurRadius: 2,
-                   offset: Offset(5,3),
-                   spreadRadius: 2
-                 )
-               ]
-             ),
+           ),
+             SizedBox(height: 130),
+           Container(
+             child:
+             AnimatedOpacity(
+                opacity: _opacity.toDouble(),
+               duration: Duration(milliseconds: 1500),
+                child:Image.asset("assets/newImages/school.png",fit:BoxFit.cover),
+              ),
 
-           )
+             height:200,
+             width: 200,
+             ),
+           ]
          ),
-       ),
      );
   }
 }
