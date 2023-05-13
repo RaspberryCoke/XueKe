@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:tomato_clock/logic/GlobalData.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:flutter/services.dart';
 
 class TestPage extends StatefulWidget {

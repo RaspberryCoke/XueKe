@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tomato_clock/debug.dart';
 import 'dart:async';
-
+import 'package:tomato_clock/logic/main_logic.dart';
 
 class SplashPage extends StatefulWidget {
    const SplashPage({Key? key}) : super(key: key);
-
   @override
   State<SplashPage> createState() => _SplashPageState();
 }
@@ -14,14 +14,18 @@ class _SplashPageState extends State<SplashPage> {
 
   void initState() {
     super.initState();
-
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
         _opacity=1;
       });
     });
     Future.delayed(const Duration(milliseconds: 1500), () {
-      Navigator.pushReplacementNamed(context, '/QQLoginPageState');
+      if(MainLogic.userInfo.uid==''){
+        Navigator.pushReplacementNamed(context, '/QQLoginPageState');
+      }else{
+        infoprint("have login");
+        Navigator.pushReplacementNamed(context, '/home_page');
+      }
     });
   }
   @override
@@ -53,7 +57,6 @@ class _SplashPageState extends State<SplashPage> {
                duration: Duration(milliseconds: 1500),
                 child:Image.asset("assets/newImages/school.png",fit:BoxFit.cover),
               ),
-
              height:200,
              width: 200,
              ),

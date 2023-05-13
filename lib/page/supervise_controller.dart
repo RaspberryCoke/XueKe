@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import '../logic/GlobalData.dart';
+
+import '../logic/main_logic.dart';
+
 
 class SuperviseController{
   static bool isSupervised=false;
@@ -59,7 +61,7 @@ class SuperviseController{
       //也就是说，已经更新了全局数据，同时也进行了持久化。
       //这个时候，只需要在java代码中直接从参数获取即可。
       List<String> allPackages=[];
-      GlobalData.whitePackagesMap.forEach((key, value) {
+      MainLogic.whitePackagesMap.forEach((key, value) {
         if(value==true)
           {
             allPackages.add(key);
@@ -75,7 +77,7 @@ class SuperviseController{
   static Future<bool>  notificationChange() async {
     try {
 
-      final bool res = await NotificationChangeChannel.invokeMethod('notificationChange',GlobalData.packageFilterString);
+      final bool res = await NotificationChangeChannel.invokeMethod('notificationChange',MainLogic.packageFilterString);
       return Future.value(res);
     } on PlatformException catch (e) {
       debugPrint(e.toString());

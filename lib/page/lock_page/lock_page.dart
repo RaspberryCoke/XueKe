@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:tomato_clock/page/lock_page/wordart.dart';
+import '../../logic/main_logic.dart';
 import 'expands/top_button_expanded.dart';
 import 'expands/top_blank_expanded.dart';
 import 'expands/middle_timer_expanded.dart';
@@ -9,7 +10,7 @@ import 'expands/top_text_expanded.dart';
 import 'expands/bottom_text_expanded.dart';
 import 'expands/bottom_button_expanded.dart';
 import 'package:tomato_clock/page/supervise_controller.dart';
-import 'package:tomato_clock/logic/GlobalData.dart';
+
 
 class LockPage extends StatefulWidget {
   const LockPage({Key? key}) : super(key: key);
@@ -78,7 +79,7 @@ class LockPageState extends State<LockPage> {
 
   late CountDownController controller;
   late CircularCountDownTimer _circular;
-  late int _remain_time=GlobalData.minutes * 60;
+  late int _remain_time=MainLogic.minutes * 60;
   late bool _is_running;
   //late Timer _timer;//计时器，每隔一分钟调用一次JAVA代码
   //Duration _period = const Duration(seconds: 10);//周期为一分钟
@@ -150,7 +151,7 @@ class LockPageState extends State<LockPage> {
                 Spacer(flex: 10),
                 BottomTextExpanded(
                     child: Text(
-                  GlobalData.planName,
+                      MainLogic.planName,
                   style: TextStyle(
                     letterSpacing: 1,
                     fontSize: 20,

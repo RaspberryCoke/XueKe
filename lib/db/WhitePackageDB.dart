@@ -11,7 +11,7 @@ import 'package:path/path.dart';
 /// 数据库的逻辑控制：
 /// 1.在main.dart中进行初始化。
 /// 获取所有的应用实例。
-/// 把数据全部保存在GlobalData中的四个数据结构中。
+/// 把数据全部保存在MainLogic中的四个数据结构中。
 ///
 ///  static Map<String,String> appNameToPackageName={};
 ///  static Map<String,String> PackageNameToappName={};
@@ -68,7 +68,7 @@ class WhitePackageDB{
         join(await getDatabasesPath(), DATABASE_NAME),
         onCreate: (db, version) {
           return db.execute(
-            'CREATE TABLE ${TABLE_NAME} (${COLUMN_APP_NAME} TEXT,${COLUMN_PACKAGE_NAME} TEXT) ',
+            'CREATE TABLE ${TABLE_NAME} (${COLUMN_APP_NAME} TEXT,${COLUMN_PACKAGE_NAME} TEXT); ',
           );
         },
         version: 1,

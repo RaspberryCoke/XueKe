@@ -1,15 +1,21 @@
-import 'package:tomato_clock/logic/login_logic.dart';
+import 'dart:math';
+
+import 'package:tomato_clock/db/TodoDB.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/model/todo.dart';
 import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/page/event.dart';
-import 'package:tomato_clock/page/future_page.dart';
-import 'package:tomato_clock/page/login.dart';
 import 'package:flutter/material.dart';
 import 'package:tomato_clock/res.dart';
 import 'package:tomato_clock/page/todo_page.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:tomato_clock/logic/GlobalData.dart';
+import 'package:tomato_clock/db/UserInfo.dart';
+
+import '../colors.dart';
+import '../components/MyCard.dart';
+import 'drawer/drawer_of_main.dart';
+import 'my_add_todo_page/my_add_todo_page.dart';
+
 
 
 class TableEventsPage extends StatefulWidget {
@@ -20,14 +26,8 @@ class TableEventsPage extends StatefulWidget {
 }
 
 class _TableEventsPageState extends State<TableEventsPage> {
-  late final ValueNotifier<List<Todo>> _selectedEvents;
-  List<String> cards = [
-    Res.card_bg_2,
-    Res.card_bg_3,
-    Res.card_bg_4,
-    Res.card_bg_5,
-    Res.card_bg_6,
-  ];
+  ValueNotifier<List<Todo>> _selectedEvents=ValueNotifier<List<Todo>>([]);
+
 
   void setting() {
     Navigator.pushReplacementNamed(context, Constant.changeInfoPage);
@@ -68,23 +68,21 @@ class _TableEventsPageState extends State<TableEventsPage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   late EventNotifier<List<Todo>> _refresh;
+
+
   void _onRefresh() {
+    //排除已被删除的情况。
     if (!mounted) return;
-    List<Todo> list = [];
-    list.addAll(MainLogic.instance.getEventsForDay(_selectedDay!));
-    Future.delayed(Duration.zero, () {
-      _selectedEvents.value = list;
-    });
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    _refresh = MainLogic.instance.refreshNotifier;
+    _refresh = MainLogic.refreshNotifier;
     _refresh.addListener(_onRefresh);
     _selectedDay = _focusedDay;
-    _selectedEvents =
-        ValueNotifier(MainLogic.instance.getEventsForDay(_selectedDay!));
+    // _selectedEvents = ValueNotifier(MainLogic.instance.getEventsForDay(_selectedDay!));
   }
 
   @override
@@ -110,7 +108,8 @@ class _TableEventsPageState extends State<TableEventsPage> {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              MainLogic.instance.deleteTodoById(date);
+              MainLogic.todoList.removeWhere((element) => element.title == title);
+              TodoDB().deleteTitleName(title);
               _onRefresh();
             },
             child: Text('确认'),
@@ -119,8 +118,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
       ),
     );
   }
-
-
 
   void _showAddTodoDialog() {
     showGeneralDialog(
@@ -132,7 +129,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
             Navigator.of(context).pop();
           },
           child: Material(
-            child: Center(child: TodoPage()),
+            child: Center(child: MyTodoPage()),
             color: Colors.black26,
           ),
         );
@@ -143,6 +140,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kShrinePink50,
       appBar: AppBar(
         leading: Builder(builder: (BuildContext context) {
           return IconButton(
@@ -169,228 +167,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
       ),
 
 
-      drawer: Drawer(
-          //backgroundColor: Colors.white,
-          child: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            height: 200,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: new ExactAssetImage('assets/person_bg.png'),
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.65), BlendMode.dstATop),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 10, right: 20, top: 60),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(60),
-                        child: Image.asset(
-                          LoginLogic.instance.currentUser?.avatar ?? Res.person,
-                          height: 97,
-                          width: 97,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 60),
-                          Container(
-                            margin: EdgeInsets.only(top: 10),
-                            child: Text(
-                              '昵称：${LoginLogic.instance.currentUser?.name ?? ''}',
-                              overflow: TextOverflow.ellipsis, //溢出显示几个点
-                              maxLines: 2,
-                              style: TextStyle(
-                                  fontFamily: 'draw',
-                                  fontSize: 20,
-                                  color: Colors.black),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 8),
-                            child: Text(
-                              '${LoginLogic.instance.currentUser?.content ?? '千里之行，始于足下'}',
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.black),
-                              overflow: TextOverflow.ellipsis, //溢出显示几个点
-                              maxLines: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          ListTile(
-            selected: true,
-            leading: Container(
-              width: 37,
-              //    color: Colors.yellow,
-              child: Icon(
-                Icons.face,
-                size: 28,
-                color: Colors.black,
-              ),
-            ),
-            title: Text(
-              "个人中心",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/personPage');
-            },
-            trailing: Icon(Icons.keyboard_arrow_right_rounded),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          ListTile(
-            selected: true,
-            leading: Container(
-                width: 37,
-                //    color: Colors.yellow,
-                child: Icon(
-                  Icons.create,
-                  size: 28,
-                  color: Colors.black,
-                )),
-            title: Text(
-              "信息修改",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/changeInfoPage');
-              setting();
-            },
-            trailing: Icon(Icons.keyboard_arrow_right_rounded),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          ListTile(
-            selected: true,
-            leading: Container(
-                width: 37,
-                //    color: Colors.yellow,
-                child: Icon(
-                  Icons.event,
-                  size: 28,
-                  color: Colors.black,
-                )),
-            title: Text(
-              "设定目标",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500),
-            ),
-            onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const FuturePage(),
-                  ),
-                );
-            },
-            trailing: Icon(Icons.keyboard_arrow_right_rounded),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          ListTile(
-            selected: true,
-            leading: Container(
-                width: 37,
-                //    color: Colors.yellow,
-                child: Icon(
-                  Icons.settings,
-                  size: 28,
-                  color: Colors.black,
-                )),
-            title: Text(
-              "系统设置",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context,'/setting_page');
-              //setting();
-            },
-            trailing: Icon(Icons.keyboard_arrow_right_rounded),
-          ),
-
-
-
-        //for test
-          ListTile(
-            selected: true,
-            leading: Container(
-                width: 37,
-                //    color: Colors.yellow,
-                child: Icon(
-                  Icons.settings,
-                  size: 28,
-                  color: Colors.black,
-                )),
-            title: Text(
-              "test",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context,'/test_page');
-              //setting();
-            },
-            trailing: Icon(Icons.keyboard_arrow_right_rounded),
-          ),
-
-
-
-
-
-          SizedBox(
-            height: 30,
-          ),
-          item('退出登录', () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Login(),
-                ),
-                (route) => route.settings.name == '/');
-          }, textStyle: TextStyle(color: Colors.red, fontSize: 20)),
-        ],
-      )),
+      drawer: MyDrawer(),
       floatingActionButton: Stack(
         children: [
           Positioned(
@@ -428,78 +205,26 @@ class _TableEventsPageState extends State<TableEventsPage> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: Column(
-        //待办画面
-        children: [
-          const SizedBox(height: 20),
 
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<Todo>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    Todo todo = value[index];
-                    return GestureDetector(
-                      onLongPress: () {
-                        _showDeleteDialog(todo.date!, todo.title!);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 4.0,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(4)),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(cards[index % 6]),
-                          ),
-                        ),
-                        child: ListTile(
-                          onTap: () {
-
-                            /////////////////////
-                            GlobalData.planName=todo.title!;
-                            GlobalData.content=todo.content!;
-                            GlobalData.minutes=todo.duration!~/60;
-                            Navigator.pushNamed(context, '/lock_page');
-
-                            // Navigator.pushNamed(
-                            //   context,
-                            //   Constant.todoDetailPage,
-                            //   arguments: {
-                            //     TodoDetailPage.keyId: todo.date,
-                            //   },
-                            // );
-                          },
-                          title: Text(
-                            '${todo.title}',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                          subtitle: Text(
-                            '${todo.toMs()}',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.white,
-                            ),
-                          ),
-                          trailing: Text(
-                            '${todo.doneToString()}',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+      body: GridView.count(
+        crossAxisCount: 2,
+        padding: const EdgeInsets.all(16.0),
+        childAspectRatio: 8.0 / 12.0,
+        // TODO: Build a grid of cards (102)
+        children: generateAllCards(),
       ),
     );
+  }
+
+  List<MyCard> generateAllCards() {
+    List<Todo>res= MainLogic.refreshNotifier.value;
+    if(res.length==0){
+      return [];
+    }
+    List<MyCard> allCards = [];
+    for(var value in res){
+      allCards.add(MyCard(title:value.title,content:value.content,time:value.time));
+    }
+    return allCards;
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tomato_clock/db/NotificationFilterDB.dart';
-import 'package:tomato_clock/logic/GlobalData.dart';
+import 'package:tomato_clock/debug.dart';
+
 import 'package:tomato_clock/page/supervise_controller.dart';
+
+import '../../logic/main_logic.dart';
 
 class NotificationFilterKeywordPage extends StatefulWidget {
   String AppName;
@@ -29,15 +32,15 @@ class NotificationFilterKeywordPageState
     debugPrint('NotificationFilterKeywordPageState');
 
     AppName = _name;
-    debugPrint("AppName: $AppName");
+    infoprint("AppName: $AppName");
 
-    PackageName = GlobalData.appNameToPackageName[AppName]!;
-    debugPrint(PackageName);
-    filterStringList = NotificationFilterDB.convertStringToList(GlobalData
-        .packageFilterString[GlobalData.appNameToPackageName[AppName]!]!);
+    PackageName = MainLogic.appNameToPackageName[AppName]!;
+    infoprint(PackageName);
+    filterStringList = NotificationFilterDB.convertStringToList(MainLogic
+        .packageFilterString[MainLogic.appNameToPackageName[AppName]!]!);
     int len = filterStringList.length;
     for (int i = 0; i < len; i++) filterStringList.remove('');
-
+    for (int i = 0; i < filterStringList.length; i++)infoprint(filterStringList[i]);
     if (filterStringList.length == 1 && filterStringList[0] == '') {
       filterStringList = [];
       return;
@@ -68,12 +71,12 @@ class NotificationFilterKeywordPageState
                               filterStringList.remove(str);
                             }
                             //再更新packageFilterString
-                            GlobalData.packageFilterString[PackageName] =
+                            MainLogic.packageFilterString[PackageName] =
                                 NotificationFilterDB.convertListToString(
                                     filterStringList);
                             //在更新数据库
                             NotificationFilterDB().update_filter_string(AppName,
-                                GlobalData.packageFilterString[PackageName]!);
+                                MainLogic.packageFilterString[PackageName]!);
                             SuperviseController.notificationChange();
                             //再删除listOfTiles中的元素
                             for (var value in listOfTiles) {
@@ -148,8 +151,10 @@ class NotificationFilterKeywordPageState
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                             color: Colors.white),
                         padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child:
+                        //Column(
+                          //crossAxisAlignment: CrossAxisAlignment.center,
+                        ListView(
                           children: <Widget>[
                             Text(
                               "输入关键词，当通知中含有\n"
@@ -159,6 +164,7 @@ class NotificationFilterKeywordPageState
                                 fontSize: 19,
                                 color: Colors.red,
                               ),
+
                             ),
                             Text(
                               "如：张三、计算机2班等\n"
@@ -273,8 +279,8 @@ class NotificationFilterKeywordPageState
                                                   break;
                                                 }
                                               }
-                                              //更新GlobalData中的packageFilterString
-                                              GlobalData.packageFilterString[
+                                              //更新MainLogic中的packageFilterString
+                                              MainLogic.packageFilterString[
                                               PackageName] =
                                                   NotificationFilterDB
                                                       .convertListToString(
@@ -283,7 +289,7 @@ class NotificationFilterKeywordPageState
                                               NotificationFilterDB()
                                                   .update_filter_string(
                                                   AppName,
-                                                  GlobalData
+                                                  MainLogic
                                                       .packageFilterString[
                                                   PackageName]!);
                                               SuperviseController.notificationChange();
@@ -315,7 +321,7 @@ class NotificationFilterKeywordPageState
                                         NotificationFilterDB
                                             .convertListToString(
                                             filterStringList);
-                                        GlobalData.packageFilterString[
+                                        MainLogic.packageFilterString[
                                         PackageName] = toUpdateString;
                                         NotificationFilterDB()
                                             .update_filter_string(
@@ -336,6 +342,7 @@ class NotificationFilterKeywordPageState
                                   )
 
                                 ]),
+
                           ],
                         ),
                       ),

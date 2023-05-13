@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:tomato_clock/logic/GlobalData.dart';
 
 import '../../db/WhitePackageDB.dart';
+import '../../logic/main_logic.dart';
 import '../supervise_controller.dart';
 
 class WhiteAppPage extends StatefulWidget {
@@ -18,7 +18,7 @@ class WhiteAppState extends State<WhiteAppPage> {
   initState(){
     debugPrint("WhiteAppPage initState");
     super.initState();
-    GlobalData.whiteAppsMap.forEach((key, value) {
+    MainLogic.whiteAppsMap.forEach((key, value) {
       lists.add(
           MySwitchListTile(
             title: key,
@@ -93,8 +93,8 @@ class _MySwitchListTileState extends State<MySwitchListTile> {
       onChanged: (value) {
         setState((){
           switch_value = value;
-          GlobalData.whiteAppsMap[title]=value;
-          debugPrint(GlobalData.whiteAppsMap[title].toString()+" is set to "+value.toString());
+          MainLogic.whiteAppsMap[title]=value;
+          debugPrint(MainLogic.whiteAppsMap[title].toString()+" is set to "+value.toString());
           if(value) turnTrue();
           else turnFalse();
           //数据库更新操作
@@ -105,9 +105,9 @@ class _MySwitchListTileState extends State<MySwitchListTile> {
 
   Future<void> turnTrue() async{
     debugPrint("insert "+title);
-    int res=await WhitePackageDB().insert(title,GlobalData.appNameToPackageName[title]!);
-    GlobalData.whiteAppsMap[title]=true;
-    GlobalData.whitePackagesMap[GlobalData.appNameToPackageName[title]!]=true;
+    int res=await WhitePackageDB().insert(title,MainLogic.appNameToPackageName[title]!);
+    MainLogic.whiteAppsMap[title]=true;
+    MainLogic.whitePackagesMap[MainLogic.appNameToPackageName[title]!]=true;
     if(res>=0)debugPrint("insert success");
     WhitePackageDB().query().then((value) => debugPrint("all allowed apps(without main): "+value.toString()));
     SuperviseController.packageChange();
@@ -116,8 +116,8 @@ class _MySwitchListTileState extends State<MySwitchListTile> {
   Future<void> turnFalse() async{
     debugPrint("delete "+title);
     int res=await WhitePackageDB().deleteAppName(title);
-    GlobalData.whiteAppsMap[title]=false;
-    GlobalData.whitePackagesMap[GlobalData.appNameToPackageName[title]!]=false;
+    MainLogic.whiteAppsMap[title]=false;
+    MainLogic.whitePackagesMap[MainLogic.appNameToPackageName[title]!]=false;
     if(res>=0)debugPrint("delete success");
     WhitePackageDB().query().then((value) => debugPrint("all allowed apps(without main): "+value.toString()));
     SuperviseController.packageChange();

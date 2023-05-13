@@ -13,7 +13,7 @@ import 'package:mutex/mutex.dart';
 /// 数据库的逻辑控制：
 /// 1.在main.dart中进行初始化。
 /// 获取所有的应用实例。
-/// 把数据全部保存在GlobalData中的两个数据结构中。
+/// 把数据全部保存在MainLogic中的两个数据结构中。
 ///
 ///
 /// 其中appNameToPackageName和PackageNameToappName是一一对应的。
@@ -71,10 +71,11 @@ class NotificationFilterDB {
 
   static String convertListToString(List<String> list) {
     String _str = '';
-    for(int i = 0;i<list.length;i++)
+    for(int i = 0;i<list.length-1;i++)
     {
       _str = _str + list[i] + ',';
     }
+    _str = _str + list[list.length-1];
     return _str;
   }
   Future<Database> get database async {
@@ -89,7 +90,7 @@ class NotificationFilterDB {
             'CREATE TABLE ${TABLE_NAME} (${COLUMN_APP_NAME} TEXT,'
                 '${COLUMN_PACKAGE_NAME} TEXT ,'
                 '${COLUMN_ISBLOCKED} INTEGER DEFAULT 0,'
-                '${COLUMN_FILTER} TEXT DEFAULT "");'
+                '${COLUMN_FILTER} TEXT);'
           );
         },
         version: 1,

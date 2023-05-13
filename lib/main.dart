@@ -1,34 +1,26 @@
-import 'package:tomato_clock/logic/GlobalData.dart';
 import 'package:tomato_clock/db/NotificationFilterDB.dart';
 import 'package:tomato_clock/db/WhitePackageDB.dart';
-import 'package:tomato_clock/logic/login_logic.dart';
+import 'package:tomato_clock/debug.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
-import 'package:tomato_clock/login/registration_page.dart';
 import 'package:tomato_clock/page/qq_login_page/qq_login_page.dart';
 import 'package:tomato_clock/page/setting_page/SettingPage.dart';
-import 'package:tomato_clock/page/constant.dart';
-import 'package:tomato_clock/page/login.dart';
-import 'package:tomato_clock/page/mine_setting_page.dart';
 import 'package:tomato_clock/page/splash_page.dart';
 import 'package:tomato_clock/page/start_white_app/StartWhiteApp.dart';
-import 'package:tomato_clock/page/table_events_page.dart';
 import 'package:tomato_clock/page/test_page.dart';
-import 'package:tomato_clock/page/todo_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tomato_clock/page/lock_page/lock_page.dart';
 import 'package:tomato_clock/page/home_page.dart';
 import 'package:tomato_clock/page/supervise_controller.dart';
 import 'package:tomato_clock/page/white_app_page/white_app_page.dart';
 import 'colors.dart';
-import 'package:tomato_clock/page/person_page.dart';
-import 'model/cut_corners_border.dart';
-import 'page/todo_detail_page.dart';
+import 'db/TodoDB.dart';
+import 'db/UserInfo.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:tomato_clock/page/white_notification_page/notification_filter_page.dart';
+import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
@@ -36,19 +28,42 @@ import 'package:path/path.dart';
 void main() async {
   print("------------------main start-----------------------");
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  MainLogic.instance.init(sharedPreferences);
-  LoginLogic.instance.init();
+  //初始化用户信息
+  initUserInfo();
+  //初始化待办事项数据库
+  initTodoList();
+  //初始化白名单软件列表
   initWhiteApp();
+  //初始化通知过滤列表
   initNotificationFilter();
+
   runApp(MyApp());
+}
+
+void initTodoList() async{
+  List<Map<String, dynamic>>res=await TodoDB().query();
+  if(res.length==0)return;
+  for(var value in res){
+    MainLogic.todoList.add(Todo(value['id'],value['title'],value['time'],value['content']));
+  }
+  MainLogic.refreshNotifier.value=MainLogic.todoList;
+}
+
+Future<bool> initUserInfo()async {
+  //注意：这里默认从数据库取出来的数据都是完整的，正确的。
+  List<Map<String, dynamic>> query_res=await UserInfoDB().query();
+  if(query_res.length==0)return false;
+  Map<String,dynamic> r=query_res[0];
+  MainLogic.userInfo=UserInfo(r['uid'], r['name'], r['gender'], r['picture']);
+  return true;
 }
 
 ThemeData _buildShrineTheme() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
+
     colorScheme: base.colorScheme.copyWith(
-      primary: kShrinePink400,
+      primary: kShrinePink300,
       secondary: kShrineErrorRed,
       //error: kShrineErrorRed,
     ),
@@ -56,16 +71,21 @@ ThemeData _buildShrineTheme() {
     textSelectionTheme: const TextSelectionThemeData(
       selectionColor: kShrinePurple,
     ),
-    inputDecorationTheme: const InputDecorationTheme(
-      border: CutCornersBorder(),
-      focusedBorder: CutCornersBorder(
-        borderSide: BorderSide(
-          width: 2.0,
-          color: kShrinePurple,
-        ),
+
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.grey[200],
+      contentPadding: EdgeInsets.all(16.0),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
       ),
-      floatingLabelStyle: TextStyle(
-        color: kShrinePurple,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(color: Colors.grey[400]!),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(color: Colors.blue),
       ),
     ),
   );
@@ -114,15 +134,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ],
       child: MaterialApp(
         routes: {
+          '/': (context) => SplashPage(),
           '/lock_page': (context) => LockPage(),
           '/setting_page': (context) => SettingPage(),
           '/test_page': (context) => TestPage(),
           '/white_app_page': (context) => WhiteAppPage(),
           '/start_white_app': (context) => StartWhiteAppPage(),
           '/notification_page': (context) => NotificationFilterPage(),
-          '/personPage':(context)=>PersonPage(),
-          '/changeInfoPage':(context)=>MineSettingPage(),
+          //'/personPage':(context)=>PersonPage(),
+          //'/changeInfoPage':(context)=>MineSettingPage(),
           '/QQLoginPageState':(context)=>QQLoginPage(),
+          '/home_page':(context)=>HomePage(),
+          //'/todo_page':(context)=>TodoPage(),
         },
         theme: _buildShrineTheme(),
         builder: EasyLoading.init(),
@@ -133,47 +156,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: [
-          //此处
           const Locale('zh', 'CH'),
           const Locale('en', 'US'),
         ],
-        onGenerateRoute: (settings) {
-          Widget widget;
-          Map<String, dynamic>? args =
-              settings.arguments as Map<String, dynamic>?;
-          switch (settings.name) {
-            case Constant.main:
-              widget = SplashPage();
-              break;
-            case Constant.login:
-              widget = Login();
-              break;
-            case Constant.register:
-              widget = RegistrationPage();
-              break;
-            case Constant.homePage:
-              widget = HomePage();
-              break;
-            case Constant.todoDetailPage:
-              widget = TodoDetailPage(args: args);
-              break;
-            case Constant.todoPage:
-              widget = const TodoPage();
-              break;
-            case Constant.changeInfoPage:
-              widget = const MineSettingPage();
-              break;
-            case Constant.personPage:
-              widget = PersonPage();
-              break;
-            default:
-              widget = TableEventsPage();
-          }
-
-          return MaterialPageRoute(builder: (context) {
-            return widget;
-          });
-        },
       ),
     );
   }
@@ -182,17 +167,17 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 Future<void> initWhiteApp() async {
   await DeviceApps.getInstalledApplications().then((value) {
     for (var app in value) {
-      GlobalData.whiteAppsMap[app.appName] = false;
-      GlobalData.whitePackagesMap[app.packageName] = false;
-      GlobalData.appNameToPackageName[app.appName] = app.packageName;
-      GlobalData.packageNameToAppName[app.packageName] = app.appName;
+      MainLogic.whiteAppsMap[app.appName] = false;
+      MainLogic.whitePackagesMap[app.packageName] = false;
+      MainLogic.appNameToPackageName[app.appName] = app.packageName;
+      MainLogic.packageNameToAppName[app.packageName] = app.appName;
     }
   });
 
-  GlobalData.appNameToPackageName["学刻"] = "com.hebut.tomato_clock";
-  GlobalData.packageNameToAppName["com.hebut.tomato_clock"] = "学刻";
-  GlobalData.appNameToPackageName["系统UI"] = "com.android.systemui";
-  GlobalData.packageNameToAppName["com.android.systemui"] = "系统UI";
+  MainLogic.appNameToPackageName["学刻"] = "com.hebut.tomato_clock";
+  MainLogic.packageNameToAppName["com.hebut.tomato_clock"] = "学刻";
+  MainLogic.appNameToPackageName["系统UI"] = "com.android.systemui";
+  MainLogic.packageNameToAppName["com.android.systemui"] = "系统UI";
 
   //获取白名单
   List<Map<String, dynamic>> res = await WhitePackageDB().query();
@@ -202,25 +187,22 @@ Future<void> initWhiteApp() async {
 
   for (var app in res) {
     //在whiteAppsMap中设置为true
-    GlobalData.whitePackagesMap[app[WhitePackageDB.COLUMN_PACKAGE_NAME]] = true;
-    GlobalData.whiteAppsMap[app[WhitePackageDB.COLUMN_APP_NAME]] = true;
+    MainLogic.whitePackagesMap[app[WhitePackageDB.COLUMN_PACKAGE_NAME]] = true;
+    MainLogic.whiteAppsMap[app[WhitePackageDB.COLUMN_APP_NAME]] = true;
   }
 
-  GlobalData.whiteAppsMap["学刻"] = true;
-  GlobalData.whiteAppsMap["系统UI"] = true;
-  GlobalData.whitePackagesMap['com.hebut.tomato_clock'] = true;
-  GlobalData.whitePackagesMap["com.android.systemui"] = true;
+  MainLogic.whiteAppsMap["学刻"] = true;
+  MainLogic.whiteAppsMap["系统UI"] = true;
+  MainLogic.whitePackagesMap['com.hebut.tomato_clock'] = true;
+  MainLogic.whitePackagesMap["com.android.systemui"] = true;
 
-  // GlobalData.whiteAppsMap.forEach((key, value) {
-  //   debugPrint(key + " : " + value.toString());
-  // });
   await SuperviseController.packageChange();
 }
 
 Future<void> initNotificationFilter() async {
   await DeviceApps.getInstalledApplications().then((value) {
     for (var app in value) {
-      GlobalData.packageWhetherFilter[app.packageName] = false;
+      MainLogic.packageWhetherFilter[app.packageName] = false;
     }
   });
 
@@ -228,18 +210,16 @@ Future<void> initNotificationFilter() async {
 
   for (var item in res) {
     //在whiteAppsMap中设置为true
-    GlobalData.packageWhetherFilter[item['PackageName']] = true;
-    GlobalData.packageFilterString[item['PackageName']] =
-        item['FilterString'] == null ? "" : item['FilterString'];
+    MainLogic.packageWhetherFilter[item['PackageName']] = true;
+    MainLogic.packageFilterString[item['PackageName']] =
+        item['Filter'] == null ? "" : item['Filter'];
   }
-  GlobalData.packageWhetherFilter.remove("com.hebut.tomato_clock");
-  GlobalData.packageFilterString.remove("com.hebut.tomato_clock");
+  MainLogic.packageWhetherFilter.remove("com.hebut.tomato_clock");
+  MainLogic.packageFilterString.remove("com.hebut.tomato_clock");
 
   SuperviseController.notificationChange();
-  // //debug
-  // GlobalData.whiteAppsMap.forEach((key, value) {
-  //   debugPrint(key+" : "+value.toString());
-  // });
-  // bool res2= await SuperviseController.packageChange();
-  // debugPrint("res2 : "+res2.toString());
+  //debug
+  MainLogic.packageFilterString.forEach((key, value) {
+    infoprint(key+" : "+value.toString());
+  });
 }

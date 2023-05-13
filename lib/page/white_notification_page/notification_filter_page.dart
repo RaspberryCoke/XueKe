@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tomato_clock/db/NotificationFilterDB.dart';
-import 'package:tomato_clock/logic/GlobalData.dart';
+
+import '../../logic/main_logic.dart';
 import '../Notification_filter_keyword_page/notification_filter_keyword_page.dart';
 import '../supervise_controller.dart';
 
@@ -17,10 +18,10 @@ class NotificationFilterState extends State<NotificationFilterPage> {
   initState(){
     debugPrint("NotificationFilterPage initState");
     super.initState();
-    GlobalData.packageWhetherFilter.forEach((key, value) {
+    MainLogic.packageWhetherFilter.forEach((key, value) {
         lists.add(
             MySwitchListTile(
-              title: GlobalData.packageNameToAppName[key]!,
+              title: MainLogic.packageNameToAppName[key]!,
               activeColor: Colors.blue,
               value: value,
             ));
@@ -103,22 +104,22 @@ class _MySwitchListTileState extends State<MySwitchListTile> {
       onChanged: (value) {
         setState((){
           switch_value = value;
-          String pkname=GlobalData.appNameToPackageName[title]!;
+          String pkname=MainLogic.appNameToPackageName[title]!;
           if(value==false) {
-            GlobalData.packageFilterString.remove(pkname);
-            GlobalData.packageWhetherFilter[pkname]=false;
+            MainLogic.packageFilterString.remove(pkname);
+            MainLogic.packageWhetherFilter[pkname]=false;
             NotificationFilterDB().deleteAppName(title);
             SuperviseController.notificationChange();
           }else{
-            GlobalData.packageFilterString[pkname]='';
-            GlobalData.packageWhetherFilter[pkname]=true;
+            MainLogic.packageFilterString[pkname]='';
+            MainLogic.packageWhetherFilter[pkname]=true;
             NotificationFilterDB().insert(title,pkname,true,'');
             SuperviseController.notificationChange();
           }
-          debugPrint("GlobalData.packageWhetherFilter全部被阻塞的包：");
-          GlobalData.packageWhetherFilter.forEach((key, value) {
+          debugPrint("MainLogic.packageWhetherFilter全部被阻塞的包：");
+          MainLogic.packageWhetherFilter.forEach((key, value) {
             if(value==true)
-              debugPrint("pkName:"+key+"--->Filter:"+GlobalData.packageFilterString[key]!);
+              debugPrint("pkName:"+key+"--->Filter:"+MainLogic.packageFilterString[key]!);
           });
           //数据库更新操作
         });
