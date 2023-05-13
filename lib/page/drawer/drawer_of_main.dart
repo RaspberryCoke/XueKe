@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 
+import '../../colors.dart';
+
 class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: kShrinePink50,
         child: Column(
       children: [
         Container(
@@ -64,30 +67,57 @@ class MyDrawer extends StatelessWidget {
         SizedBox(
           height: 15,
         ),
-        ListTile(
-          selected: true,
-          leading: Container(
-            width: 37,
-            child: Icon(
-              Icons.face,
-              size: 28,
-              color: Colors.black,
+        Padding(padding: EdgeInsets.only(left: 10, right: 10), child:Container(
+          decoration: BoxDecoration(
+            color: kShrinePink100,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          constraints: BoxConstraints(
+            minHeight: 50,
+            maxHeight: 50,
+            minWidth: double.infinity,
+            maxWidth: double.infinity,
+          ),
+          child: ListTile(
+            selected: true,
+            leading: Container(
+              width: 37,
+              child: Icon(
+                Icons.face,
+                size: 28,
+                color: Colors.black,
+              ),
             ),
-          ),
-          title: Text(
-            "应用白名单",
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          onTap: () {
+            title: Text(
+              "应用白名单",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
+            ),
+            onTap: () {
               Navigator.pushNamed(context, '/white_app_page');
-          },
-          trailing: Icon(Icons.keyboard_arrow_right_rounded),
-        ),
+            },
+            trailing: Icon(Icons.keyboard_arrow_right_rounded),
+          ),
+        )),
+
         SizedBox(
           height: 5,
         ),
-        ListTile(
+        Padding(padding: EdgeInsets.only(left: 10, right: 10), child:
+        Container(
+          decoration: BoxDecoration(
+            color: kShrinePink100,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          constraints: BoxConstraints(
+            minHeight: 50,
+            maxHeight: 50,
+            minWidth: double.infinity,
+            maxWidth: double.infinity,
+          ),
+          child: ListTile(
           selected: true,
           leading: Container(
               width: 37,
@@ -104,10 +134,9 @@ class MyDrawer extends StatelessWidget {
           ),
           onTap: () {
             Navigator.pushNamed(context, '/notification_page');
-
           },
           trailing: Icon(Icons.keyboard_arrow_right_rounded),
-        ),
+        ))),
         SizedBox(
           height: 5,
         ),

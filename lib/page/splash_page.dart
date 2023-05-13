@@ -31,6 +31,19 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
      return Container(
+       constraints: BoxConstraints.expand(),
+       decoration: BoxDecoration(
+         image: DecorationImage(
+           image: AssetImage(
+             'assets/welcome/welcome.jpg',
+           ),
+           fit: BoxFit.cover,
+           alignment: Alignment.center,
+         ),
+         color: Colors.transparent,
+       ),
+
+
        child:  Column(
            children:<Widget> [
              SizedBox(height: 200),
@@ -42,8 +55,8 @@ class _SplashPageState extends State<SplashPage> {
                  textAlign: TextAlign.center,
                  style: TextStyle(
                   fontSize: 80,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  // fontWeight: FontWeight.bold,
                   fontFamily: "liu",
                 ),
                )

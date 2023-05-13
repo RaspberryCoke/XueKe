@@ -27,18 +27,6 @@ class SettingPageState extends State<SettingPage> {
       appBar: AppBar(
         title: Text("设置"),
         //backgroundColor: Colors.white,
-        leading: Builder(builder: (BuildContext context) {
-          return IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              size: 33,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          );
-        }),
       ),
       body: Container(
         child: ListView(
@@ -91,7 +79,6 @@ class SettingPageState extends State<SettingPage> {
               ),
               onTap: () {
                 Navigator.pushNamed(context, '/notification_page');
-
               },
               trailing: Icon(Icons.keyboard_arrow_right_rounded),
             ),
