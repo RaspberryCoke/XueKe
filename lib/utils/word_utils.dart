@@ -11,6 +11,6 @@ class WordUtils {
       ' 有志者\n  自有千计万计',
       ' 懒惰就像灰尘\n再硬的铁，碰上也会生锈',
     ];
-    return wds[Random().nextInt(wds.length)];
+    return wds[Random().nextInt(wds.length-1)];
   }
 }

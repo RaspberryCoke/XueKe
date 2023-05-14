@@ -185,7 +185,7 @@ class _QQHomeTestState extends State<QQHomeTest> {
           ListTile(
             title: Text('正常登陆界面'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, Constant.login);
+              //Navigator.pushReplacementNamed(context, );
             },
           ),
         ],

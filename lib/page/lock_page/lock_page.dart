@@ -1,12 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
-import 'package:tomato_clock/logic/play.dart';
-import 'package:tomato_clock/model/todo.dart';
-import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/page/lock_page/wordart.dart';
 import '../../db/TodoDB.dart';
 import '../../logic/main_logic.dart';
@@ -35,80 +32,48 @@ class LockPage extends StatefulWidget {
 }
 
 class LockPageState extends State<LockPage> {
-  List<String> musics = [
-    'yinyuehe.mp3',
-    'fire.mp3',
-    'yusheng.mp3',
-    'guzheng.mp3',
-    'xishui.mp3',
-    'senlin.mp3',
-  ];
-
   List<String> musicText = [
-    '音乐盒',
+    '钢琴轻音乐',
+    '雨声',
     '火焰声',
-    '下雨声',
-    '古筝音',
-    '溪水声',
-    '森林声',
   ];
 
-  List<String> musicBg = [
-    Res.ic_bgm_box,
-    Res.ic_bgm_fire,
-    Res.ic_bgm_rain,
-    Res.ic_bgm_guzheng,
-    Res.ic_bgm_xishui,
-    Res.ic_bgm_senlin,
+  List<String> wds = [
+    ' 与其仰望\n他人，不如埋头奋斗',
+    ' 燃烧点燃梦想\n   搏击展翅飞翔',
+    ' 要改变命运\n  首先 要改变自我',
+    ' 少问生活为什么\n  多问自己凭什么',
+    ' 有志者\n  自有千计万计',
+    ' 懒惰就像灰尘\n再硬的铁，碰上也会生锈',
   ];
 
-  List<String> bgs = [
-    Res.default_background_1,
-    Res.default_background_2,
-    Res.default_background_3,
-    Res.default_background_4,
-    Res.default_background_5,
-    Res.default_background_6,
-    Res.default_background_7,
-  ];
+  final AudioPlayer audioPlayer = AudioPlayer();
 
-  bool isDone = false;
-  bool isStop = false;
-  late Todo todo; /////////
-  MusicStatus type = MusicStatus.init;
-  // CountDownController controller = CountDownController();
+  late CountDownController controller;
+  late CircularCountDownTimer _circular;
+  late int _remain_time=MainLogic.minutes * 60;
+  late bool _is_running;
+  int _image_random = Random().nextInt(7)+1;//1-8
+  int _string_random = Random().nextInt(6-1);//0-5
+  int _selectedIndex=0;
 
-  AudioPlayer player = AudioPlayer();
+  bool _admit_music=false;
+  String _music = '钢琴轻音乐';
 
-  Source _source = AssetSource("");//Play.t1); //初始音乐改为t1
-  Source _timerSource = AssetSource("");//Play.instance.currentPlay());
-  int musicIndex = 0;
-  String backgroundPicture = BackgroundUtils.randomBackground();
-  String word = WordUtils.randomword();
-
-  void _initAudio() async {
-    await player.setSource(_source);
-    player.onPlayerComplete.listen((event) {
-      if (type != MusicStatus.complete && type != MusicStatus.close) {
-        player.play(_source);
-      }
-    });
-  }
   @override
   initState() {
     super.initState();
     debugPrint("LockPage initState");
 
-    _initAudio();
-    Future.delayed(Duration.zero, () {
-      controller.start();
-      setSource(type);
+    //设置循环播放
+    audioPlayer.onPlayerComplete.listen((event) {
       setState(() {
-        type = MusicStatus.start;
+        audioPlayer.play(AssetSource(MainLogic.musicToDir[_music]!));
       });
     });
 
-    _is_running = false;
+
+    _is_running = true;
     controller = CountDownController();
     _circular = CircularCountDownTimer(
       isReverseAnimation: true,
@@ -124,176 +89,31 @@ class LockPageState extends State<LockPage> {
       textStyle: TextStyle(
           fontSize: 33.0, color: Colors.white, fontWeight: FontWeight.bold),
       onComplete: () {
+        //设置运行状态
         _is_running = false;
-        isDone = true;
         if (!mounted) return;
-        setState(() {
-          type = MusicStatus.complete;
-          setSource(type, res: _timerSource);
-          //记录成功的结果
-          //MainLogic.instance.addCompleteEvent(todo);
-
-          player.stop();
-
-          Navigator.pushReplacementNamed(context, Constant.homePage);
-        });
+        //记录成功的结果
+        //MainLogic.instance.addCompleteEvent(todo);
+        //切换回主界面
+        Navigator.pushReplacementNamed(context,  '/home_page');
+        //发送通知
         SuperviseController.stopSupervise();
         SuperviseController.stopPeriodNotification();
-        Navigator.pop(context);
       },
-      onStart: () {
+      onStart: ()async {
         _is_running = true;
+        audioPlayer.play(AssetSource(MainLogic.musicToDir[_music]!));
         SuperviseController.startSupervise();
         SuperviseController.periodNotification(_remain_time);
       },
     );
   }
 
-  Future<void> setSource(MusicStatus type, {Source? res}) async {
-    Source source = res ?? _source;
-    if (type == MusicStatus.init) {
-      await player.play(source);
-    }
-    if (type == MusicStatus.pause) {
-      await player.resume();
-    }
-    if (type == MusicStatus.resume || type == MusicStatus.start) {
-      await player.pause();
-    }
-    if (type == MusicStatus.complete) {
-      //循环
-      await player.setSource(source);
-      await player.stop();
-      await player.play(source);
-    }
-    if (type == MusicStatus.close) {
-      await player.stop();
-    }
-  }
-
-  int getCurrentDuration() {
-    DateTime dateTime = DateFormat("ms").parse(controller.getTime());
-    return dateTime.minute * 60 + dateTime.second;
-  }
-
   @override
   void dispose() {
-    player.stop();
+    audioPlayer.stop();
     super.dispose();
   }
-
-  void _showMusicCard() {
-    showGeneralDialog(
-      context: context,
-      pageBuilder: (context, anim1, anim2) {
-        return Center(
-          child: Container(
-            width: 170,
-            height: 280,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      '默认背景音乐|音乐盒',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemCount: musics.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              musicIndex = index;
-                              Source _source =
-                                  AssetSource(musics[index]); //获取音乐的索引
-
-                              if (_is_running = false) {
-                                type = MusicStatus.close;
-                                controller.pause();
-                                player.stop();
-                                print("----------------关闭音乐");
-                              }
-                              else if (_is_running = true) {
-                                player.play(_source);
-                              }
-                              else if (type == MusicStatus.init) {
-                                type = MusicStatus.start;
-                                print("----------------开启音乐");
-                              }
-                              //setSource(MusicStatus.init);//////////
-                            });
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            height: 40,
-                            foregroundDecoration: BoxDecoration(
-                              //选择该音乐
-                              color: musicIndex != index
-                                  ? Colors.white70
-                                  : Colors.transparent,
-                            ),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(musicBg[index]),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                musicText[index],
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-      barrierDismissible: true,
-      barrierLabel: '',
-      barrierColor: Colors.black54,
-    );
-  }
-
-  late CountDownController controller;
-  late CircularCountDownTimer _circular;
-  late int _remain_time=MainLogic.minutes * 60;
-  late bool _is_running;
 
   @override
   Widget build(BuildContext context){
@@ -307,8 +127,9 @@ class LockPageState extends State<LockPage> {
             decoration: BoxDecoration(
               //背景装饰
               image: DecorationImage(
-                image: AssetImage(backgroundPicture),
+                image: AssetImage("assets/lockImages/$_image_random.jpg"),
                 fit: BoxFit.cover,
+                alignment: Alignment.center,
               ),
             ),
             //整个界面的灵活布局
@@ -356,7 +177,7 @@ class LockPageState extends State<LockPage> {
                     ])),
                 TopTextExpanded(
                     //随机文字
-                    child: word_art(text: word)),
+                    child: word_art(text: wds[_string_random])),
                 Spacer(flex: 5),
                 MiddleTimerExpanded(child: _circular),
                 Spacer(flex: 10),
@@ -391,55 +212,31 @@ class LockPageState extends State<LockPage> {
                             debugPrint("LockPage clock, resume");
                             controller.resume();
                             _is_running = true;
+                            SuperviseController.isSupervised = true;
+                            SuperviseController.startSupervise();
+                            SuperviseController.periodNotification(_remain_time);
+                            if(_admit_music==true)
+                              audioPlayer.resume();
                           }
                           else {
                             debugPrint("LockPage clock, pause");
                             _is_running = false;
                             controller.pause();
+                            SuperviseController.isSupervised = false;
+                            SuperviseController.stopSupervise();
+                            if(_admit_music==true)
+                              audioPlayer.pause();
                           }},
-                        // onPressed: () async {
-                        //   controller.pause();
-                        //   _is_running = false;
-                        //   if (isDone && !isStop) {
-                        //     isStop = true;
-                        //     type = MusicStatus.close;
-                        //     setSource(type);
-                        //     return;
-                        //   }
-                        //   if (!mounted) return;
-                        //   if (type == MusicStatus.init) {
-                        //     controller.start();
-                        //     setSource(type);
-                        //     type = MusicStatus.start;
-                        //   } else if (type == MusicStatus.start ||
-                        //       type == MusicStatus.resume) {
-                        //     controller.pause();
-                        //     setSource(type);
-                        //     type = MusicStatus.pause;
-                        //   } else if (type == MusicStatus.pause) {
-                        //     controller.resume();
-                        //     setSource(type);
-                        //     type = MusicStatus.resume;
-                        //   } else if (type == MusicStatus.complete) {
-                        //     type = MusicStatus.close;
-                        //     setSource(type);
-                        //   }
-                        //   setState(() {});
-                        // },
                         icon: Icon(
-                          type == MusicStatus.start ||
-                                  type == MusicStatus.resume
-                              ? Icons.pause_circle_outline
-                              : type == MusicStatus.complete
-                                  ? Icons.stop_circle_outlined
-                                  : Icons.play_circle_outline,
+                          Icons.pause_circle_outline,
                           color: Colors.white,
                           size: 35,
                           shadows: [
                             Shadow(
                                 color: Colors.black45,
                                 offset: Offset(2, 2),
-                                blurRadius: 2),
+                                blurRadius: 2
+                            ),
                           ],
                         ),
                       ),
@@ -461,9 +258,7 @@ class LockPageState extends State<LockPage> {
                           )),
                       IconButton(
                         onPressed: () {
-                          /////音乐按钮
-                          if (isDone) return;
-                          _showMusicCard();
+                          showMusicDialog();
                         },
                         icon: const Icon(
                           Icons.music_note_rounded,
@@ -567,4 +362,59 @@ class LockPageState extends State<LockPage> {
     } else
       return false;
   }
+
+  void showMusicDialog() async {
+    bool? res = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          //自动生成
+          return AlertDialog(
+            title: Text('Select an option'),
+            content: Container(
+              width: double.maxFinite,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: _selectedIndex == index ? Colors.blue : null,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Text(musicText[index]),
+                    ),
+                  );
+                },
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: Text('OK'),
+                onPressed: _selectedIndex == -1
+                    ? null
+                    : () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        }
+    );
+  }
+
+
+
 }

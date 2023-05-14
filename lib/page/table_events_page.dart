@@ -19,16 +19,6 @@ class TableEventsPage extends StatefulWidget {
 class _TableEventsPageState extends State<TableEventsPage> {
   ValueNotifier<List<Todo>> _selectedEvents=ValueNotifier<List<Todo>>([]);
 
-
-  void setting() {
-    Navigator.pushReplacementNamed(context, Constant.changeInfoPage);
-  }
-
-  void person() {
-    Navigator.pushReplacementNamed(context, Constant.personPage);
-  }
-
-
   bool _isDragging = false;
   double _x = 0;
   double _y = 0;

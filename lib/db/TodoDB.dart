@@ -7,9 +7,9 @@ import 'package:path/path.dart';
 /// 数据库名：todo.db
 /// 表名：todo
 /// 列名：
-/// id BIGINT PRIMARY KEY AUTOINCREMENT
+/// id INTEGER PRIMARY KEY AUTOINCREMENT
 /// title TEXT
-/// time  DATETIME
+/// time  INTEGER
 /// content TEXT
 ///
 /// 数据库的逻辑控制：

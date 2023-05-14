@@ -20,6 +20,13 @@ class MainLogic extends ChangeNotifier {
   //全局的用户信息，在一开始就进行了初始化，从sqlite数据库中初始化。
   static UserInfo userInfo = UserInfo('','',0,Uint8List(0));
 
+  static Map<String, String> musicToDir = {
+    '钢琴轻音乐':'assets/musics/piano.aac',
+    '雨声':'assets/musics/rain.aac',
+    '火焰声':'assets/musics/fire.aac',
+  };
+
+
 
   static int minutes = 1;
   static String  planName= '';
@@ -38,6 +45,8 @@ class MainLogic extends ChangeNotifier {
   static const String keyTodoCount = 'todo_count';
   // 未来倒计时
   static const String keyFuturerefreshNotifier = 'future_todo_list';
+
+
 
   MainLogic._();
   static final MainLogic _instance = MainLogic._();
