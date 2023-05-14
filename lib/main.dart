@@ -2,6 +2,7 @@ import 'package:tomato_clock/db/NotificationFilterDB.dart';
 import 'package:tomato_clock/db/WhitePackageDB.dart';
 import 'package:tomato_clock/debug.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
+import 'package:tomato_clock/page/history_page/history_page.dart';
 import 'package:tomato_clock/page/qq_login_page/qq_login_page.dart';
 import 'package:tomato_clock/page/setting_page/SettingPage.dart';
 import 'package:tomato_clock/page/splash_page.dart';
@@ -148,6 +149,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/notification_page': (context) => NotificationFilterPage(),
           '/QQLoginPageState':(context)=>QQLoginPage(),
           '/home_page':(context)=>HomePage(),
+          '/history_page':(context)=>HistoryPage(),
         },
         theme: _buildShrineTheme(),
         builder: EasyLoading.init(),

@@ -5,7 +5,7 @@ import 'package:tomato_clock/page/event.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../colors.dart';
-import '../components/MyCard.dart';
+import '../components/TodoCard.dart';
 import 'drawer/drawer_of_main.dart';
 import 'my_add_todo_page/my_add_todo_page.dart';
 
@@ -70,34 +70,6 @@ class _TableEventsPageState extends State<TableEventsPage> {
     _selectedEvents.dispose();
     super.dispose();
   }
-
-  void _showDeleteDialog(int date, String title) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('删除代办'),
-        content: Text('确认删除 $title ？'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('取消'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              MainLogic.todoList.removeWhere((element) => element.title == title);
-              TodoDB().deleteTitleName(title);
-              _onRefresh();
-            },
-            child: Text('确认'),
-          ),
-        ],
-      ),
-    );
-  }
-
 
 
   void _showAddTodoDialog() {
@@ -185,7 +157,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
           )
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
       body: GridView.count(
         crossAxisCount: 2,
@@ -197,14 +169,14 @@ class _TableEventsPageState extends State<TableEventsPage> {
     );
   }
 
-  List<MyCard> generateAllCards() {
+  List<TodoCard> generateAllCards() {
     List<Todo>res= MainLogic.refreshNotifier.value;
     if(res.length==0){
       return [];
     }
-    List<MyCard> allCards = [];
+    List<TodoCard> allCards = [];
     for(var value in res){
-      allCards.add(MyCard(title:value.title,content:value.content,time:value.time));
+      allCards.add(TodoCard(title:value.title,content:value.content,time:value.time));
     }
     return allCards;
   }

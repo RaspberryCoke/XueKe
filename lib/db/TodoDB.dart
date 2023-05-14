@@ -118,6 +118,20 @@ class TodoDB{
     }
   }
 
+  Future<int> queryIdByTitle(String title)async{
+    final Database db = await database;
+    try{
+      List<Map<String,dynamic>> maps=await db.query(TABLE_NAME,where: '${COLUMN_TITLE_NAME} = ?',whereArgs: [title]);
+      if(maps.length!=1){
+        return -1;
+      }
+      return maps[0][COLUMN_ID_NAME];
+    } catch(e) {
+      debugPrint(e.toString());
+      return -1;
+    }
+  }
+
   Future<void> close() async{
     final Database db = await database;
     try{

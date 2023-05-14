@@ -1,5 +1,6 @@
 import 'package:tomato_clock/page/data_page.dart';
 import 'package:flutter/material.dart';
+import 'package:tomato_clock/page/history_page/history_page.dart';
 import 'package:tomato_clock/page/setting_page/SettingPage.dart';
 import 'package:tomato_clock/page/table_events_page.dart';
 
@@ -17,11 +18,13 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     TableEventsPage(),
     DataPage(),
-    SettingPage()
+    SettingPage(),
+    HistoryPage(),
   ];
   Widget build(BuildContext context){
     return Scaffold(
       body: _pages[_currentIndex],
+      extendBody: true, // very important as noted
       bottomNavigationBar: Container(
           //color: Colors.transparent,
           child: Padding(
@@ -36,13 +39,14 @@ class _HomePageState extends State<HomePage> {
                   color:kShrinePink100,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.0),
+                      color: Colors.grey.withOpacity(0.7),
                       spreadRadius: 2,
                       blurRadius: 5,
                       offset: Offset(0, 3),
                     ),
                   ],
                 ),
+
                 child: BottomNavigationBar(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
@@ -76,6 +80,10 @@ class _HomePageState extends State<HomePage> {
                     BottomNavigationBarItem(
                       icon: Icon(Icons.settings),
                       label: "设置",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.table_rows_rounded),
+                      label: "历史数据",
                     ),
                   ],
                 ),

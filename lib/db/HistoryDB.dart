@@ -34,6 +34,19 @@ class History {
   int success;
   String tag;
   History(this.historyid,this.todoid, this.title, this.time, this.content,this.starttime,this.success,this.tag);
+
+  static History fromMap(Map<String, dynamic> the_data) {
+    return History(
+      the_data['historyid'],
+      the_data['todoid'],
+      the_data['title'],
+      the_data['time'],
+      the_data['content'],
+      DateTime.parse(the_data['starttime']),
+      the_data['success'],
+      the_data['tag'],
+    );
+  }
 }
 
 
@@ -49,6 +62,9 @@ class HistoryDB{
   static String COLUMN_SUCCESS_NAME='success';
   static String COLUMN_TAG_NAME='tag';
   static final HistoryDB _instance = HistoryDB._internal();
+
+
+
   Database? _database;
   factory HistoryDB() {
     return _instance;
@@ -63,9 +79,9 @@ class HistoryDB{
         join(await getDatabasesPath(), DATABASE_NAME),
         onCreate: (db, version) {
           return db.execute(
-            'CREATE TABLE ${TABLE_NAME} '
-                '(${COLUMN_HISTORY_ID_NAME} INTEGER PRIMARY KEY AUTOINCREMENT,'
-                '(${COLUMN_TODO_ID_NAME} INTEGER,'
+            'CREATE TABLE ${TABLE_NAME} ('
+                '${COLUMN_HISTORY_ID_NAME} INTEGER PRIMARY KEY AUTOINCREMENT,'
+                '${COLUMN_TODO_ID_NAME} INTEGER,'
                 '${COLUMN_TITLE_NAME} TEXT,'
                 '${COLUMN_TIME_NAME} INTEGER,'
                 '${COLUMN_START_TIME_NAME} DATETIME,'
@@ -98,24 +114,33 @@ class HistoryDB{
     }
   }
 
-  Future<int> insert(String title,int time,String content) async {
-    final Database db = await database;
-    int res=await db.insert(
-      TABLE_NAME,
-      {
-        COLUMN_TITLE_NAME: title,
-        COLUMN_TIME_NAME:time,
-        COLUMN_CONTENT_NAME:content,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    return res;
-  }
+
 
   Future<int> deleteTitleName(String title) async{
     final Database db = await database;
     try{
       return db.delete(TABLE_NAME,where: '${COLUMN_TITLE_NAME} = ?',whereArgs: [title]);
+    } catch(e) {
+      debugPrint(e.toString());
+      return 0;
+    }
+  }
+
+
+  Future<int> deleteHistoryID(int id) async{
+    final Database db = await database;
+    try{
+      return db.delete(TABLE_NAME,where: '${COLUMN_HISTORY_ID_NAME} = ?',whereArgs: [id]);
+    } catch(e) {
+      debugPrint(e.toString());
+      return 0;
+    }
+  }
+
+  Future<int> updateHistoryIdToSucceed(int historyid) async{
+    final Database db = await database;
+    try{
+      return db.update(TABLE_NAME,{'success':1},where: '${COLUMN_HISTORY_ID_NAME} = ?',whereArgs: [historyid]);
     } catch(e) {
       debugPrint(e.toString());
       return 0;
@@ -132,6 +157,38 @@ class HistoryDB{
       return [];
     }
   }
+
+  Future<List<Map<String,dynamic>>> load_data(int _size,int _offset) async{
+    final Database db = await database;
+    try{
+      List<Map<String,dynamic>> maps=await db.query(TABLE_NAME,orderBy: '${COLUMN_HISTORY_ID_NAME} DESC',limit: _size,offset: _offset);
+      return maps;
+    } catch(e) {
+      debugPrint(e.toString());
+      return [];
+    }
+  }
+
+  Future<int> insert(int todoid,String title,int time,DateTime starttime,
+      String content,int success,String tag) async {
+    final Database db = await database;
+    int res=await db.insert(
+      TABLE_NAME,
+      {
+        COLUMN_TODO_ID_NAME:todoid,
+        COLUMN_START_TIME_NAME:starttime.toString(),
+        COLUMN_TITLE_NAME: title,
+        COLUMN_TIME_NAME:time,
+        COLUMN_CONTENT_NAME:content,
+        COLUMN_SUCCESS_NAME:success,
+        COLUMN_TAG_NAME:tag,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    return res;
+  }
+
+
 
   Future<void> close() async{
     final Database db = await database;

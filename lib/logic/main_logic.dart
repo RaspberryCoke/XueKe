@@ -21,15 +21,16 @@ class MainLogic extends ChangeNotifier {
   static UserInfo userInfo = UserInfo('','',0,Uint8List(0));
 
   static Map<String, String> musicToDir = {
-    '钢琴轻音乐':'assets/musics/piano.aac',
-    '雨声':'assets/musics/rain.aac',
-    '火焰声':'assets/musics/fire.aac',
+    '钢琴轻音乐':'musics/piano.aac',
+    '雨声':'musics/rain.aac',
+    '火焰声':'musics/fire.aac',
   };
 
 
-
+  static int todoid=-1;
+  static int historyid=-1;
   static int minutes = 1;
-  static String  planName= '';
+  static String  title= '';
   static String  content= '';
   //包信息
   static Map<String,String> appNameToPackageName={};

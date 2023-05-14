@@ -6,12 +6,12 @@ import 'package:tomato_clock/logic/main_logic.dart';
 
 import '../db/TodoDB.dart';
 
-class MyCard extends StatelessWidget {
+class TodoCard extends StatelessWidget {
   final String title;
   final String content;
   final int time;
 
-  const MyCard({
+  const TodoCard({
     Key? key,
     required this.title,
     required this.content,
@@ -21,11 +21,12 @@ class MyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
+        onTap: () async{
           //开始计时
-          MainLogic.planName=title;
+          MainLogic.title=title;
           MainLogic.content=content;
           MainLogic.minutes=time;
+          MainLogic.todoid=await TodoDB().queryIdByTitle(MainLogic.title);
           Navigator.pushNamed(context, '/lock_page');
         },
         onLongPress: () async{
