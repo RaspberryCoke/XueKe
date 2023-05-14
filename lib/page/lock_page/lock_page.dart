@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:tomato_clock/db/HistoryDB.dart';
+import 'package:tomato_clock/debug.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/page/lock_page/wordart.dart';
 import '../../db/TodoDB.dart';
@@ -19,13 +21,9 @@ import 'expands/bottom_button_expanded.dart';
 import 'package:tomato_clock/page/supervise_controller.dart';
 
 
-enum MusicStatus { start, pause, init, resume, complete, close }
-
 class LockPage extends StatefulWidget {
 
-  static const String keyId = "key_id";
-  const LockPage({Key? key, this.args}) : super(key: key);
-  final Map<String, dynamic>? args;
+  const LockPage({Key? key}) : super(key: key);
 
   @override
   LockPageState createState() => LockPageState();
@@ -55,10 +53,9 @@ class LockPageState extends State<LockPage> {
   late bool _is_running;
   int _image_random = Random().nextInt(7)+1;//1-8
   int _string_random = Random().nextInt(6-1);//0-5
-  int _selectedIndex=0;
-
-  bool _admit_music=false;
-  String _music = '钢琴轻音乐';
+  int _selectedValue=3;
+  bool _admit_music=true;
+  String _music = '雨声';
 
   @override
   initState() {
@@ -99,15 +96,29 @@ class LockPageState extends State<LockPage> {
         //发送通知
         SuperviseController.stopSupervise();
         SuperviseController.stopPeriodNotification();
+        if(MainLogic.historyid<0){
+          errprint("lock_page.dart: onComplete: ()  : MainLogic.historyid<0");
+        }else{
+          HistoryDB().updateHistoryIdToSucceed(MainLogic.historyid);
+        }
       },
       onStart: ()async {
         _is_running = true;
         audioPlayer.play(AssetSource(MainLogic.musicToDir[_music]!));
         SuperviseController.startSupervise();
         SuperviseController.periodNotification(_remain_time);
+        //先向history数据库中插入一条失败的条目，如果之后成功完成任务，再修改为成功的状态。
+        int res=await HistoryDB().insert(MainLogic.todoid,MainLogic.title,MainLogic.minutes,
+          DateTime.now(),MainLogic.content,0,'');
+        if(res==0){
+          errprint("lock_page.dart:int res=await HistoryDB().insert wrong!");
+        }
+        MainLogic.historyid=await HistoryDB().getTopID();
       },
     );
   }
+
+
 
   @override
   void dispose() {
@@ -183,7 +194,7 @@ class LockPageState extends State<LockPage> {
                 Spacer(flex: 10),
                 BottomTextExpanded(
                     child: Text(
-                      MainLogic.planName,
+                      MainLogic.title,
                   style: TextStyle(
                     letterSpacing: 1,
                     fontSize: 20,
@@ -364,55 +375,99 @@ class LockPageState extends State<LockPage> {
   }
 
   void showMusicDialog() async {
-    bool? res = await showDialog(
+    await showDialog(
         context: context,
         builder: (BuildContext context) {
-          //自动生成
-          return AlertDialog(
-            title: Text('Select an option'),
-            content: Container(
-              width: double.maxFinite,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(16.0),
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            child: Container(
+              height: 350,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  color: Colors.white),
+              padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '请确定是否要退出倒计时',
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                      height: 250,
                       decoration: BoxDecoration(
-                        color: _selectedIndex == index ? Colors.blue : null,
-                        borderRadius: BorderRadius.circular(8.0),
+                        //color: Color(0xFFF6F6F6),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
-                      child: Text(musicText[index]),
-                    ),
-                  );
-                },
+                      child:ListView(
+                        children: <Widget>[
+                          RadioListTile(
+                            title: Text('静音'),
+                            value: 1,
+                            groupValue: _selectedValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedValue = value!;
+                                Navigator.pop(context);
+                                _admit_music=false;
+                                audioPlayer.stop();
+                              });
+                            },
+                          ),
+                          RadioListTile(
+                            title: Text('钢琴轻音乐'),
+                            value: 2,
+                            groupValue: _selectedValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedValue = value!;
+                                Navigator.pop(context);
+                                _admit_music=true;
+                                _music='钢琴轻音乐';
+                                audioPlayer.play(AssetSource(MainLogic.musicToDir[_music]!));
+                              });
+                            },
+                          ),
+                          RadioListTile(
+                            title: Text('雨声'),
+                            value: 3,
+                            groupValue: _selectedValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedValue = value!;
+                                Navigator.pop(context);
+                                _admit_music=true;
+                                _music='雨声';
+                                audioPlayer.play(AssetSource(MainLogic.musicToDir[_music]!));
+                              });
+                            },
+                          ),
+                          RadioListTile(
+                            title: Text('火焰声'),
+                            value: 4,
+                            groupValue: _selectedValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedValue = value!;
+                                Navigator.pop(context);
+                                _admit_music=true;
+                                _music='火焰声';
+                                audioPlayer.play(AssetSource(MainLogic.musicToDir[_music]!));
+                              });
+                            },
+                          ),
+                        ],
+                      ) ,
+                  )
+                ],
               ),
             ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              TextButton(
-                child: Text('OK'),
-                onPressed: _selectedIndex == -1
-                    ? null
-                    : () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
           );
-        }
-    );
+        });
   }
 
 
