@@ -504,7 +504,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage(cards[index % 6]),
+                            image: AssetImage(cards[index % 5]),
                           ),
                         ),
                         child: ListTile(

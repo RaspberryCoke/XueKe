@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage>{
 
   final List<Widget> _pages=[
     TableEventsPage(),
-    LockPage(),
+   // LockPage(),
     DataPage(),
   ];
 
@@ -58,22 +58,23 @@ class _HomePageState extends State<HomePage>{
 
         onTap: (index){
           setState(() {
-            if(index==1)
+            _currentIndex=index;
+            /*if(index==1)
             {
               //全屏页面的跳转的实现
 
               Navigator.pushNamed(context, '/lock_page');
+
             }
             else
-              _currentIndex=index;
+              _currentIndex=index;*/
           });
         },
 
         items: const [
           BottomNavigationBarItem(icon:Icon(Icons.message_rounded), label: "待办",tooltip: ''),
-          BottomNavigationBarItem(icon:Icon(Icons.lock), label: "锁屏",tooltip: ''),
+        //  BottomNavigationBarItem(icon:Icon(Icons.lock), label: "锁屏",tooltip: ''),
           BottomNavigationBarItem(icon:Icon(Icons.data_thresholding_outlined), label: "数据",tooltip: ''),
-          //BottomNavigationBarItem(icon:Icon(Icons.people), label: "用户"),
         ],
       ),
     );

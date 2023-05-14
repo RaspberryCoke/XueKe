@@ -20,11 +20,9 @@ import 'expands/bottom_button_expanded.dart';
 import 'package:tomato_clock/page/back_to_app.dart';
 import 'package:tomato_clock/logic/GlobalData.dart';
 
-
 enum MusicStatus { start, pause, init, resume, complete, close }
 
 class LockPage extends StatefulWidget {
-
   static const String keyId = "key_id";
   const LockPage({Key? key, this.args}) : super(key: key);
   final Map<String, dynamic>? args;
@@ -73,17 +71,17 @@ class _lock_page_state extends State<LockPage> {
 
   bool isDone = false;
   bool isStop = false;
-  late Todo todo;/////////
+  late Todo todo; /////////
   MusicStatus type = MusicStatus.init;
- // CountDownController controller = CountDownController();
+  // CountDownController controller = CountDownController();
 
   AudioPlayer player = AudioPlayer();
 
-  Source _source = AssetSource(Play.t1);//初始音乐改为t1
+  Source _source = AssetSource(Play.t1); //初始音乐改为t1
   Source _timerSource = AssetSource(Play.instance.currentPlay());
   int musicIndex = 0;
-   String backgroundPicture = BackgroundUtils.randomBackground();
-   String word = WordUtils.randomword();
+  String backgroundPicture = BackgroundUtils.randomBackground();
+  String word = WordUtils.randomword();
 
   void _initAudio() async {
     await player.setSource(_source);
@@ -93,7 +91,6 @@ class _lock_page_state extends State<LockPage> {
       }
     });
   }
-
 
   @override
   initState() {
@@ -122,8 +119,8 @@ class _lock_page_state extends State<LockPage> {
       isReverse: true,
       width: 300,
       height: 300,
-      duration: todo.duration!,///////
-      initialDuration: 0,////////
+      duration: todo.duration!, ///////
+      initialDuration: 0, ////////
       strokeWidth: 10,
       fillColor: Colors.green[300]!,
       ringColor: Colors.white.withOpacity(0.5),
@@ -142,12 +139,11 @@ class _lock_page_state extends State<LockPage> {
 
           player.stop();
 
-          Navigator.pushReplacementNamed(context, Constant.homePage) ;
+          Navigator.pushReplacementNamed(context, Constant.homePage);
         });
       },
     );
   }
-
 
   Future<void> setSource(MusicStatus type, {Source? res}) async {
     Source source = res ?? _source;
@@ -160,7 +156,8 @@ class _lock_page_state extends State<LockPage> {
     if (type == MusicStatus.resume || type == MusicStatus.start) {
       await player.pause();
     }
-    if (type == MusicStatus.complete) {//循环
+    if (type == MusicStatus.complete) {
+      //循环
       await player.setSource(source);
       await player.stop();
       await player.play(source);
@@ -229,20 +226,30 @@ class _lock_page_state extends State<LockPage> {
                           onTap: () {
                             setState(() {
                               musicIndex = index;
-                              Source _source = AssetSource(musics[index]);//获取音乐的索引
-                              player.play(_source);
-                              // Navigator.pop(context);
+                              Source _source =
+                                  AssetSource(musics[index]); //获取音乐的索引
 
-                              if (type == MusicStatus.init) {
-                                type = MusicStatus.start;
+                              if (_is_running = false) {
+                                type = MusicStatus.close;
+                                controller.pause();
+                                player.stop();
+                                print("----------------关闭音乐");
                               }
-                              setSource(MusicStatus.init);
+                              else if (_is_running = true) {
+                                player.play(_source);
+                              }
+                              else if (type == MusicStatus.init) {
+                                type = MusicStatus.start;
+                                print("----------------开启音乐");
+                              }
+                              //setSource(MusicStatus.init);//////////
                             });
                             Navigator.pop(context);
                           },
                           child: Container(
                             height: 40,
-                            foregroundDecoration: BoxDecoration(//选择该音乐
+                            foregroundDecoration: BoxDecoration(
+                              //选择该音乐
                               color: musicIndex != index
                                   ? Colors.white70
                                   : Colors.transparent,
@@ -278,7 +285,6 @@ class _lock_page_state extends State<LockPage> {
       barrierColor: Colors.black54,
     );
   }
-
 
   late CountDownController controller;
   late CircularCountDownTimer _circular;
@@ -344,14 +350,15 @@ class _lock_page_state extends State<LockPage> {
                         ],
                       ),
                     ])),
-                TopTextExpanded(//随机文字
+                TopTextExpanded(
+                    //随机文字
                     child: word_art(text: word)),
                 Spacer(flex: 5),
                 MiddleTimerExpanded(child: _circular),
                 Spacer(flex: 10),
                 BottomTextExpanded(
                     child: Text(
-                      todo.title ?? "",
+                  todo.title ?? "",
                   style: TextStyle(
                     letterSpacing: 1,
                     fontSize: 20,
@@ -374,7 +381,7 @@ class _lock_page_state extends State<LockPage> {
                     children: [
                       IconButton(
                         //注意：这是一个判断句，如果是true，就显示这个按钮，如果是false，就显示另一个按钮
-                        onPressed:() async {
+                        onPressed: () async {
                           controller.pause();
                           _is_running = false;
                           if (isDone && !isStop) {
@@ -397,7 +404,6 @@ class _lock_page_state extends State<LockPage> {
                             controller.resume();
                             setSource(type);
                             type = MusicStatus.resume;
-
                           } else if (type == MusicStatus.complete) {
                             type = MusicStatus.close;
                             setSource(type);
@@ -406,11 +412,11 @@ class _lock_page_state extends State<LockPage> {
                         },
                         icon: Icon(
                           type == MusicStatus.start ||
-                              type == MusicStatus.resume
-                              ? Icons.pause_circle_outline:
-                          type == MusicStatus.complete
-                        ? Icons.stop_circle_outlined
-                            : Icons.play_circle_outline,
+                                  type == MusicStatus.resume
+                              ? Icons.pause_circle_outline
+                              : type == MusicStatus.complete
+                                  ? Icons.stop_circle_outlined
+                                  : Icons.play_circle_outline,
                           color: Colors.white,
                           size: 35,
                           shadows: [
@@ -421,7 +427,6 @@ class _lock_page_state extends State<LockPage> {
                           ],
                         ),
                       ),
-
                       IconButton(
                           onPressed: () async {
                             bool? res = await showDialog(
@@ -429,19 +434,25 @@ class _lock_page_state extends State<LockPage> {
                                 builder: (BuildContext context) {
                                   return Dialog(
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15))),
                                     child: Container(
                                       height: 200,
                                       decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
                                           color: Colors.white),
-                                      padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
+                                      padding:
+                                          EdgeInsets.fromLTRB(15, 20, 15, 20),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
                                             '请确定是否要退出倒计时',
-                                            style: TextStyle(color: Colors.black, fontSize: 18),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18),
                                           ),
                                           SizedBox(
                                             height: 20,
@@ -450,35 +461,45 @@ class _lock_page_state extends State<LockPage> {
                                               height: 100,
                                               decoration: BoxDecoration(
                                                 //color: Color(0xFFF6F6F6),
-                                                borderRadius:
-                                                BorderRadius.all(Radius.circular(10)),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
                                               ),
                                               child: Column(children: <Widget>[
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.pop(context, true);
-                                                    BackToApp.is_set_to_keep_screen_on = false;
+                                                    Navigator.pop(
+                                                        context, true);
+                                                    BackToApp
+                                                            .is_set_to_keep_screen_on =
+                                                        false;
                                                   },
                                                   child: Text(
                                                     "退出倒计时",
                                                     style: TextStyle(
-                                                        color: Colors.black, fontSize: 18),
+                                                        color: Colors.black,
+                                                        fontSize: 18),
                                                   ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors.white,
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white,
                                                   ),
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.pop(context, false);
+                                                    Navigator.pop(
+                                                        context, false);
                                                   },
                                                   child: Text(
                                                     "取消",
                                                     style: TextStyle(
-                                                        color: Colors.black, fontSize: 18),
+                                                        color: Colors.black,
+                                                        fontSize: 18),
                                                   ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors.white,
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white,
                                                   ),
                                                 ),
                                               ]))
@@ -489,10 +510,9 @@ class _lock_page_state extends State<LockPage> {
                                 });
                             if (res == true) {
                               Navigator.pop(context);
-                            } else return;
-
+                            } else
+                              return;
                           },
-
                           icon: Icon(
                             Icons.stop_rounded,
                             color: Colors.white,
@@ -505,11 +525,11 @@ class _lock_page_state extends State<LockPage> {
                             ],
                           )),
                       IconButton(
-
-                        onPressed:() {/////音乐按钮
+                        onPressed: () {
+                          /////音乐按钮
                           if (isDone) return;
                           _showMusicCard();
-                         },
+                        },
                         icon: const Icon(
                           Icons.music_note_rounded,
                           color: Colors.white,
