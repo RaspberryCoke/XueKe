@@ -8,6 +8,7 @@ import 'package:tomato_clock/logic/play.dart';
 import 'package:tomato_clock/model/todo.dart';
 import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/page/lock_page/wordart.dart';
+import '../../db/TodoDB.dart';
 import '../../logic/main_logic.dart';
 import 'package:tomato_clock/res.dart';
 import 'package:tomato_clock/utils/background_utils.dart';
@@ -24,7 +25,7 @@ import 'package:tomato_clock/page/supervise_controller.dart';
 enum MusicStatus { start, pause, init, resume, complete, close }
 
 class LockPage extends StatefulWidget {
-  const LockPage({Key? key}) : super(key: key);
+
   static const String keyId = "key_id";
   const LockPage({Key? key, this.args}) : super(key: key);
   final Map<String, dynamic>? args;
@@ -79,8 +80,8 @@ class LockPageState extends State<LockPage> {
 
   AudioPlayer player = AudioPlayer();
 
-  Source _source = AssetSource(Play.t1); //初始音乐改为t1
-  Source _timerSource = AssetSource(Play.instance.currentPlay());
+  Source _source = AssetSource("");//Play.t1); //初始音乐改为t1
+  Source _timerSource = AssetSource("");//Play.instance.currentPlay());
   int musicIndex = 0;
   String backgroundPicture = BackgroundUtils.randomBackground();
   String word = WordUtils.randomword();
@@ -98,10 +99,6 @@ class LockPageState extends State<LockPage> {
     super.initState();
     debugPrint("LockPage initState");
 
-    int? id = widget.args?[LockPage.keyId];
-    if (id != null) {
-      todo = MainLogic.instance.getTodoById(id)!;
-    }
     _initAudio();
     Future.delayed(Duration.zero, () {
       controller.start();
@@ -111,7 +108,6 @@ class LockPageState extends State<LockPage> {
       });
     });
 
-    _remain_time = false;
     _is_running = false;
     controller = CountDownController();
     _circular = CircularCountDownTimer(
@@ -134,7 +130,8 @@ class LockPageState extends State<LockPage> {
         setState(() {
           type = MusicStatus.complete;
           setSource(type, res: _timerSource);
-          MainLogic.instance.addCompleteEvent(todo);
+          //记录成功的结果
+          //MainLogic.instance.addCompleteEvent(todo);
 
           player.stop();
 
@@ -399,36 +396,36 @@ class LockPageState extends State<LockPage> {
                             debugPrint("LockPage clock, pause");
                             _is_running = false;
                             controller.pause();
-                          }
-                        onPressed: () async {
-                          controller.pause();
-                          _is_running = false;
-                          if (isDone && !isStop) {
-                            isStop = true;
-                            type = MusicStatus.close;
-                            setSource(type);
-                            return;
-                          }
-                          if (!mounted) return;
-                          if (type == MusicStatus.init) {
-                            controller.start();
-                            setSource(type);
-                            type = MusicStatus.start;
-                          } else if (type == MusicStatus.start ||
-                              type == MusicStatus.resume) {
-                            controller.pause();
-                            setSource(type);
-                            type = MusicStatus.pause;
-                          } else if (type == MusicStatus.pause) {
-                            controller.resume();
-                            setSource(type);
-                            type = MusicStatus.resume;
-                          } else if (type == MusicStatus.complete) {
-                            type = MusicStatus.close;
-                            setSource(type);
-                          }
-                          setState(() {});
-                        },
+                          }},
+                        // onPressed: () async {
+                        //   controller.pause();
+                        //   _is_running = false;
+                        //   if (isDone && !isStop) {
+                        //     isStop = true;
+                        //     type = MusicStatus.close;
+                        //     setSource(type);
+                        //     return;
+                        //   }
+                        //   if (!mounted) return;
+                        //   if (type == MusicStatus.init) {
+                        //     controller.start();
+                        //     setSource(type);
+                        //     type = MusicStatus.start;
+                        //   } else if (type == MusicStatus.start ||
+                        //       type == MusicStatus.resume) {
+                        //     controller.pause();
+                        //     setSource(type);
+                        //     type = MusicStatus.pause;
+                        //   } else if (type == MusicStatus.pause) {
+                        //     controller.resume();
+                        //     setSource(type);
+                        //     type = MusicStatus.resume;
+                        //   } else if (type == MusicStatus.complete) {
+                        //     type = MusicStatus.close;
+                        //     setSource(type);
+                        //   }
+                        //   setState(() {});
+                        // },
                         icon: Icon(
                           type == MusicStatus.start ||
                                   type == MusicStatus.resume
@@ -468,8 +465,6 @@ class LockPageState extends State<LockPage> {
                           if (isDone) return;
                           _showMusicCard();
                         },
-                        onPressed:() {
-                         },
                         icon: const Icon(
                           Icons.music_note_rounded,
                           color: Colors.white,

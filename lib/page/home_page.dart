@@ -2,7 +2,6 @@ import 'package:tomato_clock/page/data_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tomato_clock/page/setting_page/SettingPage.dart';
 import 'package:tomato_clock/page/table_events_page.dart';
-import 'package:tomato_clock/page/lock_page/lock_page.dart';
 
 import '../colors.dart';
 
@@ -24,8 +23,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: _pages[_currentIndex],
       bottomNavigationBar: Container(
-          color: kShrinePink50,
+          //color: Colors.transparent,
           child: Padding(
+
               padding:
                   const EdgeInsets.only(bottom: 15.0, left: 10.0, right: 10.0),
               child: Container(

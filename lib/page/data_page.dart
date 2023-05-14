@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:fl_chart/fl_chart.dart';
 
+import '../db/TodoDB.dart';
+
 /// 统计数据
 class DataPage extends StatefulWidget {
   const DataPage({Key? key}) : super(key: key);
@@ -255,7 +257,7 @@ class _DataPageState extends State<DataPage> {
   }
 
   LineChartData mainData() {
-    String a = '${context.read<MainLogic>().searchDayMinute(date)}';
+    String a =''; //'${context.read<MainLogic>().searchDayMinute(date)}';
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -316,31 +318,31 @@ class _DataPageState extends State<DataPage> {
             FlSpot(
                 1,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day24Time)}')),
+                   '')),// '${context.read<MainLogic>().searchDaytotalMinute(day24Time)}')),
             FlSpot(
                 2,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day25Time)}')),
+                    '')),//${context.read<MainLogic>().searchDaytotalMinute(day25Time)}')),
             FlSpot(
                 3,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day26Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day26Time)}')),
             FlSpot(
                 4,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day27Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day27Time)}')),
             FlSpot(
                 5,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day28Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day28Time)}')),
             FlSpot(
                 6,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day29Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day29Time)}')),
             FlSpot(
                 7,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(curDate)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(curDate)}')),
           ],
           isCurved: false, //是平滑曲线还是折线
           gradient: LinearGradient(
@@ -423,10 +425,10 @@ class _DataPageState extends State<DataPage> {
           spots: [
             //7日平均时长
             FlSpot(1,
-                double.parse('${MainLogic.instance.searchsevenDaysMinute()}')),
+                double.parse('')),//'${MainLogic.instance.searchsevenDaysMinute()}')),
 
             FlSpot(7,
-                double.parse('${MainLogic.instance.searchsevenDaysMinute()}')),
+                double.parse('')),//'${MainLogic.instance.searchsevenDaysMinute()}')),
           ],
           isCurved: true,
           gradient: LinearGradient(
@@ -584,123 +586,123 @@ class _DataPageState extends State<DataPage> {
             FlSpot(
                 1,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day1Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day1Time)}')),
             FlSpot(
                 2,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day2Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day2Time)}')),
             FlSpot(
                 3,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day3Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day3Time)}')),
             FlSpot(
                 4,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day4Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day4Time)}')),
             FlSpot(
                 5,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day5Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day5Time)}')),
             FlSpot(
                 6,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day6Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day6Time)}')),
             FlSpot(
                 7,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day7Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day7Time)}')),
             FlSpot(
                 8,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day8Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day8Time)}')),
             FlSpot(
                 9,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day9Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day9Time)}')),
             FlSpot(
                 10,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day10Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day10Time)}')),
             FlSpot(
                 11,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day11Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day11Time)}')),
             FlSpot(
                 12,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day12Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day12Time)}')),
             FlSpot(
                 13,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day13Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day13Time)}')),
             FlSpot(
                 14,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day14Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day14Time)}')),
             FlSpot(
                 15,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day15Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day15Time)}')),
             FlSpot(
                 16,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day16Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day16Time)}')),
             FlSpot(
                 17,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day17Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day17Time)}')),
             FlSpot(
                 18,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day18Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day18Time)}')),
             FlSpot(
                 19,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day19Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day19Time)}')),
             FlSpot(
                 20,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day20Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day20Time)}')),
             FlSpot(
                 21,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day21Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day21Time)}')),
             FlSpot(
                 22,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day22Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day22Time)}')),
             FlSpot(
                 23,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day23Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day23Time)}')),
             FlSpot(
                 24,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day24Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day24Time)}')),
             FlSpot(
                 25,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day25Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day25Time)}')),
             FlSpot(
                 26,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day26Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day26Time)}')),
             FlSpot(
                 27,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day27Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day27Time)}')),
             FlSpot(
                 28,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day28Time)}')),
+                    '')),//'${context.read<MainLogic>().searchDaytotalMinute(day28Time)}')),
             FlSpot(
                 29,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(day29Time)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(day29Time)}')),
             FlSpot(
                 30,
                 double.parse(
-                    '${context.read<MainLogic>().searchDaytotalMinute(curDate)}')),
+                    '')),// '${context.read<MainLogic>().searchDaytotalMinute(curDate)}')),
           ],
           isCurved: false,
           gradient: LinearGradient(
@@ -782,9 +784,9 @@ class _DataPageState extends State<DataPage> {
         LineChartBarData(
           spots: [
             FlSpot(1,
-                double.parse('${MainLogic.instance.searchthirtyDaysMinute()}')),
+                double.parse('')),//'${MainLogic.instance.searchthirtyDaysMinute()}')),
             FlSpot(30,
-                double.parse('${MainLogic.instance.searchthirtyDaysMinute()}')),
+                double.parse('')),//'${MainLogic.instance.searchthirtyDaysMinute()}')),
           ],
           isCurved: true,
           gradient: LinearGradient(
@@ -936,7 +938,7 @@ class _DataPageState extends State<DataPage> {
                                     children: [
                                       TextSpan(
                                         text:
-                                            '${MainLogic.instance.completeCount()}',
+                                           '',// '${MainLogic.instance.completeCount()}',
                                         style: TextStyle(
                                           color: Color(0xFF3e6fa5),
                                           fontSize: 20,
@@ -968,7 +970,7 @@ class _DataPageState extends State<DataPage> {
                                   children: [
                                     TextSpan(
                                       text:
-                                          '${MainLogic.instance.completeTodoTime()}',
+                                         '',// '${MainLogic.instance.completeTodoTime()}',
                                       style: TextStyle(
                                         color: Color(0xFF3e6fa5),
                                         fontSize: 20,
@@ -1008,7 +1010,7 @@ class _DataPageState extends State<DataPage> {
                                     children: [
                                       TextSpan(
                                         text:
-                                            '${MainLogic.instance.averageTodoTime()}',
+                                        '',//   '${MainLogic.instance.averageTodoTime()}',
                                         style: TextStyle(
                                           color: Color(0xFF3e6fa5),
                                           fontSize: 20,
@@ -1111,7 +1113,7 @@ class _DataPageState extends State<DataPage> {
                                     children: [
                                       TextSpan(
                                         text:
-                                            '${context.read<MainLogic>().searchDayCount(date)}',
+                                        '',//  '${context.read<MainLogic>().searchDayCount(date)}',
                                         style: TextStyle(
                                           color: Color(0xFF3e6fa5),
                                           fontSize: 20,
@@ -1145,7 +1147,7 @@ class _DataPageState extends State<DataPage> {
                                     children: [
                                       TextSpan(
                                         text:
-                                            '${context.read<MainLogic>().searchDayMinute(date)}',
+                                        '',//   '${context.read<MainLogic>().searchDayMinute(date)}',
                                         style: TextStyle(
                                           color: Color(0xFF3e6fa5),
                                           fontSize: 20,
@@ -1281,7 +1283,7 @@ class _DataPageState extends State<DataPage> {
           ),
         ),
       ),
-      //  ),
+      //  ),11
       //    ],
     );
   }

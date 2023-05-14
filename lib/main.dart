@@ -1,19 +1,9 @@
-import 'package:tomato_clock/core/database/providers/todo_table_provider.dart';
-import 'package:tomato_clock/core/database/providers/user_table_provider.dart';
-import 'package:tomato_clock/logic/login_logic.dart';
-
 import 'package:tomato_clock/db/NotificationFilterDB.dart';
 import 'package:tomato_clock/db/WhitePackageDB.dart';
 import 'package:tomato_clock/debug.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/page/qq_login_page/qq_login_page.dart';
 import 'package:tomato_clock/page/setting_page/SettingPage.dart';
-import 'package:tomato_clock/login/registration_page.dart';
-import 'package:tomato_clock/model/todo.dart';
-import 'package:tomato_clock/page/constant.dart';
-import 'package:tomato_clock/page/finished_page.dart';
-import 'package:tomato_clock/page/login.dart';
-import 'package:tomato_clock/page/mine_setting_page.dart';
 import 'package:tomato_clock/page/splash_page.dart';
 import 'package:tomato_clock/page/start_white_app/StartWhiteApp.dart';
 import 'package:tomato_clock/page/test_page.dart';
@@ -30,10 +20,7 @@ import 'db/TodoDB.dart';
 import 'db/UserInfo.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:tomato_clock/page/white_notification_page/notification_filter_page.dart';
-import 'package:tomato_clock/logic/main_logic.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:path/path.dart';
 
 void main() async {
   print("------------------main start-----------------------");
@@ -79,10 +66,16 @@ ThemeData _buildShrineTheme() {
       secondary: kShrineErrorRed,
       //error: kShrineErrorRed,
     ),
-    scaffoldBackgroundColor: kShrineSurfaceWhite,
+    scaffoldBackgroundColor: kShrinePink50,
     textSelectionTheme: const TextSelectionThemeData(
       selectionColor: kShrinePurple,
     ),
+
+  //   bottomNavigationBarTheme: BottomNavigationBarThemeData(
+  //   selectedItemColor:kShrinePink400,
+  //   unselectedItemColor: Colors.grey,
+  //   backgroundColor:Colors.transparent,//kShrinePink50,
+  // ),
 
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -153,11 +146,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/white_app_page': (context) => WhiteAppPage(),
           '/start_white_app': (context) => StartWhiteAppPage(),
           '/notification_page': (context) => NotificationFilterPage(),
-          //'/personPage':(context)=>PersonPage(),
-          //'/changeInfoPage':(context)=>MineSettingPage(),
           '/QQLoginPageState':(context)=>QQLoginPage(),
           '/home_page':(context)=>HomePage(),
-          //'/todo_page':(context)=>TodoPage(),
         },
         theme: _buildShrineTheme(),
         builder: EasyLoading.init(),
