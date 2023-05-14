@@ -17,12 +17,10 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     TableEventsPage(),
-    //LockPage(),
-    TableEventsPage(),
+    DataPage(),
     SettingPage()
   ];
-
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       body: _pages[_currentIndex],
       bottomNavigationBar: Container(

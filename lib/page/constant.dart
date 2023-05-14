@@ -7,4 +7,6 @@ class Constant {
   static const String todoPage = '/todoPage';
   static const String changeInfoPage = '/changeInfoPage';
   static const String personPage = '/personPage';
+  static const String finishedPage = '/finishPage';
+  static const String lockPage = '/lockPage';
 }

@@ -5,7 +5,7 @@ class word_art extends StatelessWidget{
   final String text;
   @override
   Widget build(BuildContext context) {
-    return Text(text,style:TextStyle(fontFamily: 'wanghongziti',fontSize: 23));
+    return Text(text,style:TextStyle(fontFamily: 'wanghongziti',fontSize: 26));
   }
 
 }

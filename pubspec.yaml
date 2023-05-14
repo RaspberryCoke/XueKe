@@ -40,9 +40,9 @@ dependencies:
   circular_countdown_timer: 0.2.1
   duration_picker: 1.1.0+1
   shared_preferences: 2.0.15
-  table_calendar: 3.0.8
+  table_calendar: any
   provider: 6.0.4
-  intl: 0.17.0
+  intl: ^0.17.0
   audioplayers: 1.1.1
   flutter_easyloading: 3.0.5
   shake_animation_widget: ^3.0.3
@@ -54,6 +54,7 @@ dependencies:
   list_tile_more_customizable: ^1.2.2
   http: ^0.13.5
   fl_chart: ^0.55.1
+  curved_navigation_bar: ^0.3.1
   device_apps: ^2.2.0
   sqflite: ^2.2.8
   mutex: ^3.0.1
@@ -64,10 +65,15 @@ dependencies:
 tencent_kit:
   app_id: '102050200'
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
 
   flutter_lints: ^1.0.4
 
