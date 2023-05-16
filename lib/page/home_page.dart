@@ -1,4 +1,4 @@
-import 'package:tomato_clock/page/data_page.dart';
+import 'package:tomato_clock/page/data_page/data_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tomato_clock/page/history_page/history_page.dart';
 import 'package:tomato_clock/page/setting_page/SettingPage.dart';
@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   ];
   Widget build(BuildContext context){
     return Scaffold(
+
       body: _pages[_currentIndex],
       extendBody: true, // very important as noted
       bottomNavigationBar: Container(

@@ -117,47 +117,50 @@ class _TableEventsPageState extends State<TableEventsPage> {
             fontSize: 25.0,
           ),
         ),
+        actions: [
+          TextButton(onPressed: (){_showAddTodoDialog();}, child: Text('添加代办',style: TextStyle(color: Colors.white,fontSize: 18),))
+        ],
       ),
 
 
       drawer: MyDrawer(),
-      floatingActionButton: Stack(
-        children: [
-          Positioned(
-            right: _x,
-            bottom: _y,
-            child: GestureDetector(
-              onPanStart: (details) {
-                setState(() {
-                  _isDragging = true;
-                });
-              },
-              onPanUpdate: (details) {
-                setState(() {
-                  _x = (_x - details.delta.dx).clamp(0, 190);
-                  _y = (_y - details.delta.dy).clamp(0, 580);
-                });
-              },
-              onPanEnd: (details) {
-                setState(() {
-                  _isDragging = false;
-                });
-              },
-              child: FloatingActionButton.extended(
-                onPressed: () {
-                  _showAddTodoDialog();
-                },
-                label: Text(
-                  "创建待办",
-                  style: TextStyle(fontSize: 17, color: Colors.white),
-                ),
-                icon: Icon(Icons.add),
-              ),
-            ),
-          )
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      // floatingActionButton: Stack(
+      //   children: [
+      //     Positioned(
+      //       right: _x,
+      //       bottom: _y,
+      //       child: GestureDetector(
+      //         onPanStart: (details) {
+      //           setState(() {
+      //             _isDragging = true;
+      //           });
+      //         },
+      //         onPanUpdate: (details) {
+      //           setState(() {
+      //             _x = (_x - details.delta.dx).clamp(0, 190);
+      //             _y = (_y - details.delta.dy).clamp(0, 580);
+      //           });
+      //         },
+      //         onPanEnd: (details) {
+      //           setState(() {
+      //             _isDragging = false;
+      //           });
+      //         },
+      //         child: FloatingActionButton.extended(
+      //           onPressed: () {
+      //             _showAddTodoDialog();
+      //           },
+      //           label: Text(
+      //             "创建待办",
+      //             style: TextStyle(fontSize: 17, color: Colors.white),
+      //           ),
+      //           icon: Icon(Icons.add),
+      //         ),
+      //       ),
+      //     )
+      //   ],
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
       body: GridView.count(
         crossAxisCount: 2,

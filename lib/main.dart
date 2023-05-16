@@ -1,3 +1,4 @@
+import 'package:tomato_clock/db/HistoryDB.dart';
 import 'package:tomato_clock/db/NotificationFilterDB.dart';
 import 'package:tomato_clock/db/WhitePackageDB.dart';
 import 'package:tomato_clock/debug.dart';
@@ -29,6 +30,7 @@ void main() async {
   // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   // MainLogic.instance.init(sharedPreferences);
   // LoginLogic.instance.init();
+  HistoryDB().makeData();
   //初始化用户信息
   initUserInfo();
   //初始化待办事项数据库
@@ -227,3 +229,4 @@ Future<void> initNotificationFilter() async {
     infoprint(key+" : "+value.toString());
   });
 }
+

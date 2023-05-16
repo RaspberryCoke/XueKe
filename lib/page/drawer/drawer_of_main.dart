@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tomato_clock/db/UserInfo.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
 
 import '../../colors.dart';
@@ -65,7 +66,7 @@ class MyDrawer extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 15,
+          height: 20,
         ),
         Padding(padding: EdgeInsets.only(left: 10, right: 10), child:Container(
           decoration: BoxDecoration(
@@ -83,7 +84,7 @@ class MyDrawer extends StatelessWidget {
             leading: Container(
               width: 37,
               child: Icon(
-                Icons.face,
+                Icons.task_alt_rounded,
                 size: 28,
                 color: Colors.black,
               ),
@@ -103,7 +104,7 @@ class MyDrawer extends StatelessWidget {
         )),
 
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         Padding(padding: EdgeInsets.only(left: 10, right: 10), child:
         Container(
@@ -138,57 +139,78 @@ class MyDrawer extends StatelessWidget {
           trailing: Icon(Icons.keyboard_arrow_right_rounded),
         ))),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
+        Padding(padding: EdgeInsets.only(left: 10, right: 10), child:
+        Container(
+            decoration: BoxDecoration(
+              color: kShrinePink100,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            constraints: BoxConstraints(
+              minHeight: 50,
+              maxHeight: 50,
+              minWidth: double.infinity,
+              maxWidth: double.infinity,
+            ),
+            child: ListTile(
+              selected: true,
+              leading: Container(
+                  width: 37,
+//    color: Colors.yellow,
+                  child: Icon(
+                    Icons.info_outline,
+                    size: 28,
+                    color: Colors.black,
+                  )),
+              title: Text(
+                "权限申请",
+                style: TextStyle(
+                    color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/notification_page');
+              },
+              trailing: Icon(Icons.keyboard_arrow_right_rounded),
+            ))),
+
         SizedBox(
-          height: 5,
+          height: 10,
         ),
-//         ListTile(
-//           selected: true,
-//           leading: Container(
-//               width: 37,
-// //    color: Colors.yellow,
-//               child: Icon(
-//                 Icons.settings,
-//                 size: 28,
-//                 color: Colors.black,
-//               )),
-//           title: Text(
-//             "系统设置",
-//             style: TextStyle(
-//                 color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
-//           ),
-//           onTap: () {
-//             Navigator.pushNamed(context, '/setting_page');
-// //setting();
-//           },
-//           trailing: Icon(Icons.keyboard_arrow_right_rounded),
-//         ),
-
-//for test
-
-//         ListTile(
-//           selected: true,
-//           leading: Container(
-//               width: 37,
-// //    color: Colors.yellow,
-//               child: Icon(
-//                 Icons.settings,
-//                 size: 28,
-//                 color: Colors.black,
-//               )),
-//           title: Text(
-//             "test",
-//             style: TextStyle(
-//                 color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
-//           ),
-//           onTap: () {
-//             Navigator.pushNamed(context, '/test_page');
-// //setting();
-//           },
-//           trailing: Icon(Icons.keyboard_arrow_right_rounded),
-//         ),
-
+        Padding(padding: EdgeInsets.only(left: 10, right: 10), child:
+        Container(
+            decoration: BoxDecoration(
+              color: kShrinePink100,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            constraints: BoxConstraints(
+              minHeight: 50,
+              maxHeight: 50,
+              minWidth: double.infinity,
+              maxWidth: double.infinity,
+            ),
+            child: ListTile(
+              selected: true,
+              leading: Container(
+                  width: 37,
+//    color: Colors.yellow,
+                  child: Icon(
+                    Icons.exit_to_app,
+                    size: 28,
+                    color: Colors.black,
+                  )),
+              title: Text(
+                "退出登录",
+                style: TextStyle(
+                    color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              onTap: () async{
+                // List<Map<String,dynamic>> list = await UserInfoDB().query();
+                // UserInfoDB().deleteUID();
+                Navigator.pushReplacementNamed(context, '/QQLoginPageState');
+              },
+              trailing: Icon(Icons.keyboard_arrow_right_rounded),
+            ))),
         SizedBox(
           height: 30,
         ),

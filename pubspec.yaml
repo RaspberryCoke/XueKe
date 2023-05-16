@@ -61,6 +61,9 @@ dependencies:
   tencent_kit: ^5.0.2
   flutter_cache_manager: ^3.0.0
   json_annotation: ^4.5.0
+  syncfusion_flutter_charts: ^21.2.4
+  syncfusion_flutter_datepicker: ^21.1.41
+
 
 tencent_kit:
   app_id: '102050200'

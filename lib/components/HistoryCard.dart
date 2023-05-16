@@ -26,7 +26,9 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+        padding: EdgeInsets.only(top: 15,left: 10, right: 10,bottom: 15),
+    child: Card(
       borderOnForeground: false,
       elevation: 4.0,
       shape: RoundedRectangleBorder(
@@ -87,13 +89,20 @@ class HistoryCard extends StatelessWidget {
                         fontFamily: 'wanghongziti'),
                   ),
                 ),
+
                 Container(
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, top: 5, bottom: 5),
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
                   child:
-                    Icon(succeed==1?Icons.check:Icons.close,
-                      color:succeed==1?Colors.green:Colors.red, size: 30),
-                  color: Colors.transparent,
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(succeed==1?Icons.check:Icons.close,
+                      color:succeed==1?Colors.green:Colors.red, size: 30)),
+
                 )
               ],
             ),
@@ -115,6 +124,6 @@ class HistoryCard extends StatelessWidget {
       //     ),
       //   ],
       // ),
-    );
+    ));
   }
 }

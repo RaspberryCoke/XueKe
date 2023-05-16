@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -207,4 +209,90 @@ class HistoryDB{
       debugPrint(e.toString());
     }
   }
+
+
+  Future<DateTime> findOldestDateTime()async{
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps =
+        await db.query(TABLE_NAME, orderBy: '${COLUMN_HISTORY_ID_NAME} ASC', limit: 1);
+
+    final date = DateTime.parse(maps[0][COLUMN_START_TIME_NAME]);
+    return date;
+  }
+
+
+  Future<int> makeData() async{
+    final Database db = await database;
+
+    int _res=await db.delete(TABLE_NAME,where: '1= ?',whereArgs: [1]);
+    if(_res==0)
+      {
+        await db.delete(TABLE_NAME);
+      }
+
+    int all=0;
+    for(int i=1;i<=15;i++) {
+      all+=await db.insert(
+        TABLE_NAME,
+        {
+          COLUMN_TODO_ID_NAME: 3,
+          COLUMN_START_TIME_NAME: DateTime(2023, 5, i, 13, 25, 23, 123, 123).toString(),
+          COLUMN_TITLE_NAME: 'title',
+          COLUMN_TIME_NAME: Random().nextInt(99) + 1,
+          COLUMN_CONTENT_NAME: '',
+          COLUMN_SUCCESS_NAME: 1,
+          COLUMN_TAG_NAME: '',
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
+    all+=await db.insert(
+      TABLE_NAME,
+      {
+        COLUMN_TODO_ID_NAME: 3,
+        COLUMN_START_TIME_NAME: DateTime(2023, 4, 29, 13, 25, 23, 123, 123).toString(),
+        COLUMN_TITLE_NAME: 'title',
+        COLUMN_TIME_NAME: Random().nextInt(99) + 1,
+        COLUMN_CONTENT_NAME: '',
+        COLUMN_SUCCESS_NAME: 1,
+        COLUMN_TAG_NAME: '',
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    all+=await db.insert(
+      TABLE_NAME,
+      {
+        COLUMN_TODO_ID_NAME: 3,
+        COLUMN_START_TIME_NAME: DateTime(2023, 4, 30, 13, 25, 23, 123, 123).toString(),
+        COLUMN_TITLE_NAME: 'title',
+        COLUMN_TIME_NAME: Random().nextInt(99) + 1,
+        COLUMN_CONTENT_NAME: '',
+        COLUMN_SUCCESS_NAME: 1,
+        COLUMN_TAG_NAME: '',
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    return all;
+  }
+
+
+
+  Future<int> queryDataByDate(DateTime date) async {
+    final Database db = await database;
+    final start = DateTime(date.year, date.month, date.day);
+    final end = start.add(Duration(days: 1));
+    final queryResult = await db.query(
+      TABLE_NAME,
+      where: '${COLUMN_START_TIME_NAME} BETWEEN ? AND ?',
+      whereArgs: [start.toIso8601String(), end.toIso8601String()],
+    );
+    int t=0;
+    for(var i=0;i<queryResult.length;i++)
+      {
+        t+=queryResult[i][COLUMN_TIME_NAME] as int;
+      }
+    return t;
+  }
+
+
 }
