@@ -40,10 +40,10 @@ class _HomePageState extends State<HomePage> {
                   color:kShrinePink100,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.7),
+                      color: Colors.grey.withOpacity(0.3),
                       spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
+                      blurRadius: 3,
+                      offset: Offset(0, 2),
                     ),
                   ],
                 ),

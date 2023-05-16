@@ -8,8 +8,6 @@ import 'package:tomato_clock/qq_api/model/tencent_api_resp.dart';
 import 'package:tomato_clock/qq_api/model/tencent_unionid_resp.dart';
 import 'package:tomato_clock/qq_api/tencent_api.dart';
 
-import 'constant.dart';
-
 const String _kTencentAppID = '102050200';
 //const String _kUniversalLink = 'your tencent universal link'; // 可选项目
 

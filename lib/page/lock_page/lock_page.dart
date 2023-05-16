@@ -9,8 +9,6 @@ import 'package:tomato_clock/logic/main_logic.dart';
 import 'package:tomato_clock/page/lock_page/wordart.dart';
 import '../../db/TodoDB.dart';
 import '../../logic/main_logic.dart';
-import 'package:tomato_clock/res.dart';
-import 'package:tomato_clock/utils/background_utils.dart';
 import 'package:tomato_clock/utils/word_utils.dart';
 import 'expands/top_button_expanded.dart';
 import 'expands/top_blank_expanded.dart';

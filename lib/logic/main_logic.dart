@@ -1,20 +1,10 @@
-import 'dart:collection';
-import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:tomato_clock/model/todo.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table_calendar/table_calendar.dart';
-
 import '../db/TodoDB.dart';
 import '../db/UserInfo.dart';
 import '../page/event.dart';
 
 class MainLogic extends ChangeNotifier {
-
-
-
   //全局的已完成列表，在一开始就进行了初始化，从sqlite数据库中初始化。
 
   //全局的用户信息，在一开始就进行了初始化，从sqlite数据库中初始化。

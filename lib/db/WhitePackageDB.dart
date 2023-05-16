@@ -142,13 +142,4 @@ class WhitePackageDB{
     }
   }
 
-  // Future<bool> isOpen() async{
-  //   final Database db = await database;
-  //   try{
-  //     return db.isOpen;
-  //   } catch(e) {
-  //     debugPrint(e.toString());
-  //     return false;
-  //   }
-  // }
 }

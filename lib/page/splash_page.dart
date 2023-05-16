@@ -63,15 +63,20 @@ class _SplashPageState extends State<SplashPage> {
              ),
            ),
              SizedBox(height: 130),
-           Container(
-             child:
-             AnimatedOpacity(
-                opacity: _opacity.toDouble(),
-               duration: Duration(milliseconds: 1500),
-                child:Image.asset("assets/newImages/school.png",fit:BoxFit.cover),
-              ),
-             height:200,
-             width: 200,
+             Container(
+               height:200,
+               width: 200,
+               decoration: BoxDecoration(
+                 color: Colors.white, // 设置容器的背景颜色为白色
+                 shape: BoxShape.circle, // 将容器形状设置为圆形
+               ),
+               child: ClipOval(
+                 child: AnimatedOpacity(
+                   opacity: _opacity.toDouble(),
+                   duration: Duration(milliseconds: 1500),
+                   child:Image.asset("assets/newImages/school.png",fit:BoxFit.cover),
+                 ),
+               ),
              ),
            ]
          ),

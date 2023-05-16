@@ -78,7 +78,6 @@ class HistoryCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-
                   padding: const EdgeInsets.only(
                       left: 16, right: 16, top: 5, bottom: 5),
                   child: Text(
@@ -89,7 +88,6 @@ class HistoryCard extends StatelessWidget {
                         fontFamily: 'wanghongziti'),
                   ),
                 ),
-
                 Container(
                   width: 40,
                   height: 40,
@@ -102,7 +100,6 @@ class HistoryCard extends StatelessWidget {
                     backgroundColor: Colors.white,
                     child: Icon(succeed==1?Icons.check:Icons.close,
                       color:succeed==1?Colors.green:Colors.red, size: 30)),
-
                 )
               ],
             ),
@@ -121,9 +118,6 @@ class HistoryCard extends StatelessWidget {
           ],
         ),
       ),
-      //     ),
-      //   ],
-      // ),
     ));
   }
 }

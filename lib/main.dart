@@ -30,7 +30,6 @@ void main() async {
   // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   // MainLogic.instance.init(sharedPreferences);
   // LoginLogic.instance.init();
-  HistoryDB().makeData();
   //初始化用户信息
   initUserInfo();
   //初始化待办事项数据库
@@ -39,6 +38,7 @@ void main() async {
   initWhiteApp();
   //初始化通知过滤列表
   initNotificationFilter();
+
   runApp(MyApp());
 }
 

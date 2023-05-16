@@ -210,7 +210,6 @@ class HistoryDB{
     }
   }
 
-
   Future<DateTime> findOldestDateTime()async{
     final Database db = await database;
     final List<Map<String, dynamic>> maps =
@@ -219,63 +218,6 @@ class HistoryDB{
     final date = DateTime.parse(maps[0][COLUMN_START_TIME_NAME]);
     return date;
   }
-
-
-  Future<int> makeData() async{
-    final Database db = await database;
-
-    int _res=await db.delete(TABLE_NAME,where: '1= ?',whereArgs: [1]);
-    if(_res==0)
-      {
-        await db.delete(TABLE_NAME);
-      }
-
-    int all=0;
-    for(int i=1;i<=15;i++) {
-      all+=await db.insert(
-        TABLE_NAME,
-        {
-          COLUMN_TODO_ID_NAME: 3,
-          COLUMN_START_TIME_NAME: DateTime(2023, 5, i, 13, 25, 23, 123, 123).toString(),
-          COLUMN_TITLE_NAME: 'title',
-          COLUMN_TIME_NAME: Random().nextInt(99) + 1,
-          COLUMN_CONTENT_NAME: '',
-          COLUMN_SUCCESS_NAME: 1,
-          COLUMN_TAG_NAME: '',
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
-    all+=await db.insert(
-      TABLE_NAME,
-      {
-        COLUMN_TODO_ID_NAME: 3,
-        COLUMN_START_TIME_NAME: DateTime(2023, 4, 29, 13, 25, 23, 123, 123).toString(),
-        COLUMN_TITLE_NAME: 'title',
-        COLUMN_TIME_NAME: Random().nextInt(99) + 1,
-        COLUMN_CONTENT_NAME: '',
-        COLUMN_SUCCESS_NAME: 1,
-        COLUMN_TAG_NAME: '',
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    all+=await db.insert(
-      TABLE_NAME,
-      {
-        COLUMN_TODO_ID_NAME: 3,
-        COLUMN_START_TIME_NAME: DateTime(2023, 4, 30, 13, 25, 23, 123, 123).toString(),
-        COLUMN_TITLE_NAME: 'title',
-        COLUMN_TIME_NAME: Random().nextInt(99) + 1,
-        COLUMN_CONTENT_NAME: '',
-        COLUMN_SUCCESS_NAME: 1,
-        COLUMN_TAG_NAME: '',
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    return all;
-  }
-
-
 
   Future<int> queryDataByDate(DateTime date) async {
     final Database db = await database;
@@ -293,6 +235,4 @@ class HistoryDB{
       }
     return t;
   }
-
-
 }

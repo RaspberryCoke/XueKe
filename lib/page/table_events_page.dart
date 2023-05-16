@@ -1,6 +1,5 @@
 import 'package:tomato_clock/db/TodoDB.dart';
 import 'package:tomato_clock/logic/main_logic.dart';
-import 'package:tomato_clock/page/constant.dart';
 import 'package:tomato_clock/page/event.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -121,47 +120,7 @@ class _TableEventsPageState extends State<TableEventsPage> {
           TextButton(onPressed: (){_showAddTodoDialog();}, child: Text('添加代办',style: TextStyle(color: Colors.white,fontSize: 18),))
         ],
       ),
-
-
       drawer: MyDrawer(),
-      // floatingActionButton: Stack(
-      //   children: [
-      //     Positioned(
-      //       right: _x,
-      //       bottom: _y,
-      //       child: GestureDetector(
-      //         onPanStart: (details) {
-      //           setState(() {
-      //             _isDragging = true;
-      //           });
-      //         },
-      //         onPanUpdate: (details) {
-      //           setState(() {
-      //             _x = (_x - details.delta.dx).clamp(0, 190);
-      //             _y = (_y - details.delta.dy).clamp(0, 580);
-      //           });
-      //         },
-      //         onPanEnd: (details) {
-      //           setState(() {
-      //             _isDragging = false;
-      //           });
-      //         },
-      //         child: FloatingActionButton.extended(
-      //           onPressed: () {
-      //             _showAddTodoDialog();
-      //           },
-      //           label: Text(
-      //             "创建待办",
-      //             style: TextStyle(fontSize: 17, color: Colors.white),
-      //           ),
-      //           icon: Icon(Icons.add),
-      //         ),
-      //       ),
-      //     )
-      //   ],
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-
       body: GridView.count(
         crossAxisCount: 2,
         padding: const EdgeInsets.all(16.0),
