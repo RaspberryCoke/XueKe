@@ -17,14 +17,12 @@ class DataPage extends StatefulWidget {
 class DataPageState extends State<DataPage> {
   List<Data> chartData = [];
   List<Data> chartData_month = [];
-  List<DateTime> _selectedDates_month = [];
-  DateTime? _startDate_month;
-  DateTime? _endDate_month;
+
 
 
   List<DateTime> _selectedDates = [];
-  DateTime? _startDate;
-  DateTime? _endDate;
+  DateTime _startDate=DateTime.now().subtract(Duration(days: 1));
+  DateTime _endDate=DateTime.now();
   DateTime _oldestDateTime = DateTime(1999, 1, 1);
 
   @override
@@ -48,12 +46,44 @@ class DataPageState extends State<DataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kShrinePink50,
+
       appBar: AppBar(
-        title: Text("数据统计"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Padding(
+            padding: EdgeInsets.only(top: 5,left: 10, right: 10,bottom: 5),
+            child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 1,
+                      offset: Offset(0, 1), // changes position of shadow
+                    ),
+                  ],
+                  color: kShrinePink300,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                constraints: BoxConstraints(
+                  minHeight: 45,
+                  maxHeight: 45,
+                  minWidth: 130,
+                  maxWidth: 130,
+                ),
+                child: Center(
+                    child: Text(
+                      '待办任务',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                      ),
+                    )))),
         //backgroundColor: Colors.white,
       ),
       body: Container(
-        color: Colors.white30,
+        color: kShrinePink50,
         child: ListView(
           children: <Widget>[
             SizedBox(
@@ -142,15 +172,15 @@ class DataPageState extends State<DataPage> {
                     maxWidth: double.infinity,
                   ),
                   child: SfDateRangePicker(
-                    rangeSelectionColor: Colors.orangeAccent.withAlpha(100),
+                    rangeSelectionColor:kShrinePink300,
                     selectionColor: Colors.red, // 选中单个日期的颜色
                     maxDate: DateTime.now(),
                     minDate: _oldestDateTime,
                     onSelectionChanged: _onSelectionChanged,
                     selectionMode: DateRangePickerSelectionMode.range,
                     initialSelectedRange: PickerDateRange(
-                        DateTime.now().subtract(const Duration(days: 1)),
-                        DateTime.now()),
+                        _endDate,
+                        _endDate),
                   ),
                 )),
 
@@ -162,7 +192,7 @@ class DataPageState extends State<DataPage> {
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: Container(
                     decoration: BoxDecoration(
-                      color: Color(0xff43A047).withAlpha(40), //Colors.white24,
+                      color: Color(0xff00ff00).withAlpha(35), //Colors.white24,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
@@ -190,9 +220,9 @@ class DataPageState extends State<DataPage> {
                         interval: 1,
                         // 设置间隔为1天
 
-                        visibleMaximum: DateTime(2022, 4, 10),
+                        visibleMaximum: _endDate,
                         // 设置显示的最大日期
-                        visibleMinimum: DateTime(2022, 4, 1),
+                        visibleMinimum: _startDate,
                         // 设置显示的最小日期
                         majorGridLines: MajorGridLines(
                             width: 1, color: Colors.grey.shade300),

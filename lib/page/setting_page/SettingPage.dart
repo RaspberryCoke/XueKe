@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:tomato_clock/colors.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -25,7 +26,37 @@ class SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("设置"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Padding(
+            padding: EdgeInsets.only(top: 5,left: 10, right: 10,bottom: 5),
+            child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 1,
+                      offset: Offset(0, 1), // changes position of shadow
+                    ),
+                  ],
+                  color: kShrinePink300,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                constraints: const BoxConstraints(
+                  minHeight: 45,
+                  maxHeight: 45,
+                  minWidth: 130,
+                  maxWidth: 130,
+                ),
+                child: Center(
+                    child: Text(
+                      '设置',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                      ),
+                    )))),
         //backgroundColor: Colors.white,
       ),
       body: Container(
